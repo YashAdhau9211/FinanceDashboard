@@ -1,0 +1,79 @@
+export type TransactionType = 'income' | 'expense' | 'transfer';
+
+// Category type with 13 categories
+export type Category =
+  | 'salary'
+  | 'freelance'
+  | 'investment'
+  | 'rent'
+  | 'utilities'
+  | 'groceries'
+  | 'dining'
+  | 'transportation'
+  | 'entertainment'
+  | 'healthcare'
+  | 'shopping'
+  | 'transfer'
+  | 'other';
+
+// Role type for user roles
+export type Role = 'ADMIN' | 'ANALYST';
+
+// Sort direction type
+export type SortDir = 'asc' | 'desc';
+
+// Transaction interface with all required fields
+export interface Transaction {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+  type: TransactionType;
+  category: Category;
+  merchant?: string;
+  tags?: string[];
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Filter state interface for transaction filtering
+export interface FilterState {
+  searchQuery: string;
+  type: TransactionType | 'all';
+  category: Category | 'all';
+  dateRange: {
+    start: string | null;
+    end: string | null;
+  };
+  sortField: 'date' | 'amount' | 'description';
+  sortDir: SortDir;
+}
+
+// UI state interface for UI preferences
+export interface UIState {
+  sidebarCollapsed: boolean;
+  darkMode: boolean;
+}
+
+// Monthly data interface for aggregated monthly data
+export interface MonthlyData {
+  month: string;
+  income: number;
+  expenses: number;
+  net: number;
+  transactionCount: number;
+}
+
+// Insight data interface for insights page
+export interface InsightData {
+  topCategories: Array<{
+    category: Category;
+    amount: number;
+    percentage: number;
+  }>;
+  monthlyTrend: MonthlyData[];
+  averageTransaction: number;
+  totalIncome: number;
+  totalExpenses: number;
+}
