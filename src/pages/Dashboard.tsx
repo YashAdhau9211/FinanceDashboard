@@ -1,12 +1,86 @@
+import { useMemo } from 'react';
 import { PageWrapper } from '../components/PageWrapper';
+import {
+  KPICardsGrid,
+  BalanceTrendChart,
+  SpendingDonut,
+  RecentTransactionsWidget,
+  TransactionActivityHeatmap,
+} from '../components/dashboard';
+import { ErrorBoundary } from '../components/ErrorBoundary';
+import { ErrorFallback } from '../components/dashboard/ErrorFallback';
+import { useTransactionsStore } from '../stores/transactionsStore';
+import { computeMonthlyData } from '../stores/selectors/monthlyDataSelector';
+import { computeCategoryBreakdown } from '../stores/selectors/categoryBreakdownSelector';
+import { getRecentTransactions } from '../stores/selectors/recentTransactionsSelector';
 
 export function Dashboard() {
+  const transactions = useTransactionsStore((state) => state.transactions);
+
+  // Compute all derived state using selectors with useMemo
+  const monthlyData = useMemo(() => computeMonthlyData(transactions, 12), [transactions]);
+
+  const categoryBreakdown = useMemo(() => computeCategoryBreakdown(transactions), [transactions]);
+
+  const recentTransactions = useMemo(() => getRecentTransactions(transactions), [transactions]);
+
   return (
     <PageWrapper pageTitle="Dashboard">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h2>
-        <div className="text-gray-600 dark:text-gray-400">
-          Dashboard content coming soon...
+        {/* Top row: KPI Cards Grid (4 columns) */}
+        <ErrorBoundary
+          sectionName="KPI Cards"
+          fallback={(error, retry) => (
+            <ErrorFallback sectionName="KPI Cards" error={error} onRetry={retry} />
+          )}
+        >
+          <KPICardsGrid />
+        </ErrorBoundary>
+
+        {/* Middle row: Transaction Activity Heatmap (left) + Balance Trend Chart (right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ErrorBoundary
+            sectionName="Transaction Activity Heatmap"
+            fallback={(error, retry) => (
+              <ErrorFallback
+                sectionName="Transaction Activity Heatmap"
+                error={error}
+                onRetry={retry}
+              />
+            )}
+          >
+            <TransactionActivityHeatmap />
+          </ErrorBoundary>
+
+          <ErrorBoundary
+            sectionName="Balance Trend Chart"
+            fallback={(error, retry) => (
+              <ErrorFallback sectionName="Balance Trend Chart" error={error} onRetry={retry} />
+            )}
+          >
+            <BalanceTrendChart data={monthlyData} />
+          </ErrorBoundary>
+        </div>
+
+        {/* Bottom row: Spending Donut (left) + Recent Transactions Widget (right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ErrorBoundary
+            sectionName="Spending Breakdown"
+            fallback={(error, retry) => (
+              <ErrorFallback sectionName="Spending Breakdown" error={error} onRetry={retry} />
+            )}
+          >
+            <SpendingDonut data={categoryBreakdown} />
+          </ErrorBoundary>
+
+          <ErrorBoundary
+            sectionName="Recent Transactions"
+            fallback={(error, retry) => (
+              <ErrorFallback sectionName="Recent Transactions" error={error} onRetry={retry} />
+            )}
+          >
+            <RecentTransactionsWidget transactions={recentTransactions} />
+          </ErrorBoundary>
         </div>
       </div>
     </PageWrapper>

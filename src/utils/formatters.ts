@@ -22,19 +22,19 @@ export function formatDate(dateString: string): string {
 export function formatShortAmount(amount: number): string {
   const absAmount = Math.abs(amount);
   const sign = amount < 0 ? '-' : '';
-  
+
   // Indian numbering system: Crore (10M), Lakh (100K), Thousand
   if (absAmount >= 10_000_000) {
     return `${sign}₹${(absAmount / 10_000_000).toFixed(1)}Cr`;
   }
-  
+
   if (absAmount >= 100_000) {
     return `${sign}₹${(absAmount / 100_000).toFixed(1)}L`;
   }
-  
+
   if (absAmount >= 1_000) {
     return `${sign}₹${(absAmount / 1_000).toFixed(1)}K`;
   }
-  
+
   return `${sign}₹${absAmount}`;
 }

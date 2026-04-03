@@ -14,8 +14,7 @@ export const useUIStore = create<UIState & UIActions>()((set) => ({
   darkMode: false,
 
   // Toggle sidebar action
-  toggleSidebar: () =>
-    set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
+  toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
 
   // Toggle dark mode action
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),

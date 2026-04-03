@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   /* Dark mode configuration */
@@ -12,11 +12,11 @@
   --color-slate-200: #e2e8f0;
   --color-slate-700: #334155;
   --color-slate-800: #1e293b;
-  
+
   /* Font families */
   --font-family-sans: Inter, system-ui, sans-serif;
-  --font-family-mono: "JetBrains Mono", monospace;
-  
+  --font-family-mono: 'JetBrains Mono', monospace;
+
   /* Custom spacing */
   --spacing-18: 4.5rem;
   --spacing-88: 22rem;
@@ -32,8 +32,34 @@
     margin: 0;
     padding: 0;
   }
-  
+
   #root {
     min-height: 100vh;
+  }
+
+  /* Keyboard navigation focus indicators */
+  *:focus-visible {
+    outline: 2px solid var(--color-teal-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Remove default focus outline for mouse users */
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Enhanced focus for buttons and links */
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--color-teal-500);
+    outline-offset: 2px;
+  }
+
+  /* Focus for interactive chart elements */
+  [role='button']:focus-visible,
+  [role='gridcell']:focus-visible {
+    outline: 2px solid var(--color-teal-500);
+    outline-offset: 2px;
   }
 }

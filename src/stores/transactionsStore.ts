@@ -8,18 +8,14 @@ interface TransactionsState {
 }
 
 interface TransactionsActions {
-  addTransaction: (
-    transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>
-  ) => void;
+  addTransaction: (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateTransaction: (id: string, updates: Partial<Transaction>) => void;
   deleteTransaction: (id: string) => void;
   getTransactionById: (id: string) => Transaction | undefined;
   getFilteredTransactions: (filters: FilterState) => Transaction[];
 }
 
-export const useTransactionsStore = create<
-  TransactionsState & TransactionsActions
->()(
+export const useTransactionsStore = create<TransactionsState & TransactionsActions>()(
   persist(
     (set, get) => ({
       // Initialize state with mockTransactions array
@@ -44,12 +40,12 @@ export const useTransactionsStore = create<
         set((state) => ({
           transactions: state.transactions.map((t) => {
             if (t.id !== id) return t;
-            
+
             // Filter out undefined values to preserve unmodified fields
             const filteredUpdates = Object.fromEntries(
-              Object.entries(updates).filter(([_, value]) => value !== undefined)
+              Object.entries(updates).filter(([, value]) => value !== undefined)
             );
-            
+
             return {
               ...t,
               ...filteredUpdates,

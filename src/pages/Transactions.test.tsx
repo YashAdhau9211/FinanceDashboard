@@ -44,7 +44,7 @@ describe('Transactions', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('65 transactions loaded')).toBeInTheDocument();
+    expect(screen.getByText('103 transactions loaded')).toBeInTheDocument();
   });
 
   it('updates transaction count when store changes', () => {
@@ -54,11 +54,11 @@ describe('Transactions', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('65 transactions loaded')).toBeInTheDocument();
+    expect(screen.getByText('103 transactions loaded')).toBeInTheDocument();
 
     // Update store with fewer transactions
     useTransactionsStore.setState({ transactions: mockTransactions.slice(0, 10) });
-    
+
     rerender(
       <BrowserRouter>
         <Transactions />

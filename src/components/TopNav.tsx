@@ -29,9 +29,7 @@ export function TopNav({ pageTitle }: TopNavProps) {
           <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">Z</span>
           </div>
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-            {pageTitle}
-          </h1>
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{pageTitle}</h1>
         </div>
 
         {/* Right: Role Switcher + Dark Mode + User */}
@@ -47,9 +45,7 @@ export function TopNav({ pageTitle }: TopNavProps) {
                 ADMIN
               </span>
             ) : (
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {role}
-              </span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{role}</span>
             )}
           </button>
 
@@ -68,7 +64,7 @@ export function TopNav({ pageTitle }: TopNavProps) {
           </button>
 
           {/* User Avatar */}
-          <div 
+          <div
             className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center cursor-pointer"
             title="Profile"
           >

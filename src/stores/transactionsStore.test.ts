@@ -11,11 +11,7 @@ beforeEach(() => {
 });
 
 // Arbitraries for generating random transaction data
-const transactionTypeArb = fc.constantFrom<TransactionType>(
-  'income',
-  'expense',
-  'transfer'
-);
+const transactionTypeArb = fc.constantFrom<TransactionType>('income', 'expense', 'transfer');
 
 const categoryArb = fc.constantFrom<Category>(
   'salary',
@@ -34,13 +30,11 @@ const categoryArb = fc.constantFrom<Category>(
 );
 
 const transactionDataArb = fc.record({
-  date: fc
-    .integer({ min: 0, max: 3652 })
-    .map((days) => {
-      const baseDate = new Date('2020-01-01');
-      baseDate.setDate(baseDate.getDate() + days);
-      return baseDate.toISOString().split('T')[0];
-    }),
+  date: fc.integer({ min: 0, max: 3652 }).map((days) => {
+    const baseDate = new Date('2020-01-01');
+    baseDate.setDate(baseDate.getDate() + days);
+    return baseDate.toISOString().split('T')[0];
+  }),
   description: fc.string({ minLength: 1, maxLength: 100 }),
   amount: fc.double({ min: 0.01, max: 1000000, noNaN: true }),
   type: transactionTypeArb,
@@ -72,9 +66,7 @@ describe('transactionsStore', () => {
 
           // Verify all provided fields match exactly
           expect(addedTransaction.date).toBe(transactionData.date);
-          expect(addedTransaction.description).toBe(
-            transactionData.description
-          );
+          expect(addedTransaction.description).toBe(transactionData.description);
           expect(addedTransaction.amount).toBe(transactionData.amount);
           expect(addedTransaction.type).toBe(transactionData.type);
           expect(addedTransaction.category).toBe(transactionData.category);
@@ -89,15 +81,11 @@ describe('transactionsStore', () => {
 
           expect(addedTransaction.createdAt).toBeDefined();
           expect(typeof addedTransaction.createdAt).toBe('string');
-          expect(new Date(addedTransaction.createdAt).toString()).not.toBe(
-            'Invalid Date'
-          );
+          expect(new Date(addedTransaction.createdAt).toString()).not.toBe('Invalid Date');
 
           expect(addedTransaction.updatedAt).toBeDefined();
           expect(typeof addedTransaction.updatedAt).toBe('string');
-          expect(new Date(addedTransaction.updatedAt).toString()).not.toBe(
-            'Invalid Date'
-          );
+          expect(new Date(addedTransaction.updatedAt).toString()).not.toBe('Invalid Date');
 
           // Verify transaction appears in the transactions array
           expect(transactions).toContain(addedTransaction);
@@ -129,25 +117,20 @@ describe('transactionsStore', () => {
             const targetId = targetTransaction.id;
 
             // Store other transactions for comparison
-            const otherTransactions = transactions.filter(
-              (t) => t.id !== targetId
-            );
+            const otherTransactions = transactions.filter((t) => t.id !== targetId);
 
             // Delete the target transaction
             store.deleteTransaction(targetId);
 
             // Get updated transactions
-            const updatedTransactions =
-              useTransactionsStore.getState().transactions;
+            const updatedTransactions = useTransactionsStore.getState().transactions;
 
             // Verify deleted transaction is not in the store
             expect(updatedTransactions.find((t) => t.id === targetId)).toBeUndefined();
 
             // Verify all other transactions remain in the store
             otherTransactions.forEach((transaction) => {
-              const found = updatedTransactions.find(
-                (t) => t.id === transaction.id
-              );
+              const found = updatedTransactions.find((t) => t.id === transaction.id);
               expect(found).toBeDefined();
               expect(found).toEqual(transaction);
             });
@@ -170,10 +153,9 @@ describe('transactionsStore', () => {
             description: fc.option(fc.string({ minLength: 1, maxLength: 100 }), {
               nil: undefined,
             }),
-            amount: fc.option(
-              fc.double({ min: 0.01, max: 1000000, noNaN: true }),
-              { nil: undefined }
-            ),
+            amount: fc.option(fc.double({ min: 0.01, max: 1000000, noNaN: true }), {
+              nil: undefined,
+            }),
             type: fc.option(transactionTypeArb, { nil: undefined }),
             category: fc.option(categoryArb, { nil: undefined }),
             merchant: fc.option(fc.string({ minLength: 1, maxLength: 50 }), {
@@ -205,21 +187,16 @@ describe('transactionsStore', () => {
             store.updateTransaction(originalTransaction.id, partialUpdate);
 
             // Get the updated transaction
-            const updatedTransactions =
-              useTransactionsStore.getState().transactions;
+            const updatedTransactions = useTransactionsStore.getState().transactions;
             const updatedTransaction = updatedTransactions.find(
               (t) => t.id === originalTransaction.id
             )!;
 
             // Verify updated fields changed
             if (partialUpdate.description !== undefined) {
-              expect(updatedTransaction.description).toBe(
-                partialUpdate.description
-              );
+              expect(updatedTransaction.description).toBe(partialUpdate.description);
             } else {
-              expect(updatedTransaction.description).toBe(
-                originalTransaction.description
-              );
+              expect(updatedTransaction.description).toBe(originalTransaction.description);
             }
 
             if (partialUpdate.amount !== undefined) {
@@ -237,17 +214,13 @@ describe('transactionsStore', () => {
             if (partialUpdate.category !== undefined) {
               expect(updatedTransaction.category).toBe(partialUpdate.category);
             } else {
-              expect(updatedTransaction.category).toBe(
-                originalTransaction.category
-              );
+              expect(updatedTransaction.category).toBe(originalTransaction.category);
             }
 
             if (partialUpdate.merchant !== undefined) {
               expect(updatedTransaction.merchant).toBe(partialUpdate.merchant);
             } else {
-              expect(updatedTransaction.merchant).toBe(
-                originalTransaction.merchant
-              );
+              expect(updatedTransaction.merchant).toBe(originalTransaction.merchant);
             }
 
             if (partialUpdate.notes !== undefined) {
@@ -276,277 +249,267 @@ describe('transactionsStore', () => {
   });
 });
 
-  describe('Property 7: Search Filter Matches Description or Merchant', () => {
-    it('**Validates: Requirements 6.4** - should return only transactions matching search query in description or merchant', () => {
-      fc.assert(
-        fc.property(
-          fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
-          fc.string({ minLength: 1, maxLength: 10 }),
-          (transactionsData, searchQuery) => {
-            const store = useTransactionsStore.getState();
+describe('Property 7: Search Filter Matches Description or Merchant', () => {
+  it('**Validates: Requirements 6.4** - should return only transactions matching search query in description or merchant', () => {
+    fc.assert(
+      fc.property(
+        fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
+        fc.string({ minLength: 1, maxLength: 10 }),
+        (transactionsData, searchQuery) => {
+          const store = useTransactionsStore.getState();
 
-            // Add multiple transactions
-            transactionsData.forEach((data) => store.addTransaction(data));
+          // Add multiple transactions
+          transactionsData.forEach((data) => store.addTransaction(data));
 
-            // Create filter state with search query
-            const filters = {
-              searchQuery,
-              type: 'all' as const,
-              category: 'all' as const,
-              dateRange: { start: null, end: null },
-              sortField: 'date' as const,
-              sortDir: 'desc' as const,
-            };
+          // Create filter state with search query
+          const filters = {
+            searchQuery,
+            type: 'all' as const,
+            category: 'all' as const,
+            dateRange: { start: null, end: null },
+            sortField: 'date' as const,
+            sortDir: 'desc' as const,
+          };
 
-            // Get filtered transactions
-            const filtered = store.getFilteredTransactions(filters);
+          // Get filtered transactions
+          const filtered = store.getFilteredTransactions(filters);
 
-            // Verify all returned transactions contain the query (case-insensitive)
-            const lowerQuery = searchQuery.toLowerCase();
-            filtered.forEach((transaction) => {
-              const matchesDescription = transaction.description
-                .toLowerCase()
-                .includes(lowerQuery);
-              const matchesMerchant =
-                transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
-              expect(matchesDescription || matchesMerchant).toBe(true);
-            });
+          // Verify all returned transactions contain the query (case-insensitive)
+          const lowerQuery = searchQuery.toLowerCase();
+          filtered.forEach((transaction) => {
+            const matchesDescription = transaction.description.toLowerCase().includes(lowerQuery);
+            const matchesMerchant =
+              transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
+            expect(matchesDescription || matchesMerchant).toBe(true);
+          });
 
-            // Verify all transactions containing the query are returned
-            const allTransactions = useTransactionsStore.getState().transactions;
-            allTransactions.forEach((transaction) => {
-              const matchesDescription = transaction.description
-                .toLowerCase()
-                .includes(lowerQuery);
-              const matchesMerchant =
-                transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
+          // Verify all transactions containing the query are returned
+          const allTransactions = useTransactionsStore.getState().transactions;
+          allTransactions.forEach((transaction) => {
+            const matchesDescription = transaction.description.toLowerCase().includes(lowerQuery);
+            const matchesMerchant =
+              transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
 
-              if (matchesDescription || matchesMerchant) {
-                expect(filtered).toContainEqual(transaction);
-              }
-            });
-          }
-        ),
-        { numRuns: 100 }
-      );
-    });
-
-    it('should return all transactions when search query is empty', () => {
-      const store = useTransactionsStore.getState();
-
-      // Add some transactions
-      store.addTransaction({
-        date: '2025-01-01',
-        description: 'Test 1',
-        amount: 100,
-        type: 'income',
-        category: 'salary',
-      });
-      store.addTransaction({
-        date: '2025-01-02',
-        description: 'Test 2',
-        amount: 200,
-        type: 'expense',
-        category: 'rent',
-      });
-
-      const filters = {
-        searchQuery: '',
-        type: 'all' as const,
-        category: 'all' as const,
-        dateRange: { start: null, end: null },
-        sortField: 'date' as const,
-        sortDir: 'desc' as const,
-      };
-
-      const filtered = store.getFilteredTransactions(filters);
-      const allTransactions = useTransactionsStore.getState().transactions;
-
-      expect(filtered.length).toBe(allTransactions.length);
-    });
+            if (matchesDescription || matchesMerchant) {
+              expect(filtered).toContainEqual(transaction);
+            }
+          });
+        }
+      ),
+      { numRuns: 100 }
+    );
   });
 
-  describe('Property 8: Type Filter Matches Transaction Type', () => {
-    it('**Validates: Requirements 6.4** - should return only transactions matching the specified type', () => {
-      fc.assert(
-        fc.property(
-          fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),
-          fc.constantFrom('income', 'expense', 'transfer', 'all'),
-          (transactionsData, typeFilter) => {
-            const store = useTransactionsStore.getState();
+  it('should return all transactions when search query is empty', () => {
+    const store = useTransactionsStore.getState();
 
-            // Add multiple transactions
-            transactionsData.forEach((data) => store.addTransaction(data));
-
-            // Create filter state with type filter
-            const filters = {
-              searchQuery: '',
-              type: typeFilter as 'income' | 'expense' | 'transfer' | 'all',
-              category: 'all' as const,
-              dateRange: { start: null, end: null },
-              sortField: 'date' as const,
-              sortDir: 'desc' as const,
-            };
-
-            // Get filtered transactions
-            const filtered = store.getFilteredTransactions(filters);
-            const allTransactions = useTransactionsStore.getState().transactions;
-
-            if (typeFilter === 'all') {
-              // When filter is "all", all transactions should be returned
-              expect(filtered.length).toBe(allTransactions.length);
-            } else {
-              // When filter is specific type, all results should have that type
-              filtered.forEach((transaction) => {
-                expect(transaction.type).toBe(typeFilter);
-              });
-
-              // Verify no transactions of other types are included
-              const otherTypes = ['income', 'expense', 'transfer'].filter(
-                (t) => t !== typeFilter
-              );
-              filtered.forEach((transaction) => {
-                expect(otherTypes).not.toContain(transaction.type);
-              });
-
-              // Verify all transactions of the specified type are included
-              const expectedTransactions = allTransactions.filter(
-                (t) => t.type === typeFilter
-              );
-              expect(filtered.length).toBe(expectedTransactions.length);
-            }
-          }
-        ),
-        { numRuns: 100 }
-      );
+    // Add some transactions
+    store.addTransaction({
+      date: '2025-01-01',
+      description: 'Test 1',
+      amount: 100,
+      type: 'income',
+      category: 'salary',
     });
+    store.addTransaction({
+      date: '2025-01-02',
+      description: 'Test 2',
+      amount: 200,
+      type: 'expense',
+      category: 'rent',
+    });
+
+    const filters = {
+      searchQuery: '',
+      type: 'all' as const,
+      category: 'all' as const,
+      dateRange: { start: null, end: null },
+      sortField: 'date' as const,
+      sortDir: 'desc' as const,
+    };
+
+    const filtered = store.getFilteredTransactions(filters);
+    const allTransactions = useTransactionsStore.getState().transactions;
+
+    expect(filtered.length).toBe(allTransactions.length);
   });
+});
 
-  describe('Property 9: Date Range Filter Respects Boundaries', () => {
-    it('**Validates: Requirements 6.4** - should return only transactions within the specified date range', () => {
-      fc.assert(
-        fc.property(
-          fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),
-          fc.option(
-            fc
-              .integer({ min: 0, max: 3652 })
-              .map((days) => {
-                const baseDate = new Date('2020-01-01');
-                baseDate.setDate(baseDate.getDate() + days);
-                return baseDate.toISOString().split('T')[0];
-              })
-          ),
-          fc.option(
-            fc
-              .integer({ min: 0, max: 3652 })
-              .map((days) => {
-                const baseDate = new Date('2020-01-01');
-                baseDate.setDate(baseDate.getDate() + days);
-                return baseDate.toISOString().split('T')[0];
-              })
-          ),
-          (transactionsData, startDate, endDate) => {
-            const store = useTransactionsStore.getState();
+describe('Property 8: Type Filter Matches Transaction Type', () => {
+  it('**Validates: Requirements 6.4** - should return only transactions matching the specified type', () => {
+    fc.assert(
+      fc.property(
+        fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),
+        fc.constantFrom('income', 'expense', 'transfer', 'all'),
+        (transactionsData, typeFilter) => {
+          // Reset store before each iteration
+          useTransactionsStore.setState({ transactions: [] });
+          const store = useTransactionsStore.getState();
 
-            // Add multiple transactions
-            transactionsData.forEach((data) => store.addTransaction(data));
+          // Add multiple transactions
+          transactionsData.forEach((data) => store.addTransaction(data));
 
-            // Ensure start <= end if both are specified
-            let start = startDate || null;
-            let end = endDate || null;
-            if (start && end && start > end) {
-              [start, end] = [end, start];
-            }
+          // Create filter state with type filter
+          const filters = {
+            searchQuery: '',
+            type: typeFilter as 'income' | 'expense' | 'transfer' | 'all',
+            category: 'all' as const,
+            dateRange: { start: null, end: null },
+            sortField: 'date' as const,
+            sortDir: 'desc' as const,
+          };
 
-            // Create filter state with date range
-            const filters = {
-              searchQuery: '',
-              type: 'all' as const,
-              category: 'all' as const,
-              dateRange: { start, end },
-              sortField: 'date' as const,
-              sortDir: 'desc' as const,
-            };
+          // Get filtered transactions
+          const filtered = store.getFilteredTransactions(filters);
+          const allTransactions = useTransactionsStore.getState().transactions;
 
-            // Get filtered transactions
-            const filtered = store.getFilteredTransactions(filters);
-            const allTransactions = useTransactionsStore.getState().transactions;
-
-            // Verify all results are within the date range
+          if (typeFilter === 'all') {
+            // When filter is "all", all transactions should be returned
+            expect(filtered.length).toBe(allTransactions.length);
+          } else {
+            // When filter is specific type, all results should have that type
             filtered.forEach((transaction) => {
-              if (start) {
-                expect(transaction.date >= start).toBe(true);
-              }
-              if (end) {
-                expect(transaction.date <= end).toBe(true);
-              }
+              expect(transaction.type).toBe(typeFilter);
             });
 
-            // Verify all transactions within range are included
-            const expectedTransactions = allTransactions.filter((t) => {
-              const afterStart = !start || t.date >= start;
-              const beforeEnd = !end || t.date <= end;
-              return afterStart && beforeEnd;
+            // Verify no transactions of other types are included
+            const otherTypes = ['income', 'expense', 'transfer'].filter((t) => t !== typeFilter);
+            filtered.forEach((transaction) => {
+              expect(otherTypes).not.toContain(transaction.type);
             });
 
+            // Verify all transactions of the specified type are included
+            const expectedTransactions = allTransactions.filter((t) => t.type === typeFilter);
             expect(filtered.length).toBe(expectedTransactions.length);
+          }
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
 
-            // When neither start nor end is specified, all transactions should be returned
-            if (!start && !end) {
-              expect(filtered.length).toBe(allTransactions.length);
+describe('Property 9: Date Range Filter Respects Boundaries', () => {
+  it('**Validates: Requirements 6.4** - should return only transactions within the specified date range', () => {
+    fc.assert(
+      fc.property(
+        fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),
+        fc.option(
+          fc.integer({ min: 0, max: 3652 }).map((days) => {
+            const baseDate = new Date('2020-01-01');
+            baseDate.setDate(baseDate.getDate() + days);
+            return baseDate.toISOString().split('T')[0];
+          })
+        ),
+        fc.option(
+          fc.integer({ min: 0, max: 3652 }).map((days) => {
+            const baseDate = new Date('2020-01-01');
+            baseDate.setDate(baseDate.getDate() + days);
+            return baseDate.toISOString().split('T')[0];
+          })
+        ),
+        (transactionsData, startDate, endDate) => {
+          const store = useTransactionsStore.getState();
+
+          // Add multiple transactions
+          transactionsData.forEach((data) => store.addTransaction(data));
+
+          // Ensure start <= end if both are specified
+          let start = startDate || null;
+          let end = endDate || null;
+          if (start && end && start > end) {
+            [start, end] = [end, start];
+          }
+
+          // Create filter state with date range
+          const filters = {
+            searchQuery: '',
+            type: 'all' as const,
+            category: 'all' as const,
+            dateRange: { start, end },
+            sortField: 'date' as const,
+            sortDir: 'desc' as const,
+          };
+
+          // Get filtered transactions
+          const filtered = store.getFilteredTransactions(filters);
+          const allTransactions = useTransactionsStore.getState().transactions;
+
+          // Verify all results are within the date range
+          filtered.forEach((transaction) => {
+            if (start) {
+              expect(transaction.date >= start).toBe(true);
+            }
+            if (end) {
+              expect(transaction.date <= end).toBe(true);
+            }
+          });
+
+          // Verify all transactions within range are included
+          const expectedTransactions = allTransactions.filter((t) => {
+            const afterStart = !start || t.date >= start;
+            const beforeEnd = !end || t.date <= end;
+            return afterStart && beforeEnd;
+          });
+
+          expect(filtered.length).toBe(expectedTransactions.length);
+
+          // When neither start nor end is specified, all transactions should be returned
+          if (!start && !end) {
+            expect(filtered.length).toBe(allTransactions.length);
+          }
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
+
+describe('Property 10: Sort Order Consistency', () => {
+  it('**Validates: Requirements 6.4** - should return transactions in correct order based on sort field and direction', () => {
+    fc.assert(
+      fc.property(
+        fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
+        fc.constantFrom('date', 'amount', 'description'),
+        fc.constantFrom('asc', 'desc'),
+        (transactionsData, sortField, sortDir) => {
+          const store = useTransactionsStore.getState();
+
+          // Add multiple transactions
+          transactionsData.forEach((data) => store.addTransaction(data));
+
+          // Create filter state with sort options
+          const filters = {
+            searchQuery: '',
+            type: 'all' as const,
+            category: 'all' as const,
+            dateRange: { start: null, end: null },
+            sortField: sortField as 'date' | 'amount' | 'description',
+            sortDir: sortDir as 'asc' | 'desc',
+          };
+
+          // Get filtered transactions
+          const filtered = store.getFilteredTransactions(filters);
+
+          // Verify correct ordering
+          for (let i = 0; i < filtered.length - 1; i++) {
+            const current = filtered[i];
+            const next = filtered[i + 1];
+
+            const currentVal = current[sortField];
+            const nextVal = next[sortField];
+
+            if (sortDir === 'asc') {
+              // For ascending: each element <= next element
+              expect(currentVal <= nextVal).toBe(true);
+            } else {
+              // For descending: each element >= next element
+              expect(currentVal >= nextVal).toBe(true);
             }
           }
-        ),
-        { numRuns: 100 }
-      );
-    });
+        }
+      ),
+      { numRuns: 100 }
+    );
   });
-
-  describe('Property 10: Sort Order Consistency', () => {
-    it('**Validates: Requirements 6.4** - should return transactions in correct order based on sort field and direction', () => {
-      fc.assert(
-        fc.property(
-          fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
-          fc.constantFrom('date', 'amount', 'description'),
-          fc.constantFrom('asc', 'desc'),
-          (transactionsData, sortField, sortDir) => {
-            const store = useTransactionsStore.getState();
-
-            // Add multiple transactions
-            transactionsData.forEach((data) => store.addTransaction(data));
-
-            // Create filter state with sort options
-            const filters = {
-              searchQuery: '',
-              type: 'all' as const,
-              category: 'all' as const,
-              dateRange: { start: null, end: null },
-              sortField: sortField as 'date' | 'amount' | 'description',
-              sortDir: sortDir as 'asc' | 'desc',
-            };
-
-            // Get filtered transactions
-            const filtered = store.getFilteredTransactions(filters);
-
-            // Verify correct ordering
-            for (let i = 0; i < filtered.length - 1; i++) {
-              const current = filtered[i];
-              const next = filtered[i + 1];
-
-              const currentVal = current[sortField];
-              const nextVal = next[sortField];
-
-              if (sortDir === 'asc') {
-                // For ascending: each element <= next element
-                expect(currentVal <= nextVal).toBe(true);
-              } else {
-                // For descending: each element >= next element
-                expect(currentVal >= nextVal).toBe(true);
-              }
-            }
-          }
-        ),
-        { numRuns: 100 }
-      );
-    });
-  });
+});

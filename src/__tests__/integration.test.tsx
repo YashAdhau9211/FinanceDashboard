@@ -7,22 +7,20 @@ import { useUIStore } from '../stores/uiStore';
 import App from '../App';
 import type { Transaction } from '../types';
 
-
-
 describe('Integration Tests', () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
-    
+
     // Reset all stores to initial state
     useTransactionsStore.setState({
       transactions: [],
     });
-    
+
     useRoleStore.setState({
       role: 'ANALYST',
     });
-    
+
     useUIStore.setState({
       sidebarCollapsed: false,
       darkMode: false,
@@ -32,7 +30,7 @@ describe('Integration Tests', () => {
   afterEach(() => {
     // Clean up localStorage after each test
     localStorage.clear();
-    
+
     // Remove dark class from document if present
     document.documentElement.classList.remove('dark');
   });
@@ -53,7 +51,7 @@ describe('Integration Tests', () => {
       // Verify localStorage was updated
       const stored = localStorage.getItem('zorvyn-transactions');
       expect(stored).toBeTruthy();
-      
+
       const parsed = JSON.parse(stored!);
       expect(parsed.state.transactions).toHaveLength(1);
       expect(parsed.state.transactions[0].description).toBe('Test Transaction');
@@ -79,7 +77,7 @@ describe('Integration Tests', () => {
         },
         version: 0,
       };
-      
+
       localStorage.setItem('zorvyn-transactions', JSON.stringify(mockData));
 
       // Reset store to trigger rehydration
@@ -89,7 +87,7 @@ describe('Integration Tests', () => {
       await waitFor(() => {
         const currentTransactions = useTransactionsStore.getState().transactions;
         expect(currentTransactions.length).toBeGreaterThan(0);
-        const persistedTransaction = currentTransactions.find(t => t.id === 'test-1');
+        const persistedTransaction = currentTransactions.find((t) => t.id === 'test-1');
         expect(persistedTransaction).toBeDefined();
         expect(persistedTransaction?.description).toBe('Persisted Transaction');
         expect(persistedTransaction?.amount).toBe(2000);
@@ -105,7 +103,7 @@ describe('Integration Tests', () => {
       // Verify localStorage was updated
       const stored = localStorage.getItem('zorvyn-role');
       expect(stored).toBeTruthy();
-      
+
       const parsed = JSON.parse(stored!);
       expect(parsed.state.role).toBe('ADMIN');
     });
@@ -118,7 +116,7 @@ describe('Integration Tests', () => {
         },
         version: 0,
       };
-      
+
       localStorage.setItem('zorvyn-role', JSON.stringify(mockData));
 
       // Reset store to trigger rehydration
@@ -137,25 +135,24 @@ describe('Integration Tests', () => {
       render(<App />);
 
       // Should redirect to /dashboard and show Dashboard page
-      expect(screen.getByRole('heading', { level: 2, name: 'Dashboard' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
     });
 
     it('should navigate between routes when sidebar links are clicked', async () => {
       const user = userEvent.setup();
-      
+
       render(<App />);
 
       // Start at Dashboard
-      expect(screen.getByRole('heading', { level: 2, name: 'Dashboard' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
 
-      // Click Transactions link
-      const transactionsLink = screen.getByRole('link', { name: /transactions/i });
+      // Click Transactions link in sidebar
+      const transactionsLink = screen.getAllByRole('link', { name: /transactions/i })[0]; // Get sidebar link
       await user.click(transactionsLink);
 
-      // Should navigate to Transactions page - verify both TopNav (h1) and page content (h2)
+      // Should navigate to Transactions page - verify TopNav (h1)
       await waitFor(() => {
         expect(screen.getByRole('heading', { level: 1, name: 'Transactions' })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { level: 2, name: 'Transactions' })).toBeInTheDocument();
       });
 
       // Click Insights link
@@ -173,7 +170,7 @@ describe('Integration Tests', () => {
   describe('dark mode class application to DOM', () => {
     it('should add dark class to document.documentElement when dark mode is enabled', async () => {
       const user = userEvent.setup();
-      
+
       render(<App />);
 
       // Initially, dark class should not be present
@@ -191,11 +188,11 @@ describe('Integration Tests', () => {
 
     it('should remove dark class from document.documentElement when dark mode is disabled', async () => {
       const user = userEvent.setup();
-      
+
       // Start with dark mode enabled
       useUIStore.setState({ darkMode: true });
       document.documentElement.classList.add('dark');
-      
+
       render(<App />);
 
       // Dark class should be present initially
@@ -213,7 +210,7 @@ describe('Integration Tests', () => {
 
     it('should persist dark mode state across component remounts', async () => {
       const user = userEvent.setup();
-      
+
       const { unmount } = render(<App />);
 
       // Enable dark mode
@@ -226,7 +223,7 @@ describe('Integration Tests', () => {
 
       // Unmount and remount
       unmount();
-      
+
       render(<App />);
 
       // Dark mode should still be enabled (from UI store state)

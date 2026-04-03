@@ -12,8 +12,7 @@ describe('App Routing', () => {
   it('should redirect root path to dashboard', () => {
     render(<App />);
     // The app should redirect to /dashboard and show the Dashboard page
-    // Check for the page heading (h2) specifically
-    const heading = screen.getByRole('heading', { level: 2, name: 'Dashboard' });
+    const heading = screen.getByRole('heading', { level: 1, name: 'Dashboard' });
     expect(heading).toBeTruthy();
   });
 

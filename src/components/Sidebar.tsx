@@ -21,9 +21,7 @@ export function Sidebar() {
           <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">Z</span>
           </div>
-          {!sidebarCollapsed && (
-            <span className="text-xl font-bold text-white">Zorvyn</span>
-          )}
+          {!sidebarCollapsed && <span className="text-xl font-bold text-white">Zorvyn</span>}
         </div>
 
         {/* Navigation Links */}
@@ -43,9 +41,7 @@ export function Sidebar() {
                 }`}
               >
                 <Icon size={20} />
-                {!sidebarCollapsed && (
-                  <span className="text-sm font-medium">{item.label}</span>
-                )}
+                {!sidebarCollapsed && <span className="text-sm font-medium">{item.label}</span>}
               </Link>
             );
           })}
