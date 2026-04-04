@@ -134,8 +134,40 @@ describe('Category Breakdown Selector - Property Tests', () => {
         fc.property(
           fc.array(
             fc.record({
-              ...transactionGenerator.value,
+              id: fc.uuid(),
+              date: fc.integer({ min: 0, max: 730 }).map((days) => {
+                const d = new Date('2024-01-01');
+                d.setDate(d.getDate() + days);
+                return d.toISOString().split('T')[0];
+              }),
+              description: fc.string({ minLength: 1, maxLength: 50 }),
+              amount: fc.integer({ min: 100, max: 100000 }),
               type: fc.constantFrom('income' as const, 'transfer' as const), // No expenses
+              category: fc.constantFrom(
+                'salary' as const,
+                'freelance' as const,
+                'investment' as const,
+                'groceries' as const,
+                'dining' as const,
+                'rent' as const,
+                'utilities' as const,
+                'transportation' as const,
+                'entertainment' as const,
+                'healthcare' as const,
+                'shopping' as const,
+                'transfer' as const,
+                'other' as const
+              ),
+              createdAt: fc.integer({ min: 0, max: 730 }).map((days) => {
+                const d = new Date('2024-01-01');
+                d.setDate(d.getDate() + days);
+                return d.toISOString();
+              }),
+              updatedAt: fc.integer({ min: 0, max: 730 }).map((days) => {
+                const d = new Date('2024-01-01');
+                d.setDate(d.getDate() + days);
+                return d.toISOString();
+              }),
             }) as fc.Arbitrary<Transaction>,
             { minLength: 0, maxLength: 50 }
           ),

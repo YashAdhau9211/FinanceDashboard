@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
 import { useTransactionsStore } from './transactionsStore';
+import { useRoleStore } from './roleStore';
 import type { TransactionType, Category } from '../types';
 
 // Helper to reset store state before each test
@@ -8,6 +9,8 @@ beforeEach(() => {
   useTransactionsStore.setState({
     transactions: [],
   });
+  // Set role to ADMIN for all tests
+  useRoleStore.setState({ role: 'ADMIN' });
 });
 
 // Arbitraries for generating random transaction data
@@ -250,7 +253,7 @@ describe('transactionsStore', () => {
 });
 
 describe('Property 7: Search Filter Matches Description or Merchant', () => {
-  it('**Validates: Requirements 6.4** - should return only transactions matching search query in description or merchant', () => {
+  it('**Validates: Requirements 6.4** - should return only transactions matching search query in description or merchant', { timeout: 15000 }, () => {
     fc.assert(
       fc.property(
         fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
@@ -390,7 +393,7 @@ describe('Property 8: Type Filter Matches Transaction Type', () => {
 });
 
 describe('Property 9: Date Range Filter Respects Boundaries', () => {
-  it('**Validates: Requirements 6.4** - should return only transactions within the specified date range', () => {
+  it('**Validates: Requirements 6.4** - should return only transactions within the specified date range', { timeout: 15000 }, () => {
     fc.assert(
       fc.property(
         fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),

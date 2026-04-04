@@ -32,6 +32,15 @@ export default {
         18: '4.5rem',
         88: '22rem',
       },
+      animation: {
+        shimmer: 'shimmer 1.5s infinite',
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
