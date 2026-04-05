@@ -81,9 +81,7 @@ export function TransactionCard({ transaction, onEdit, onDelete }: TransactionCa
       </div>
 
       {/* Card Body - Description */}
-      <p className="text-base text-gray-900 dark:text-white mb-3">
-        {transaction.description}
-      </p>
+      <p className="text-base text-gray-900 dark:text-white mb-3">{transaction.description}</p>
 
       {/* Badges - Category and Type */}
       <div className="flex items-center gap-2 mb-4">
@@ -94,7 +92,9 @@ export function TransactionCard({ transaction, onEdit, onDelete }: TransactionCa
           <CategoryIcon className="w-3.5 h-3.5" />
           {transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}
         </span>
-        <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${getTypeBadgeColor()}`}>
+        <span
+          className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${getTypeBadgeColor()}`}
+        >
           {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
         </span>
       </div>
@@ -119,7 +119,7 @@ export function TransactionCard({ transaction, onEdit, onDelete }: TransactionCa
               <Trash2 className="w-4 h-4" />
               Delete
             </button>
-            
+
             {/* Delete Confirmation Tooltip */}
             {showDeleteConfirm && (
               <div className="absolute z-20 left-0 right-0 top-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3">

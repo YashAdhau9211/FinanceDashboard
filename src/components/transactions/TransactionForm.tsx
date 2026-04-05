@@ -121,15 +121,13 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
     if (validateForm()) {
       setIsSubmitting(true);
       setSubmissionError(null);
-      
+
       try {
         await onSubmit(formData);
       } catch (error) {
         console.error('Form submission error:', error);
         setSubmissionError(
-          error instanceof Error 
-            ? error.message 
-            : 'Failed to save transaction. Please try again.'
+          error instanceof Error ? error.message : 'Failed to save transaction. Please try again.'
         );
       } finally {
         setIsSubmitting(false);
@@ -152,7 +150,11 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           <div className="flex items-start">
             <div className="flex-shrink-0">
               <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
               </svg>
             </div>
             <div className="ml-3 flex-1">
@@ -174,7 +176,10 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
 
       {/* Date Field */}
       <div>
-        <label htmlFor="transaction-date" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="transaction-date"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Date <span className="text-red-500">*</span>
         </label>
         <input
@@ -196,7 +201,10 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
 
       {/* Description Field */}
       <div>
-        <label htmlFor="transaction-description" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="transaction-description"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Description <span className="text-red-500">*</span>
         </label>
         <input
@@ -219,7 +227,10 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
 
       {/* Amount Field */}
       <div>
-        <label htmlFor="transaction-amount" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="transaction-amount"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Amount (₹) <span className="text-red-500">*</span>
         </label>
         <input
@@ -256,12 +267,16 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
                   name="transaction-type"
                   value={type}
                   checked={formData.type === type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value as TransactionType })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, type: e.target.value as TransactionType })
+                  }
                   onBlur={() => handleBlur('type')}
                   className="h-4 w-4 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
                   required
                 />
-                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 capitalize">{type}</span>
+                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 capitalize">
+                  {type}
+                </span>
               </label>
             ))}
           </div>
@@ -275,7 +290,10 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
 
       {/* Category Field */}
       <div>
-        <label htmlFor="transaction-category" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="transaction-category"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Category <span className="text-red-500">*</span>
         </label>
         <select

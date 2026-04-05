@@ -40,11 +40,7 @@ describe('TransactionCard', () => {
 
   it('should render transaction details', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     expect(screen.getByText('Grocery Shopping at Whole Foods')).toBeInTheDocument();
@@ -54,11 +50,7 @@ describe('TransactionCard', () => {
 
   it('should display category badge with icon', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     expect(screen.getByText('Groceries')).toBeInTheDocument();
@@ -66,11 +58,7 @@ describe('TransactionCard', () => {
 
   it('should display type badge', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     expect(screen.getByText('Expense')).toBeInTheDocument();
@@ -79,11 +67,7 @@ describe('TransactionCard', () => {
   it('should show Edit and Delete buttons for ADMIN role', () => {
     // ADMIN is default in mock
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     expect(screen.getByLabelText('Edit transaction')).toBeInTheDocument();
@@ -98,11 +82,7 @@ describe('TransactionCard', () => {
     });
 
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     expect(screen.queryByLabelText('Edit transaction')).not.toBeInTheDocument();
@@ -111,11 +91,7 @@ describe('TransactionCard', () => {
 
   it('should call onEdit when Edit button is clicked', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const editButton = screen.getByLabelText('Edit transaction');
@@ -126,11 +102,7 @@ describe('TransactionCard', () => {
 
   it('should show delete confirmation when Delete button is clicked', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const deleteButton = screen.getByLabelText('Delete transaction');
@@ -143,11 +115,7 @@ describe('TransactionCard', () => {
 
   it('should call onDelete when Confirm is clicked', async () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const deleteButton = screen.getByLabelText('Delete transaction');
@@ -157,18 +125,17 @@ describe('TransactionCard', () => {
     fireEvent.click(confirmButton);
 
     // Wait for the setTimeout to complete
-    await waitFor(() => {
-      expect(mockOnDelete).toHaveBeenCalledWith('1');
-    }, { timeout: 300 });
+    await waitFor(
+      () => {
+        expect(mockOnDelete).toHaveBeenCalledWith('1');
+      },
+      { timeout: 300 }
+    );
   });
 
   it('should hide confirmation when Cancel is clicked', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const deleteButton = screen.getByLabelText('Delete transaction');
@@ -182,11 +149,7 @@ describe('TransactionCard', () => {
 
   it('should apply correct color for expense amounts', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const amountElement = screen.getByText(/₹1,500/);
@@ -214,11 +177,7 @@ describe('TransactionCard', () => {
 
   it('should show negative sign for expense amounts', () => {
     render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     expect(screen.getByText(/-₹1,500/)).toBeInTheDocument();
@@ -226,11 +185,7 @@ describe('TransactionCard', () => {
 
   it('should have fade-in animation class', () => {
     const { container } = render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const card = container.firstChild;
@@ -239,11 +194,7 @@ describe('TransactionCard', () => {
 
   it('should have proper card styling', () => {
     const { container } = render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const card = container.firstChild;
@@ -254,11 +205,7 @@ describe('TransactionCard', () => {
 
   it('should have dark mode support', () => {
     const { container } = render(
-      <TransactionCard
-        transaction={mockTransaction}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     const card = container.firstChild;

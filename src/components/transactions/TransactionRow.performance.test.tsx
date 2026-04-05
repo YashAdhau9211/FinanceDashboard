@@ -29,7 +29,7 @@ describe('TransactionRow Performance', () => {
     // Verify that TransactionRow is wrapped with memo
     // React.memo components have a $$typeof property
     expect(TransactionRow).toBeDefined();
-    
+
     // Test that the component doesn't re-render when props don't change
     const { rerender } = render(
       <table>

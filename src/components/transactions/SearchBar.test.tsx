@@ -12,14 +12,14 @@ describe('SearchBar', () => {
 
   it('renders search input with label and placeholder', () => {
     render(<SearchBar />);
-    
+
     expect(screen.getByLabelText(/search transactions/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/search transactions\.\.\./i)).toBeInTheDocument();
   });
 
   it('displays search icon', () => {
     render(<SearchBar />);
-    
+
     const searchIcon = document.querySelector('svg');
     expect(searchIcon).toBeInTheDocument();
   });
@@ -27,23 +27,23 @@ describe('SearchBar', () => {
   it('updates local state immediately when typing', async () => {
     const user = userEvent.setup();
     render(<SearchBar />);
-    
+
     const input = screen.getByLabelText(/search transactions/i);
     await user.type(input, 'test');
-    
+
     expect(input).toHaveValue('test');
   });
 
   it('debounces store update by 300ms', async () => {
     const user = userEvent.setup();
     render(<SearchBar />);
-    
+
     const input = screen.getByLabelText(/search transactions/i);
     await user.type(input, 'test');
-    
+
     // Store should not be updated immediately
     expect(useFiltersStore.getState().searchQuery).toBe('');
-    
+
     // Wait for debounce
     await waitFor(
       () => {
@@ -56,15 +56,15 @@ describe('SearchBar', () => {
   it('shows clear button when query is not empty', async () => {
     const user = userEvent.setup();
     render(<SearchBar />);
-    
+
     const input = screen.getByLabelText(/search transactions/i);
-    
+
     // Clear button should not be visible initially
     expect(screen.queryByLabelText(/clear search/i)).not.toBeInTheDocument();
-    
+
     // Type something
     await user.type(input, 'test');
-    
+
     // Clear button should now be visible
     expect(screen.getByLabelText(/clear search/i)).toBeInTheDocument();
   });
@@ -72,23 +72,23 @@ describe('SearchBar', () => {
   it('clears input when clear button is clicked', async () => {
     const user = userEvent.setup();
     render(<SearchBar />);
-    
+
     const input = screen.getByLabelText(/search transactions/i);
     await user.type(input, 'test');
-    
+
     const clearButton = screen.getByLabelText(/clear search/i);
     await user.click(clearButton);
-    
+
     expect(input).toHaveValue('');
   });
 
   it('updates store when input is cleared', async () => {
     const user = userEvent.setup();
     render(<SearchBar />);
-    
+
     const input = screen.getByLabelText(/search transactions/i);
     await user.type(input, 'test');
-    
+
     // Wait for debounce
     await waitFor(
       () => {
@@ -96,10 +96,10 @@ describe('SearchBar', () => {
       },
       { timeout: 400 }
     );
-    
+
     const clearButton = screen.getByLabelText(/clear search/i);
     await user.click(clearButton);
-    
+
     // Wait for debounce after clearing
     await waitFor(
       () => {
@@ -111,10 +111,10 @@ describe('SearchBar', () => {
 
   it('has proper label association with input', () => {
     render(<SearchBar />);
-    
+
     const label = screen.getByText(/search transactions/i);
     const input = screen.getByLabelText(/search transactions/i);
-    
+
     expect(label).toHaveAttribute('for', 'search-transactions');
     expect(input).toHaveAttribute('id', 'search-transactions');
   });

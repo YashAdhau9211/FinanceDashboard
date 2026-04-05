@@ -16,7 +16,13 @@ interface TransactionTableProps {
   onAddTransaction: () => void;
 }
 
-export function TransactionTable({ transactions, isLoading, onEdit, onDelete, onAddTransaction }: TransactionTableProps) {
+export function TransactionTable({
+  transactions,
+  isLoading,
+  onEdit,
+  onDelete,
+  onAddTransaction,
+}: TransactionTableProps) {
   const role = useRoleStore((state) => state.role);
   const sortField = useFiltersStore((state) => state.sortField);
   const sortDir = useFiltersStore((state) => state.sortDir);
@@ -99,10 +105,16 @@ export function TransactionTable({ transactions, isLoading, onEdit, onDelete, on
                 currentSortDir={sortDir}
                 onSort={handleSort}
               />
-              <th scope="col" className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
+              >
                 CATEGORY
               </th>
-              <th scope="col" className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+              <th
+                scope="col"
+                className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
+              >
                 TYPE
               </th>
               <SortableHeader
@@ -113,7 +125,10 @@ export function TransactionTable({ transactions, isLoading, onEdit, onDelete, on
                 onSort={handleSort}
               />
               {role === 'ADMIN' && (
-                <th scope="col" className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
+                >
                   ACTIONS
                 </th>
               )}

@@ -253,55 +253,59 @@ describe('transactionsStore', () => {
 });
 
 describe('Property 7: Search Filter Matches Description or Merchant', () => {
-  it('**Validates: Requirements 6.4** - should return only transactions matching search query in description or merchant', { timeout: 15000 }, () => {
-    fc.assert(
-      fc.property(
-        fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
-        fc.string({ minLength: 1, maxLength: 10 }),
-        (transactionsData, searchQuery) => {
-          const store = useTransactionsStore.getState();
+  it(
+    '**Validates: Requirements 6.4** - should return only transactions matching search query in description or merchant',
+    { timeout: 15000 },
+    () => {
+      fc.assert(
+        fc.property(
+          fc.array(transactionDataArb, { minLength: 5, maxLength: 20 }),
+          fc.string({ minLength: 1, maxLength: 10 }),
+          (transactionsData, searchQuery) => {
+            const store = useTransactionsStore.getState();
 
-          // Add multiple transactions
-          transactionsData.forEach((data) => store.addTransaction(data));
+            // Add multiple transactions
+            transactionsData.forEach((data) => store.addTransaction(data));
 
-          // Create filter state with search query
-          const filters = {
-            searchQuery,
-            type: 'all' as const,
-            category: 'all' as const,
-            dateRange: { start: null, end: null },
-            sortField: 'date' as const,
-            sortDir: 'desc' as const,
-          };
+            // Create filter state with search query
+            const filters = {
+              searchQuery,
+              type: 'all' as const,
+              category: 'all' as const,
+              dateRange: { start: null, end: null },
+              sortField: 'date' as const,
+              sortDir: 'desc' as const,
+            };
 
-          // Get filtered transactions
-          const filtered = store.getFilteredTransactions(filters);
+            // Get filtered transactions
+            const filtered = store.getFilteredTransactions(filters);
 
-          // Verify all returned transactions contain the query (case-insensitive)
-          const lowerQuery = searchQuery.toLowerCase();
-          filtered.forEach((transaction) => {
-            const matchesDescription = transaction.description.toLowerCase().includes(lowerQuery);
-            const matchesMerchant =
-              transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
-            expect(matchesDescription || matchesMerchant).toBe(true);
-          });
+            // Verify all returned transactions contain the query (case-insensitive)
+            const lowerQuery = searchQuery.toLowerCase();
+            filtered.forEach((transaction) => {
+              const matchesDescription = transaction.description.toLowerCase().includes(lowerQuery);
+              const matchesMerchant =
+                transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
+              expect(matchesDescription || matchesMerchant).toBe(true);
+            });
 
-          // Verify all transactions containing the query are returned
-          const allTransactions = useTransactionsStore.getState().transactions;
-          allTransactions.forEach((transaction) => {
-            const matchesDescription = transaction.description.toLowerCase().includes(lowerQuery);
-            const matchesMerchant =
-              transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
+            // Verify all transactions containing the query are returned
+            const allTransactions = useTransactionsStore.getState().transactions;
+            allTransactions.forEach((transaction) => {
+              const matchesDescription = transaction.description.toLowerCase().includes(lowerQuery);
+              const matchesMerchant =
+                transaction.merchant?.toLowerCase().includes(lowerQuery) || false;
 
-            if (matchesDescription || matchesMerchant) {
-              expect(filtered).toContainEqual(transaction);
-            }
-          });
-        }
-      ),
-      { numRuns: 100 }
-    );
-  });
+              if (matchesDescription || matchesMerchant) {
+                expect(filtered).toContainEqual(transaction);
+              }
+            });
+          }
+        ),
+        { numRuns: 100 }
+      );
+    }
+  );
 
   it('should return all transactions when search query is empty', () => {
     const store = useTransactionsStore.getState();
@@ -393,79 +397,83 @@ describe('Property 8: Type Filter Matches Transaction Type', () => {
 });
 
 describe('Property 9: Date Range Filter Respects Boundaries', () => {
-  it('**Validates: Requirements 6.4** - should return only transactions within the specified date range', { timeout: 15000 }, () => {
-    fc.assert(
-      fc.property(
-        fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),
-        fc.option(
-          fc.integer({ min: 0, max: 3652 }).map((days) => {
-            const baseDate = new Date('2020-01-01');
-            baseDate.setDate(baseDate.getDate() + days);
-            return baseDate.toISOString().split('T')[0];
-          })
-        ),
-        fc.option(
-          fc.integer({ min: 0, max: 3652 }).map((days) => {
-            const baseDate = new Date('2020-01-01');
-            baseDate.setDate(baseDate.getDate() + days);
-            return baseDate.toISOString().split('T')[0];
-          })
-        ),
-        (transactionsData, startDate, endDate) => {
-          const store = useTransactionsStore.getState();
+  it(
+    '**Validates: Requirements 6.4** - should return only transactions within the specified date range',
+    { timeout: 15000 },
+    () => {
+      fc.assert(
+        fc.property(
+          fc.array(transactionDataArb, { minLength: 10, maxLength: 30 }),
+          fc.option(
+            fc.integer({ min: 0, max: 3652 }).map((days) => {
+              const baseDate = new Date('2020-01-01');
+              baseDate.setDate(baseDate.getDate() + days);
+              return baseDate.toISOString().split('T')[0];
+            })
+          ),
+          fc.option(
+            fc.integer({ min: 0, max: 3652 }).map((days) => {
+              const baseDate = new Date('2020-01-01');
+              baseDate.setDate(baseDate.getDate() + days);
+              return baseDate.toISOString().split('T')[0];
+            })
+          ),
+          (transactionsData, startDate, endDate) => {
+            const store = useTransactionsStore.getState();
 
-          // Add multiple transactions
-          transactionsData.forEach((data) => store.addTransaction(data));
+            // Add multiple transactions
+            transactionsData.forEach((data) => store.addTransaction(data));
 
-          // Ensure start <= end if both are specified
-          let start = startDate || null;
-          let end = endDate || null;
-          if (start && end && start > end) {
-            [start, end] = [end, start];
-          }
-
-          // Create filter state with date range
-          const filters = {
-            searchQuery: '',
-            type: 'all' as const,
-            category: 'all' as const,
-            dateRange: { start, end },
-            sortField: 'date' as const,
-            sortDir: 'desc' as const,
-          };
-
-          // Get filtered transactions
-          const filtered = store.getFilteredTransactions(filters);
-          const allTransactions = useTransactionsStore.getState().transactions;
-
-          // Verify all results are within the date range
-          filtered.forEach((transaction) => {
-            if (start) {
-              expect(transaction.date >= start).toBe(true);
+            // Ensure start <= end if both are specified
+            let start = startDate || null;
+            let end = endDate || null;
+            if (start && end && start > end) {
+              [start, end] = [end, start];
             }
-            if (end) {
-              expect(transaction.date <= end).toBe(true);
+
+            // Create filter state with date range
+            const filters = {
+              searchQuery: '',
+              type: 'all' as const,
+              category: 'all' as const,
+              dateRange: { start, end },
+              sortField: 'date' as const,
+              sortDir: 'desc' as const,
+            };
+
+            // Get filtered transactions
+            const filtered = store.getFilteredTransactions(filters);
+            const allTransactions = useTransactionsStore.getState().transactions;
+
+            // Verify all results are within the date range
+            filtered.forEach((transaction) => {
+              if (start) {
+                expect(transaction.date >= start).toBe(true);
+              }
+              if (end) {
+                expect(transaction.date <= end).toBe(true);
+              }
+            });
+
+            // Verify all transactions within range are included
+            const expectedTransactions = allTransactions.filter((t) => {
+              const afterStart = !start || t.date >= start;
+              const beforeEnd = !end || t.date <= end;
+              return afterStart && beforeEnd;
+            });
+
+            expect(filtered.length).toBe(expectedTransactions.length);
+
+            // When neither start nor end is specified, all transactions should be returned
+            if (!start && !end) {
+              expect(filtered.length).toBe(allTransactions.length);
             }
-          });
-
-          // Verify all transactions within range are included
-          const expectedTransactions = allTransactions.filter((t) => {
-            const afterStart = !start || t.date >= start;
-            const beforeEnd = !end || t.date <= end;
-            return afterStart && beforeEnd;
-          });
-
-          expect(filtered.length).toBe(expectedTransactions.length);
-
-          // When neither start nor end is specified, all transactions should be returned
-          if (!start && !end) {
-            expect(filtered.length).toBe(allTransactions.length);
           }
-        }
-      ),
-      { numRuns: 100 }
-    );
-  });
+        ),
+        { numRuns: 100 }
+      );
+    }
+  );
 });
 
 describe('Property 10: Sort Order Consistency', () => {

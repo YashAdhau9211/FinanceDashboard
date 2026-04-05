@@ -104,37 +104,27 @@ describe('Accessibility Tests - Transactions Feature', () => {
   describe('TransactionForm', () => {
     it('should have no accessibility violations', async () => {
       const { container } = render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
+        <TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
 
     it('should have explicit labels for all inputs', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       // Check date field
       const dateInput = screen.getByLabelText(/date/i);
       expect(dateInput).toHaveAttribute('id');
-      
+
       // Check description field
       const descInput = screen.getByLabelText(/description/i);
       expect(descInput).toHaveAttribute('id');
-      
+
       // Check amount field
       const amountInput = screen.getByLabelText(/amount/i);
       expect(amountInput).toHaveAttribute('id');
-      
+
       // Check category field
       const categorySelect = screen.getByLabelText(/category/i);
       expect(categorySelect).toHaveAttribute('id');
@@ -142,13 +132,7 @@ describe('Accessibility Tests - Transactions Feature', () => {
 
     it('should use role="alert" for validation errors', async () => {
       const user = userEvent.setup();
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       // Blur fields without filling to trigger validation
       const dateInput = screen.getByLabelText(/date/i);
@@ -167,21 +151,15 @@ describe('Accessibility Tests - Transactions Feature', () => {
     it('should be keyboard accessible', async () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       // Tab through form fields
       await user.tab();
       expect(screen.getByLabelText(/date/i)).toHaveFocus();
-      
+
       await user.tab();
       expect(screen.getByLabelText(/description/i)).toHaveFocus();
-      
+
       await user.tab();
       expect(screen.getByLabelText(/amount/i)).toHaveFocus();
     });
@@ -243,7 +221,7 @@ describe('Accessibility Tests - Transactions Feature', () => {
       render(<DateRangePicker />);
       const startInput = screen.getByLabelText(/start date/i);
       const endInput = screen.getByLabelText(/end date/i);
-      
+
       expect(startInput).toBeInTheDocument();
       expect(startInput).toHaveAttribute('id');
       expect(endInput).toBeInTheDocument();
@@ -257,13 +235,13 @@ describe('Accessibility Tests - Transactions Feature', () => {
       // Set end date before start date to trigger validation
       const startInput = screen.getByLabelText(/start date/i);
       const endInput = screen.getByLabelText(/end date/i);
-      
+
       await user.type(startInput, '2025-01-20');
       await user.type(endInput, '2025-01-10');
-      
+
       // Blur to trigger validation
       await user.tab();
-      
+
       // Check for alert
       const alert = screen.queryByRole('alert');
       if (alert) {
@@ -310,7 +288,7 @@ describe('Accessibility Tests - Transactions Feature', () => {
       const dialog = screen.getByRole('dialog');
       const titleId = dialog.getAttribute('aria-labelledby');
       expect(titleId).toBeTruthy();
-      
+
       const title = document.getElementById(titleId!);
       expect(title).toHaveTextContent('Test Panel');
     });
@@ -328,10 +306,10 @@ describe('Accessibility Tests - Transactions Feature', () => {
       // Focus should be trapped within the panel
       const button1 = screen.getByRole('button', { name: 'Button 1' });
       const button2 = screen.getByRole('button', { name: 'Button 2' });
-      
+
       button1.focus();
       expect(button1).toHaveFocus();
-      
+
       await user.tab();
       expect(button2).toHaveFocus();
     });
@@ -353,7 +331,7 @@ describe('Accessibility Tests - Transactions Feature', () => {
   describe('Keyboard Navigation', () => {
     it('should allow keyboard navigation through sortable headers', async () => {
       const user = userEvent.setup();
-      
+
       render(
         <TransactionTable
           transactions={mockTransactions}
@@ -368,7 +346,7 @@ describe('Accessibility Tests - Transactions Feature', () => {
       await user.tab();
       const dateButton = screen.getByRole('button', { name: /date/i });
       expect(dateButton).toHaveFocus();
-      
+
       // Press Enter to activate sort
       await user.keyboard('{Enter}');
       // Sort should be triggered (visual feedback would change)
@@ -377,18 +355,16 @@ describe('Accessibility Tests - Transactions Feature', () => {
     it('should allow keyboard activation of buttons', async () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
-      
-      render(
-        <button onClick={onClick}>Test Button</button>
-      );
+
+      render(<button onClick={onClick}>Test Button</button>);
 
       const button = screen.getByRole('button');
       button.focus();
-      
+
       // Test Enter key
       await user.keyboard('{Enter}');
       expect(onClick).toHaveBeenCalledTimes(1);
-      
+
       // Test Space key
       await user.keyboard(' ');
       expect(onClick).toHaveBeenCalledTimes(2);
@@ -398,13 +374,7 @@ describe('Accessibility Tests - Transactions Feature', () => {
   describe('Screen Reader Announcements', () => {
     it('should announce form validation errors with role="alert"', async () => {
       const user = userEvent.setup();
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       // Blur date field without filling to trigger validation
       const dateInput = screen.getByLabelText(/date/i);

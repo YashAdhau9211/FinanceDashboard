@@ -17,7 +17,7 @@ export function filteredTransactions(
       const categoryMatch = txn.category.toLowerCase().includes(query);
       const amountMatch = txn.amount.toString().includes(query);
       const merchantMatch = txn.merchant?.toLowerCase().includes(query) || false;
-      
+
       return descriptionMatch || categoryMatch || amountMatch || merchantMatch;
     });
   }

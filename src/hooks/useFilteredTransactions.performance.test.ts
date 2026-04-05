@@ -11,7 +11,10 @@ describe('useFilteredTransactions Performance - Memoization', () => {
     date: `2026-01-${String((i % 28) + 1).padStart(2, '0')}T10:00:00Z`,
     description: `Transaction ${i}`,
     amount: 1000 + i * 100,
-    type: (i % 3 === 0 ? 'income' : i % 3 === 1 ? 'expense' : 'transfer') as 'income' | 'expense' | 'transfer',
+    type: (i % 3 === 0 ? 'income' : i % 3 === 1 ? 'expense' : 'transfer') as
+      | 'income'
+      | 'expense'
+      | 'transfer',
     category: 'groceries' as const,
     merchant: `Merchant ${i}`,
     tags: ['test'],
@@ -59,18 +62,21 @@ describe('useFilteredTransactions Performance - Memoization', () => {
 
     // Change transactions
     useTransactionsStore.setState({
-      transactions: [...mockTransactions, {
-        id: '999',
-        date: '2026-01-15T10:00:00Z',
-        description: 'New Transaction',
-        amount: 5000,
-        type: 'income' as const,
-        category: 'salary' as const,
-        merchant: 'New Merchant',
-        tags: ['new'],
-        createdAt: '2026-01-15T10:00:00Z',
-        updatedAt: '2026-01-15T10:00:00Z',
-      }],
+      transactions: [
+        ...mockTransactions,
+        {
+          id: '999',
+          date: '2026-01-15T10:00:00Z',
+          description: 'New Transaction',
+          amount: 5000,
+          type: 'income' as const,
+          category: 'salary' as const,
+          merchant: 'New Merchant',
+          tags: ['new'],
+          createdAt: '2026-01-15T10:00:00Z',
+          updatedAt: '2026-01-15T10:00:00Z',
+        },
+      ],
     });
 
     rerender();

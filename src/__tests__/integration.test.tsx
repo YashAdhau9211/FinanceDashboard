@@ -99,7 +99,7 @@ describe('Integration Tests', () => {
     it('should persist role to localStorage when changed', () => {
       // Reset role to ANALYST for this test
       useRoleStore.setState({ role: 'ANALYST' });
-      
+
       // Toggle role to ADMIN
       useRoleStore.getState().toggleRole();
 

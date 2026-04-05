@@ -68,7 +68,7 @@ describe('TransactionTable - Responsive Design', () => {
   it('should render desktop table view on large screens', () => {
     // Set viewport to desktop size
     global.innerWidth = 1024;
-    
+
     render(
       <TransactionTable
         transactions={mockTransactions}
@@ -87,7 +87,7 @@ describe('TransactionTable - Responsive Design', () => {
   it('should render mobile card view on small screens', () => {
     // Set viewport to mobile size
     global.innerWidth = 375;
-    
+
     render(
       <TransactionTable
         transactions={mockTransactions}
@@ -117,7 +117,7 @@ describe('TransactionTable - Responsive Design', () => {
     // Check that transaction details are visible (using getAllByText for duplicates)
     expect(screen.getAllByText('Grocery Shopping').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Salary').length).toBeGreaterThan(0);
-    
+
     // Check amounts are displayed (using getAllByText for duplicates)
     expect(screen.getAllByText(/₹1,500/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/₹50,000/).length).toBeGreaterThan(0);
@@ -137,7 +137,7 @@ describe('TransactionTable - Responsive Design', () => {
     // Check for Edit and Delete buttons in mobile view (ADMIN is default in mock)
     const editButtons = screen.getAllByLabelText(/Edit transaction/);
     const deleteButtons = screen.getAllByLabelText(/Delete transaction/);
-    
+
     expect(editButtons.length).toBeGreaterThan(0);
     expect(deleteButtons.length).toBeGreaterThan(0);
   });

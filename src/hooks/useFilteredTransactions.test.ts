@@ -54,7 +54,7 @@ describe('useFilteredTransactions', () => {
 
   it('should return all transactions with default filters', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     expect(result.current).toHaveLength(3);
     // Default sort is date desc, so newest first
     expect(result.current[0].date).toBe('2025-01-20');
@@ -63,53 +63,53 @@ describe('useFilteredTransactions', () => {
 
   it('should return filtered transactions based on search query', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     act(() => {
       useFiltersStore.getState().setSearchQuery('grocery');
     });
-    
+
     expect(result.current).toHaveLength(1);
     expect(result.current[0].description).toBe('Grocery Shopping');
   });
 
   it('should return filtered transactions based on type', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     act(() => {
       useFiltersStore.getState().setType('income');
     });
-    
+
     expect(result.current).toHaveLength(1);
     expect(result.current[0].type).toBe('income');
   });
 
   it('should return filtered transactions based on category', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     act(() => {
       useFiltersStore.getState().setCategory('dining');
     });
-    
+
     expect(result.current).toHaveLength(1);
     expect(result.current[0].category).toBe('dining');
   });
 
   it('should return filtered transactions based on date range', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     act(() => {
       useFiltersStore.getState().setDateRange('2025-01-15', null);
     });
-    
+
     expect(result.current).toHaveLength(2); // Jan 15 and Jan 20
     expect(result.current.every((t) => t.date >= '2025-01-15')).toBe(true);
   });
 
   it('should recompute when transactions change', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     expect(result.current).toHaveLength(3);
-    
+
     // Add a new transaction
     act(() => {
       useTransactionsStore.getState().addTransaction({
@@ -120,151 +120,151 @@ describe('useFilteredTransactions', () => {
         category: 'shopping',
       });
     });
-    
+
     expect(result.current).toHaveLength(4);
   });
 
   it('should recompute when filters change', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     expect(result.current).toHaveLength(3);
-    
+
     // Apply type filter
     act(() => {
       useFiltersStore.getState().setType('expense');
     });
-    
+
     expect(result.current).toHaveLength(2);
-    
+
     // Change type filter
     act(() => {
       useFiltersStore.getState().setType('income');
     });
-    
+
     expect(result.current).toHaveLength(1);
   });
 
   it('should recompute when sort field changes', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     // Default sort is date desc
     expect(result.current[0].date).toBe('2025-01-20');
-    
+
     // Change to amount desc
     act(() => {
       useFiltersStore.getState().setSortField('amount');
       useFiltersStore.getState().setSortDir('desc');
     });
-    
+
     expect(result.current[0].amount).toBe(50000);
   });
 
   it('should recompute when sort direction changes', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     // Default sort is date desc
     expect(result.current[0].date).toBe('2025-01-20');
-    
+
     // Change to date asc
     act(() => {
       useFiltersStore.getState().setSortDir('asc');
     });
-    
+
     expect(result.current[0].date).toBe('2025-01-10');
   });
 
   it('should handle multiple filter changes', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     // Apply search query
     act(() => {
       useFiltersStore.getState().setSearchQuery('shopping');
     });
-    
+
     expect(result.current).toHaveLength(1);
-    
+
     // Add type filter
     act(() => {
       useFiltersStore.getState().setType('expense');
     });
-    
+
     expect(result.current).toHaveLength(1);
     expect(result.current[0].description).toBe('Grocery Shopping');
-    
+
     // Clear filters
     act(() => {
       useFiltersStore.getState().resetFilters();
     });
-    
+
     expect(result.current).toHaveLength(3);
   });
 
   it('should handle transaction deletion', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     expect(result.current).toHaveLength(3);
-    
+
     // Delete a transaction
     act(() => {
       useTransactionsStore.getState().deleteTransaction('1');
     });
-    
+
     expect(result.current).toHaveLength(2);
     expect(result.current.every((t) => t.id !== '1')).toBe(true);
   });
 
   it('should handle transaction update', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     // Apply type filter for income
     act(() => {
       useFiltersStore.getState().setType('income');
     });
-    
+
     expect(result.current).toHaveLength(1);
-    
+
     // Update an expense transaction to income
     act(() => {
       useTransactionsStore.getState().updateTransaction('1', {
         type: 'income',
       });
     });
-    
+
     expect(result.current).toHaveLength(2);
   });
 
   it('should return empty array when no transactions match filters', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     act(() => {
       useFiltersStore.getState().setSearchQuery('nonexistent');
     });
-    
+
     expect(result.current).toHaveLength(0);
   });
 
   it('should memoize results and not recompute unnecessarily', () => {
     const { result, rerender } = renderHook(() => useFilteredTransactions());
-    
+
     const firstResult = result.current;
-    
+
     // Rerender without changing stores
     rerender();
-    
+
     // Should return the same reference (memoized)
     expect(result.current).toBe(firstResult);
   });
 
   it('should handle combined filters correctly', () => {
     const { result } = renderHook(() => useFilteredTransactions());
-    
+
     // Apply multiple filters
     act(() => {
       useFiltersStore.getState().setType('expense');
       useFiltersStore.getState().setCategory('groceries');
       useFiltersStore.getState().setDateRange('2025-01-01', '2025-01-31');
     });
-    
+
     expect(result.current).toHaveLength(1);
     expect(result.current[0].description).toBe('Grocery Shopping');
   });

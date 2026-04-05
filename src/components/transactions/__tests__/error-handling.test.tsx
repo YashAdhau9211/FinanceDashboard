@@ -20,13 +20,7 @@ describe('Error Handling Tests', () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn().mockRejectedValue(new Error('Network error'));
 
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       // Fill form with valid data
       await user.type(screen.getByLabelText(/date/i), '2025-01-15');
@@ -49,13 +43,7 @@ describe('Error Handling Tests', () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn().mockRejectedValue(new Error('Server error'));
 
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       // Fill and submit form
       await user.type(screen.getByLabelText(/date/i), '2025-01-15');
@@ -72,17 +60,12 @@ describe('Error Handling Tests', () => {
 
     it('should allow retry after submission error', async () => {
       const user = userEvent.setup();
-      const onSubmit = vi.fn()
+      const onSubmit = vi
+        .fn()
         .mockRejectedValueOnce(new Error('First attempt failed'))
         .mockResolvedValueOnce(undefined);
 
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       // Fill and submit form
       await user.type(screen.getByLabelText(/date/i), '2025-01-15');
@@ -107,15 +90,11 @@ describe('Error Handling Tests', () => {
 
     it('should disable buttons during submission', async () => {
       const user = userEvent.setup();
-      const onSubmit = vi.fn().mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)));
+      const onSubmit = vi
+        .fn()
+        .mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       // Fill form
       await user.type(screen.getByLabelText(/date/i), '2025-01-15');
@@ -125,7 +104,7 @@ describe('Error Handling Tests', () => {
       // Submit form
       const submitButton = screen.getByRole('button', { name: /save/i });
       const cancelButton = screen.getByRole('button', { name: /cancel/i });
-      
+
       await user.click(submitButton);
 
       // Buttons should be disabled during submission
@@ -139,13 +118,7 @@ describe('Error Handling Tests', () => {
       const customError = new Error('Custom validation failed');
       const onSubmit = vi.fn().mockRejectedValue(customError);
 
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       // Fill and submit
       await user.type(screen.getByLabelText(/date/i), '2025-01-15');
@@ -163,7 +136,7 @@ describe('Error Handling Tests', () => {
   describe('Store Action Error Handling', () => {
     it('should log error when addTransaction fails', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
+
       // Force an error by making crypto.randomUUID throw
       const originalRandomUUID = crypto.randomUUID;
       crypto.randomUUID = vi.fn().mockImplementation(() => {
@@ -182,10 +155,7 @@ describe('Error Handling Tests', () => {
         // Expected to throw
       }
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Failed to add transaction:',
-        expect.any(Error)
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to add transaction:', expect.any(Error));
 
       // Restore
       crypto.randomUUID = originalRandomUUID;
@@ -206,8 +176,8 @@ describe('Error Handling Tests', () => {
 
       // Check toast was added
       const toasts = useToastStore.getState().toasts;
-      expect(toasts.some(t => t.type === 'error')).toBe(true);
-      expect(toasts.some(t => t.message.includes('permission'))).toBe(true);
+      expect(toasts.some((t) => t.type === 'error')).toBe(true);
+      expect(toasts.some((t) => t.message.includes('permission'))).toBe(true);
     });
 
     it('should display toast when ANALYST tries to update transaction', () => {
@@ -220,8 +190,8 @@ describe('Error Handling Tests', () => {
 
       // Check toast was added
       const toasts = useToastStore.getState().toasts;
-      expect(toasts.some(t => t.type === 'error')).toBe(true);
-      expect(toasts.some(t => t.message.includes('permission'))).toBe(true);
+      expect(toasts.some((t) => t.type === 'error')).toBe(true);
+      expect(toasts.some((t) => t.message.includes('permission'))).toBe(true);
     });
 
     it('should display toast when ANALYST tries to delete transaction', () => {
@@ -232,8 +202,8 @@ describe('Error Handling Tests', () => {
 
       // Check toast was added
       const toasts = useToastStore.getState().toasts;
-      expect(toasts.some(t => t.type === 'error')).toBe(true);
-      expect(toasts.some(t => t.message.includes('permission'))).toBe(true);
+      expect(toasts.some((t) => t.type === 'error')).toBe(true);
+      expect(toasts.some((t) => t.message.includes('permission'))).toBe(true);
     });
 
     it('should display success toast on successful addTransaction', () => {
@@ -250,8 +220,8 @@ describe('Error Handling Tests', () => {
 
       // Check success toast was added
       const toasts = useToastStore.getState().toasts;
-      expect(toasts.some(t => t.type === 'success')).toBe(true);
-      expect(toasts.some(t => t.message.includes('added successfully'))).toBe(true);
+      expect(toasts.some((t) => t.type === 'success')).toBe(true);
+      expect(toasts.some((t) => t.message.includes('added successfully'))).toBe(true);
     });
 
     it('should display success toast on successful updateTransaction', () => {
@@ -279,8 +249,8 @@ describe('Error Handling Tests', () => {
 
       // Check success toast
       const toasts = useToastStore.getState().toasts;
-      expect(toasts.some(t => t.type === 'success')).toBe(true);
-      expect(toasts.some(t => t.message.includes('updated successfully'))).toBe(true);
+      expect(toasts.some((t) => t.type === 'success')).toBe(true);
+      expect(toasts.some((t) => t.message.includes('updated successfully'))).toBe(true);
     });
 
     it('should display success toast on successful deleteTransaction', () => {
@@ -306,8 +276,8 @@ describe('Error Handling Tests', () => {
 
       // Check success toast
       const toasts = useToastStore.getState().toasts;
-      expect(toasts.some(t => t.type === 'success')).toBe(true);
-      expect(toasts.some(t => t.message.includes('deleted successfully'))).toBe(true);
+      expect(toasts.some((t) => t.type === 'success')).toBe(true);
+      expect(toasts.some((t) => t.message.includes('deleted successfully'))).toBe(true);
     });
   });
 

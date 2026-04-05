@@ -17,13 +17,7 @@ const mockTransaction: Transaction = {
 describe('TransactionForm', () => {
   describe('Rendering', () => {
     it('should render all form fields', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       expect(screen.getByLabelText(/date/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
@@ -33,26 +27,14 @@ describe('TransactionForm', () => {
     });
 
     it('should render Save and Cancel buttons', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
     });
 
     it('should render empty fields in add mode', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const dateInput = screen.getByLabelText(/date/i) as HTMLInputElement;
       const descInput = screen.getByLabelText(/description/i) as HTMLInputElement;
@@ -85,13 +67,7 @@ describe('TransactionForm', () => {
 
   describe('Validation', () => {
     it('should show error when date is empty', async () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const dateInput = screen.getByLabelText(/date/i);
       fireEvent.blur(dateInput);
@@ -102,13 +78,7 @@ describe('TransactionForm', () => {
     });
 
     it('should show error when date is in the future', async () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const dateInput = screen.getByLabelText(/date/i);
       const futureDate = new Date();
@@ -124,13 +94,7 @@ describe('TransactionForm', () => {
     });
 
     it('should show error when description is empty', async () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const descInput = screen.getByLabelText(/description/i);
       fireEvent.blur(descInput);
@@ -141,13 +105,7 @@ describe('TransactionForm', () => {
     });
 
     it('should show error when amount is empty', async () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.blur(amountInput);
@@ -158,13 +116,7 @@ describe('TransactionForm', () => {
     });
 
     it('should show error when amount is less than or equal to 0', async () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: '-5' } });
@@ -176,17 +128,11 @@ describe('TransactionForm', () => {
     });
 
     it('should disable Save button when there are validation errors', async () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const saveButton = screen.getByRole('button', { name: /save/i });
       const dateInput = screen.getByLabelText(/date/i);
-      
+
       fireEvent.blur(dateInput);
 
       await waitFor(() => {
@@ -198,13 +144,7 @@ describe('TransactionForm', () => {
   describe('Form Submission', () => {
     it('should call onSubmit with valid data', async () => {
       const onSubmit = vi.fn();
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       const dateInput = screen.getByLabelText(/date/i);
       const descInput = screen.getByLabelText(/description/i);
@@ -232,13 +172,7 @@ describe('TransactionForm', () => {
 
     it('should not call onSubmit with invalid data', async () => {
       const onSubmit = vi.fn();
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={onSubmit}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={onSubmit} onCancel={vi.fn()} />);
 
       const saveButton = screen.getByRole('button', { name: /save/i });
       fireEvent.click(saveButton);
@@ -250,13 +184,7 @@ describe('TransactionForm', () => {
 
     it('should call onCancel when Cancel button is clicked', () => {
       const onCancel = vi.fn();
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={onCancel}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={onCancel} />);
 
       const cancelButton = screen.getByRole('button', { name: /cancel/i });
       fireEvent.click(cancelButton);
@@ -267,26 +195,14 @@ describe('TransactionForm', () => {
 
   describe('Field Constraints', () => {
     it('should limit description to 100 characters', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const descInput = screen.getByLabelText(/description/i) as HTMLInputElement;
       expect(descInput).toHaveAttribute('maxLength', '100');
     });
 
     it('should set minimum amount to 0.01', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const amountInput = screen.getByLabelText(/amount/i) as HTMLInputElement;
       expect(amountInput).toHaveAttribute('min', '0.01');
@@ -294,13 +210,7 @@ describe('TransactionForm', () => {
     });
 
     it('should prevent selecting future dates', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const dateInput = screen.getByLabelText(/date/i) as HTMLInputElement;
       const today = new Date().toISOString().split('T')[0];
@@ -310,13 +220,7 @@ describe('TransactionForm', () => {
 
   describe('Type Selection', () => {
     it('should render all transaction type options', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       expect(screen.getByLabelText(/income/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/expense/i)).toBeInTheDocument();
@@ -324,13 +228,7 @@ describe('TransactionForm', () => {
     });
 
     it('should default to expense type', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const expenseRadio = screen.getByLabelText(/expense/i) as HTMLInputElement;
       expect(expenseRadio).toBeChecked();
@@ -339,16 +237,10 @@ describe('TransactionForm', () => {
 
   describe('Category Selection', () => {
     it('should render all category options', () => {
-      render(
-        <TransactionForm
-          mode="add"
-          onSubmit={vi.fn()}
-          onCancel={vi.fn()}
-        />
-      );
+      render(<TransactionForm mode="add" onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
       const categorySelect = screen.getByLabelText(/category/i) as HTMLSelectElement;
-      const options = Array.from(categorySelect.options).map(opt => opt.value);
+      const options = Array.from(categorySelect.options).map((opt) => opt.value);
 
       expect(options).toContain('salary');
       expect(options).toContain('groceries');

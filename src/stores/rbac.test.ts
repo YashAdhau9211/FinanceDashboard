@@ -9,7 +9,7 @@ describe('Role-Based Access Control (RBAC)', () => {
     // Reset stores before each test
     useTransactionsStore.setState({ transactions: [] });
     useRoleStore.setState({ role: 'ANALYST' });
-    
+
     // Clear and reset console warnings spy
     consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
@@ -23,10 +23,10 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should prevent ANALYST from adding transactions', () => {
       // Set role to ANALYST
       useRoleStore.setState({ role: 'ANALYST' });
-      
+
       const store = useTransactionsStore.getState();
       const initialCount = store.transactions.length;
-      
+
       // Attempt to add transaction as ANALYST
       store.addTransaction({
         date: '2025-01-15',
@@ -35,11 +35,11 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       // Verify transaction was NOT added
       const finalCount = useTransactionsStore.getState().transactions.length;
       expect(finalCount).toBe(initialCount);
-      
+
       // Verify warning was logged
       expect(console.warn).toHaveBeenCalledWith('ANALYST role cannot add transactions');
     });
@@ -48,7 +48,7 @@ describe('Role-Based Access Control (RBAC)', () => {
       // Add transaction as ADMIN first
       useRoleStore.setState({ role: 'ADMIN' });
       const store = useTransactionsStore.getState();
-      
+
       store.addTransaction({
         date: '2025-01-15',
         description: 'Original Description',
@@ -56,22 +56,22 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       const transactions = useTransactionsStore.getState().transactions;
       const transactionId = transactions[0].id;
       const originalDescription = transactions[0].description;
-      
+
       // Switch to ANALYST and attempt update
       useRoleStore.setState({ role: 'ANALYST' });
-      
+
       store.updateTransaction(transactionId, {
         description: 'Modified Description',
       });
-      
+
       // Verify transaction was NOT updated
       const updatedTransaction = useTransactionsStore.getState().transactions[0];
       expect(updatedTransaction.description).toBe(originalDescription);
-      
+
       // Verify warning was logged
       expect(console.warn).toHaveBeenCalledWith('ANALYST role cannot update transactions');
     });
@@ -80,7 +80,7 @@ describe('Role-Based Access Control (RBAC)', () => {
       // Add transaction as ADMIN first
       useRoleStore.setState({ role: 'ADMIN' });
       const store = useTransactionsStore.getState();
-      
+
       store.addTransaction({
         date: '2025-01-15',
         description: 'Test Transaction',
@@ -88,20 +88,20 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       const transactions = useTransactionsStore.getState().transactions;
       const transactionId = transactions[0].id;
       const initialCount = transactions.length;
-      
+
       // Switch to ANALYST and attempt delete
       useRoleStore.setState({ role: 'ANALYST' });
-      
+
       store.deleteTransaction(transactionId);
-      
+
       // Verify transaction was NOT deleted
       const finalCount = useTransactionsStore.getState().transactions.length;
       expect(finalCount).toBe(initialCount);
-      
+
       // Verify warning was logged
       expect(console.warn).toHaveBeenCalledWith('ANALYST role cannot delete transactions');
     });
@@ -111,10 +111,10 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should allow ADMIN to add transactions', () => {
       // Set role to ADMIN
       useRoleStore.setState({ role: 'ADMIN' });
-      
+
       const store = useTransactionsStore.getState();
       const initialCount = store.transactions.length;
-      
+
       // Add transaction as ADMIN
       store.addTransaction({
         date: '2025-01-15',
@@ -123,11 +123,11 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       // Verify transaction was added
       const finalCount = useTransactionsStore.getState().transactions.length;
       expect(finalCount).toBe(initialCount + 1);
-      
+
       // Verify no warning was logged
       expect(console.warn).not.toHaveBeenCalled();
     });
@@ -135,9 +135,9 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should allow ADMIN to update transactions', () => {
       // Set role to ADMIN
       useRoleStore.setState({ role: 'ADMIN' });
-      
+
       const store = useTransactionsStore.getState();
-      
+
       store.addTransaction({
         date: '2025-01-15',
         description: 'Original Description',
@@ -145,19 +145,19 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       const transactions = useTransactionsStore.getState().transactions;
       const transactionId = transactions[0].id;
-      
+
       // Update transaction as ADMIN
       store.updateTransaction(transactionId, {
         description: 'Modified Description',
       });
-      
+
       // Verify transaction was updated
       const updatedTransaction = useTransactionsStore.getState().transactions[0];
       expect(updatedTransaction.description).toBe('Modified Description');
-      
+
       // Verify no warning was logged
       expect(console.warn).not.toHaveBeenCalled();
     });
@@ -165,9 +165,9 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should allow ADMIN to delete transactions', () => {
       // Set role to ADMIN
       useRoleStore.setState({ role: 'ADMIN' });
-      
+
       const store = useTransactionsStore.getState();
-      
+
       store.addTransaction({
         date: '2025-01-15',
         description: 'Test Transaction',
@@ -175,18 +175,18 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       const transactions = useTransactionsStore.getState().transactions;
       const transactionId = transactions[0].id;
       const initialCount = transactions.length;
-      
+
       // Delete transaction as ADMIN
       store.deleteTransaction(transactionId);
-      
+
       // Verify transaction was deleted
       const finalCount = useTransactionsStore.getState().transactions.length;
       expect(finalCount).toBe(initialCount - 1);
-      
+
       // Verify no warning was logged
       expect(console.warn).not.toHaveBeenCalled();
     });
@@ -196,16 +196,16 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should initialize with ANALYST role', () => {
       // Reset to initial state
       useRoleStore.setState({ role: 'ANALYST' });
-      
+
       const role = useRoleStore.getState().role;
       expect(role).toBe('ANALYST');
     });
 
     it('should allow setting role to ADMIN', () => {
       const store = useRoleStore.getState();
-      
+
       store.setRole('ADMIN');
-      
+
       const role = useRoleStore.getState().role;
       expect(role).toBe('ADMIN');
     });
@@ -213,9 +213,9 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should allow setting role to ANALYST', () => {
       useRoleStore.setState({ role: 'ADMIN' });
       const store = useRoleStore.getState();
-      
+
       store.setRole('ANALYST');
-      
+
       const role = useRoleStore.getState().role;
       expect(role).toBe('ANALYST');
     });
@@ -223,9 +223,9 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should toggle role from ANALYST to ADMIN', () => {
       useRoleStore.setState({ role: 'ANALYST' });
       const store = useRoleStore.getState();
-      
+
       store.toggleRole();
-      
+
       const role = useRoleStore.getState().role;
       expect(role).toBe('ADMIN');
     });
@@ -233,9 +233,9 @@ describe('Role-Based Access Control (RBAC)', () => {
     it('should toggle role from ADMIN to ANALYST', () => {
       useRoleStore.setState({ role: 'ADMIN' });
       const store = useRoleStore.getState();
-      
+
       store.toggleRole();
-      
+
       const role = useRoleStore.getState().role;
       expect(role).toBe('ANALYST');
     });
@@ -246,7 +246,7 @@ describe('Role-Based Access Control (RBAC)', () => {
       // Start as ADMIN
       useRoleStore.setState({ role: 'ADMIN' });
       const store = useTransactionsStore.getState();
-      
+
       // Add transaction as ADMIN (should succeed)
       store.addTransaction({
         date: '2025-01-15',
@@ -255,13 +255,13 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       expect(useTransactionsStore.getState().transactions.length).toBe(1);
-      
+
       // Switch to ANALYST
       useRoleStore.getState().toggleRole();
       expect(useRoleStore.getState().role).toBe('ANALYST');
-      
+
       // Attempt to add transaction as ANALYST (should fail)
       store.addTransaction({
         date: '2025-01-16',
@@ -270,14 +270,14 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'expense',
         category: 'rent',
       });
-      
+
       // Should still have only 1 transaction
       expect(useTransactionsStore.getState().transactions.length).toBe(1);
-      
+
       // Switch back to ADMIN
       useRoleStore.getState().toggleRole();
       expect(useRoleStore.getState().role).toBe('ADMIN');
-      
+
       // Add transaction as ADMIN again (should succeed)
       store.addTransaction({
         date: '2025-01-17',
@@ -286,7 +286,7 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'freelance',
       });
-      
+
       // Should now have 2 transactions
       expect(useTransactionsStore.getState().transactions.length).toBe(2);
     });
@@ -297,7 +297,7 @@ describe('Role-Based Access Control (RBAC)', () => {
       // Set up as ADMIN and add multiple transactions
       useRoleStore.setState({ role: 'ADMIN' });
       const store = useTransactionsStore.getState();
-      
+
       store.addTransaction({
         date: '2025-01-15',
         description: 'Transaction 1',
@@ -305,7 +305,7 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'salary',
       });
-      
+
       store.addTransaction({
         date: '2025-01-16',
         description: 'Transaction 2',
@@ -313,16 +313,16 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'expense',
         category: 'rent',
       });
-      
+
       expect(useTransactionsStore.getState().transactions.length).toBe(2);
-      
+
       // Switch to ANALYST
       useRoleStore.setState({ role: 'ANALYST' });
-      
+
       const transactions = useTransactionsStore.getState().transactions;
       const firstId = transactions[0].id;
       const secondId = transactions[1].id;
-      
+
       // Attempt multiple operations as ANALYST (all should fail)
       store.updateTransaction(firstId, { description: 'Modified 1' });
       store.updateTransaction(secondId, { description: 'Modified 2' });
@@ -334,13 +334,13 @@ describe('Role-Based Access Control (RBAC)', () => {
         type: 'income',
         category: 'freelance',
       });
-      
+
       // Verify no changes occurred
       const finalTransactions = useTransactionsStore.getState().transactions;
       expect(finalTransactions.length).toBe(2);
       expect(finalTransactions[0].description).toBe('Transaction 1');
       expect(finalTransactions[1].description).toBe('Transaction 2');
-      
+
       // Verify warnings were logged for each operation
       expect(console.warn).toHaveBeenCalledTimes(4);
     });

@@ -17,12 +17,8 @@ export function EmptyState({ onAddTransaction }: EmptyStateProps) {
         </div>
 
         {/* Message */}
-        <h3 className="mb-2 text-lg font-medium text-gray-900">
-          No transactions yet
-        </h3>
-        <p className="mb-6 text-sm text-gray-500">
-          Add your first one to get started.
-        </p>
+        <h3 className="mb-2 text-lg font-medium text-gray-900">No transactions yet</h3>
+        <p className="mb-6 text-sm text-gray-500">Add your first one to get started.</p>
 
         {/* CTA Button - Only for ADMIN role */}
         {role === 'ADMIN' && (

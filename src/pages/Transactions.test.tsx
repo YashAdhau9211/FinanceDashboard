@@ -39,7 +39,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Mock transactions store
     (useTransactionsStore as any).mockImplementation((selector: any) => {
       const state = {
@@ -73,39 +73,47 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should show skeleton loader initially', () => {
       renderWithRouter(<Transactions />);
-      
+
       const loadingElement = screen.getByRole('status', { name: /loading transactions/i });
       expect(loadingElement).toBeInTheDocument();
     }, 10000);
 
     it('should show table after 600ms loading period', async () => {
       vi.useRealTimers(); // Use real timers for this test
-      
+
       renderWithRouter(<Transactions />);
-      
+
       // Initially shows skeleton
       expect(screen.getByRole('status', { name: /loading transactions/i })).toBeInTheDocument();
-      
+
       // Wait for loading to complete naturally
-      await waitFor(() => {
-        expect(screen.queryByRole('status', { name: /loading transactions/i })).not.toBeInTheDocument();
-        expect(screen.getByRole('table')).toBeInTheDocument();
-      }, { timeout: 2000 });
-      
+      await waitFor(
+        () => {
+          expect(
+            screen.queryByRole('status', { name: /loading transactions/i })
+          ).not.toBeInTheDocument();
+          expect(screen.getByRole('table')).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
+
       vi.useFakeTimers(); // Restore fake timers
     });
 
     it('should apply fade transition when loading completes', async () => {
       vi.useRealTimers(); // Use real timers for this test
-      
+
       const { container } = renderWithRouter(<Transactions />);
-      
+
       // Wait for loading to complete naturally
-      await waitFor(() => {
-        const tableContainer = container.querySelector('.transition-opacity');
-        expect(tableContainer).toBeInTheDocument();
-      }, { timeout: 2000 });
-      
+      await waitFor(
+        () => {
+          const tableContainer = container.querySelector('.transition-opacity');
+          expect(tableContainer).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
+
       vi.useFakeTimers(); // Restore fake timers
     });
   });
@@ -121,7 +129,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should show empty state when no transactions and no filters', async () => {
       vi.useRealTimers(); // Use real timers for this test
-      
+
       (useTransactionsStore as any).mockImplementation((selector: any) => {
         const state = {
           transactions: [],
@@ -133,18 +141,21 @@ describe('Transactions Page - CRUD Integration', () => {
       });
 
       renderWithRouter(<Transactions />);
-      
+
       // Wait for loading to complete naturally
-      await waitFor(() => {
-        expect(screen.getByText(/no transactions yet/i)).toBeInTheDocument();
-      }, { timeout: 2000 });
-      
+      await waitFor(
+        () => {
+          expect(screen.getByText(/no transactions yet/i)).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
+
       vi.useFakeTimers(); // Restore fake timers
     });
 
     it('should show Add Transaction button in empty state for ADMIN', async () => {
       vi.useRealTimers(); // Use real timers for this test
-      
+
       (useTransactionsStore as any).mockImplementation((selector: any) => {
         const state = {
           transactions: [],
@@ -156,19 +167,22 @@ describe('Transactions Page - CRUD Integration', () => {
       });
 
       renderWithRouter(<Transactions />);
-      
+
       // Wait for loading to complete naturally
-      await waitFor(() => {
-        const addButtons = screen.getAllByRole('button', { name: /add transaction/i });
-        expect(addButtons.length).toBeGreaterThan(0);
-      }, { timeout: 2000 });
-      
+      await waitFor(
+        () => {
+          const addButtons = screen.getAllByRole('button', { name: /add transaction/i });
+          expect(addButtons.length).toBeGreaterThan(0);
+        },
+        { timeout: 2000 }
+      );
+
       vi.useFakeTimers(); // Restore fake timers
     });
 
     it('should not show Add Transaction button in empty state for ANALYST', async () => {
       vi.useRealTimers(); // Use real timers for this test
-      
+
       (useTransactionsStore as any).mockImplementation((selector: any) => {
         const state = {
           transactions: [],
@@ -185,13 +199,18 @@ describe('Transactions Page - CRUD Integration', () => {
       });
 
       renderWithRouter(<Transactions />);
-      
+
       // Wait for loading to complete naturally
-      await waitFor(() => {
-        expect(screen.getByText(/no transactions yet/i)).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: /add transaction/i })).not.toBeInTheDocument();
-      }, { timeout: 2000 });
-      
+      await waitFor(
+        () => {
+          expect(screen.getByText(/no transactions yet/i)).toBeInTheDocument();
+          expect(
+            screen.queryByRole('button', { name: /add transaction/i })
+          ).not.toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
+
       vi.useFakeTimers(); // Restore fake timers
     });
   });
@@ -214,7 +233,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should open slide-over panel when Add Transaction is clicked', async () => {
       renderWithRouter(<Transactions />);
-      
+
       const addButton = screen.getByRole('button', { name: /add transaction/i });
       fireEvent.click(addButton);
 
@@ -225,7 +244,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should add transaction when form is submitted', async () => {
       renderWithRouter(<Transactions />);
-      
+
       // Open slide-over
       const addButton = screen.getByRole('button', { name: /add transaction/i });
       fireEvent.click(addButton);
@@ -261,7 +280,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should close slide-over after successful submission', async () => {
       renderWithRouter(<Transactions />);
-      
+
       // Open slide-over
       const addButton = screen.getByRole('button', { name: /add transaction/i });
       fireEvent.click(addButton);
@@ -292,7 +311,7 @@ describe('Transactions Page - CRUD Integration', () => {
   describe('Edit Transaction Flow', () => {
     it('should show Edit buttons for ADMIN role', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const editButtons = screen.getAllByLabelText(/edit transaction/i);
         expect(editButtons.length).toBeGreaterThan(0);
@@ -306,7 +325,7 @@ describe('Transactions Page - CRUD Integration', () => {
       });
 
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         expect(screen.queryByLabelText(/edit transaction/i)).not.toBeInTheDocument();
       });
@@ -314,7 +333,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should open slide-over with pre-filled data when Edit is clicked', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const editButtons = screen.getAllByLabelText(/edit transaction/i);
         fireEvent.click(editButtons[0]);
@@ -323,7 +342,7 @@ describe('Transactions Page - CRUD Integration', () => {
       await waitFor(() => {
         expect(screen.getByRole('dialog')).toBeInTheDocument();
         expect(screen.getByText('Edit Transaction')).toBeInTheDocument();
-        
+
         const descInput = screen.getByLabelText(/description/i) as HTMLInputElement;
         expect(descInput.value).toBe('Grocery Shopping');
       });
@@ -331,7 +350,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should update transaction when form is submitted', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const editButtons = screen.getAllByLabelText(/edit transaction/i);
         fireEvent.click(editButtons[0]);
@@ -364,7 +383,7 @@ describe('Transactions Page - CRUD Integration', () => {
   describe('Delete Transaction Flow', () => {
     it('should show Delete buttons for ADMIN role', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const deleteButtons = screen.getAllByLabelText(/delete transaction/i);
         expect(deleteButtons.length).toBeGreaterThan(0);
@@ -378,7 +397,7 @@ describe('Transactions Page - CRUD Integration', () => {
       });
 
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         expect(screen.queryByLabelText(/delete transaction/i)).not.toBeInTheDocument();
       });
@@ -386,7 +405,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should show confirmation dialog when Delete is clicked', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const deleteButtons = screen.getAllByLabelText(/delete transaction/i);
         fireEvent.click(deleteButtons[0]);
@@ -401,7 +420,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should delete transaction when Confirm is clicked', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const deleteButtons = screen.getAllByLabelText(/delete transaction/i);
         fireEvent.click(deleteButtons[0]);
@@ -419,7 +438,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should not delete transaction when Cancel is clicked', async () => {
       renderWithRouter(<Transactions />);
-      
+
       await waitFor(() => {
         const deleteButtons = screen.getAllByLabelText(/delete transaction/i);
         fireEvent.click(deleteButtons[0]);
@@ -437,7 +456,7 @@ describe('Transactions Page - CRUD Integration', () => {
   describe('Cancel Actions', () => {
     it('should close slide-over when Cancel button is clicked in form', async () => {
       renderWithRouter(<Transactions />);
-      
+
       const addButton = screen.getByRole('button', { name: /add transaction/i });
       fireEvent.click(addButton);
 
@@ -455,7 +474,7 @@ describe('Transactions Page - CRUD Integration', () => {
 
     it('should close slide-over when backdrop is clicked', async () => {
       renderWithRouter(<Transactions />);
-      
+
       const addButton = screen.getByRole('button', { name: /add transaction/i });
       fireEvent.click(addButton);
 

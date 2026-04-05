@@ -63,7 +63,11 @@ describe('Transactions Page Performance', () => {
     useTransactionsStore.setState({ transactions: mockTransactions });
 
     const startTime = performance.now();
-    render(<BrowserRouter><Transactions /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Transactions />
+      </BrowserRouter>
+    );
     const endTime = performance.now();
 
     const renderTime = endTime - startTime;
@@ -90,7 +94,11 @@ describe('Transactions Page Performance', () => {
     useTransactionsStore.setState({ transactions: mockTransactions });
 
     const startTime = performance.now();
-    render(<BrowserRouter><Transactions /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Transactions />
+      </BrowserRouter>
+    );
     const endTime = performance.now();
 
     const renderTime = endTime - startTime;
@@ -103,7 +111,11 @@ describe('Transactions Page Performance', () => {
     useTransactionsStore.setState({ transactions: [] });
 
     const startTime = performance.now();
-    render(<BrowserRouter><Transactions /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Transactions />
+      </BrowserRouter>
+    );
     const endTime = performance.now();
 
     const renderTime = endTime - startTime;
@@ -128,7 +140,7 @@ describe('Transactions Page Performance', () => {
     })) as Transaction[];
 
     useTransactionsStore.setState({ transactions: mockTransactions });
-    
+
     // Apply filters
     useFiltersStore.setState({
       searchQuery: 'Transaction 5',
@@ -147,7 +159,11 @@ describe('Transactions Page Performance', () => {
     });
 
     const startTime = performance.now();
-    render(<BrowserRouter><Transactions /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Transactions />
+      </BrowserRouter>
+    );
     const endTime = performance.now();
 
     const renderTime = endTime - startTime;

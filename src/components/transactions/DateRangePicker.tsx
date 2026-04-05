@@ -15,7 +15,7 @@ export function DateRangePicker() {
     if (dateRange.start && dateRange.end) {
       const startDate = new Date(dateRange.start);
       const endDate = new Date(dateRange.end);
-      
+
       if (endDate < startDate) {
         setError('End date cannot be before start date');
       } else {
@@ -47,7 +47,10 @@ export function DateRangePicker() {
       <div className="flex flex-col sm:flex-row gap-2">
         {/* Start Date */}
         <div className="flex flex-col gap-1 flex-1">
-          <label htmlFor="date-start" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label
+            htmlFor="date-start"
+            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             Start Date
           </label>
           <div className="relative">
@@ -73,7 +76,10 @@ export function DateRangePicker() {
 
         {/* End Date */}
         <div className="flex flex-col gap-1 flex-1">
-          <label htmlFor="date-end" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label
+            htmlFor="date-end"
+            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             End Date
           </label>
           <div className="relative">

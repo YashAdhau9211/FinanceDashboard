@@ -10,9 +10,7 @@ export function FilteredEmptyState() {
         <h3 className="mb-2 text-lg font-medium text-gray-900">
           No transactions match your filters
         </h3>
-        <p className="mb-6 text-sm text-gray-500">
-          Try adjusting your search or filter criteria.
-        </p>
+        <p className="mb-6 text-sm text-gray-500">Try adjusting your search or filter criteria.</p>
 
         {/* Clear Filters Button */}
         <button

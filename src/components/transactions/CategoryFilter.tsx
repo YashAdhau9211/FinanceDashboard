@@ -32,7 +32,10 @@ export function CategoryFilter() {
 
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor="category-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label
+        htmlFor="category-filter"
+        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
         Category
       </label>
       <select

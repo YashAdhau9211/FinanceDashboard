@@ -4,7 +4,10 @@ import { PageWrapper } from '../components/PageWrapper';
 import { TransactionTable } from '../components/transactions/TransactionTable';
 import { FilterBar } from '../components/transactions/FilterBar';
 import { SlideOverPanel } from '../components/transactions/SlideOverPanel';
-import { TransactionForm, type TransactionFormData } from '../components/transactions/TransactionForm';
+import {
+  TransactionForm,
+  type TransactionFormData,
+} from '../components/transactions/TransactionForm';
 import { useFilteredTransactions } from '../hooks/useFilteredTransactions';
 import { useTransactionsStore } from '../stores/transactionsStore';
 import { useRoleStore } from '../stores/roleStore';
@@ -15,7 +18,7 @@ function TransactionsContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | undefined>(undefined);
-  
+
   const filteredTransactions = useFilteredTransactions();
   const addTransaction = useTransactionsStore((state) => state.addTransaction);
   const updateTransaction = useTransactionsStore((state) => state.updateTransaction);
@@ -77,8 +80,8 @@ function TransactionsContent() {
           )}
         </div>
         <FilterBar />
-        <TransactionTable 
-          transactions={filteredTransactions} 
+        <TransactionTable
+          transactions={filteredTransactions}
           isLoading={isLoading}
           onEdit={handleEditClick}
           onDelete={handleDeleteClick}

@@ -14,7 +14,13 @@ interface TransactionRowProps {
   isNew?: boolean;
 }
 
-export const TransactionRow = memo(function TransactionRow({ transaction, isEven, onEdit, onDelete, isNew = false }: TransactionRowProps) {
+export const TransactionRow = memo(function TransactionRow({
+  transaction,
+  isEven,
+  onEdit,
+  onDelete,
+  isNew = false,
+}: TransactionRowProps) {
   const role = useRoleStore((state) => state.role);
   const [showDescTooltip, setShowDescTooltip] = useState(false);
   const [showAmountTooltip, setShowAmountTooltip] = useState(false);
@@ -126,7 +132,9 @@ export const TransactionRow = memo(function TransactionRow({ transaction, isEven
 
       {/* Type Column */}
       <td className="px-4 py-3">
-        <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${getTypeBadgeColor()}`}>
+        <span
+          className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${getTypeBadgeColor()}`}
+        >
           {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
         </span>
       </td>
@@ -166,7 +174,7 @@ export const TransactionRow = memo(function TransactionRow({ transaction, isEven
               >
                 <Trash2 className="w-4 h-4" />
               </button>
-              
+
               {/* Delete Confirmation Tooltip */}
               {showDeleteConfirm && (
                 <div className="absolute z-20 right-0 top-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 w-64">

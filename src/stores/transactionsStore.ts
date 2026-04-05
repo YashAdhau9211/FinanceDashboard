@@ -29,13 +29,12 @@ export const useTransactionsStore = create<TransactionsState & TransactionsActio
           const role = useRoleStore.getState().role;
           if (role !== 'ADMIN') {
             console.warn('ANALYST role cannot add transactions');
-            useToastStore.getState().addToast(
-              'You do not have permission to add transactions',
-              'error'
-            );
+            useToastStore
+              .getState()
+              .addToast('You do not have permission to add transactions', 'error');
             return;
           }
-          
+
           set((state) => ({
             transactions: [
               ...state.transactions,
@@ -48,16 +47,12 @@ export const useTransactionsStore = create<TransactionsState & TransactionsActio
             ],
           }));
 
-          useToastStore.getState().addToast(
-            'Transaction added successfully',
-            'success'
-          );
+          useToastStore.getState().addToast('Transaction added successfully', 'success');
         } catch (error) {
           console.error('Failed to add transaction:', error);
-          useToastStore.getState().addToast(
-            'Failed to add transaction. Please try again.',
-            'error'
-          );
+          useToastStore
+            .getState()
+            .addToast('Failed to add transaction. Please try again.', 'error');
           throw error;
         }
       },
@@ -68,13 +63,12 @@ export const useTransactionsStore = create<TransactionsState & TransactionsActio
           const role = useRoleStore.getState().role;
           if (role !== 'ADMIN') {
             console.warn('ANALYST role cannot update transactions');
-            useToastStore.getState().addToast(
-              'You do not have permission to update transactions',
-              'error'
-            );
+            useToastStore
+              .getState()
+              .addToast('You do not have permission to update transactions', 'error');
             return;
           }
-          
+
           set((state) => ({
             transactions: state.transactions.map((t) => {
               if (t.id !== id) return t;
@@ -92,16 +86,12 @@ export const useTransactionsStore = create<TransactionsState & TransactionsActio
             }),
           }));
 
-          useToastStore.getState().addToast(
-            'Transaction updated successfully',
-            'success'
-          );
+          useToastStore.getState().addToast('Transaction updated successfully', 'success');
         } catch (error) {
           console.error('Failed to update transaction:', error);
-          useToastStore.getState().addToast(
-            'Failed to update transaction. Please try again.',
-            'error'
-          );
+          useToastStore
+            .getState()
+            .addToast('Failed to update transaction. Please try again.', 'error');
           throw error;
         }
       },
@@ -112,27 +102,22 @@ export const useTransactionsStore = create<TransactionsState & TransactionsActio
           const role = useRoleStore.getState().role;
           if (role !== 'ADMIN') {
             console.warn('ANALYST role cannot delete transactions');
-            useToastStore.getState().addToast(
-              'You do not have permission to delete transactions',
-              'error'
-            );
+            useToastStore
+              .getState()
+              .addToast('You do not have permission to delete transactions', 'error');
             return;
           }
-          
+
           set((state) => ({
             transactions: state.transactions.filter((t) => t.id !== id),
           }));
 
-          useToastStore.getState().addToast(
-            'Transaction deleted successfully',
-            'success'
-          );
+          useToastStore.getState().addToast('Transaction deleted successfully', 'success');
         } catch (error) {
           console.error('Failed to delete transaction:', error);
-          useToastStore.getState().addToast(
-            'Failed to delete transaction. Please try again.',
-            'error'
-          );
+          useToastStore
+            .getState()
+            .addToast('Failed to delete transaction. Please try again.', 'error');
           throw error;
         }
       },

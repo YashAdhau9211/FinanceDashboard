@@ -41,7 +41,7 @@ describe('SlideOverPanel', () => {
         <div>Content</div>
       </SlideOverPanel>
     );
-    
+
     const backdrop = document.querySelector('.bg-black\\/50');
     expect(backdrop).toBeInTheDocument();
     fireEvent.click(backdrop!);
@@ -55,7 +55,7 @@ describe('SlideOverPanel', () => {
         <div>Content</div>
       </SlideOverPanel>
     );
-    
+
     const closeButton = screen.getByLabelText('Close panel');
     fireEvent.click(closeButton);
     expect(onClose).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe('SlideOverPanel', () => {
         <div>Content</div>
       </SlideOverPanel>
     );
-    
+
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -80,7 +80,7 @@ describe('SlideOverPanel', () => {
         <div>Content</div>
       </SlideOverPanel>
     );
-    
+
     fireEvent.keyDown(document, { key: 'Enter' });
     expect(onClose).not.toHaveBeenCalled();
   });
@@ -92,10 +92,10 @@ describe('SlideOverPanel', () => {
         <button>Button 2</button>
       </SlideOverPanel>
     );
-    
+
     const buttons = screen.getAllByRole('button');
     expect(buttons.length).toBeGreaterThan(0);
-    
+
     // First focusable element should be focused
     expect(document.activeElement).toBe(buttons[0]);
   });
@@ -106,7 +106,7 @@ describe('SlideOverPanel', () => {
         <div>Content</div>
       </SlideOverPanel>
     );
-    
+
     const panel = document.querySelector('.animate-slide-in');
     expect(panel).toBeInTheDocument();
   });
@@ -117,9 +117,9 @@ describe('SlideOverPanel', () => {
         <div>Content</div>
       </SlideOverPanel>
     );
-    
+
     expect(document.body.style.overflow).toBe('hidden');
-    
+
     unmount();
     expect(document.body.style.overflow).toBe('');
   });

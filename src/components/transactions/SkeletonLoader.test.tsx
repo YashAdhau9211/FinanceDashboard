@@ -31,7 +31,7 @@ describe('SkeletonLoader', () => {
   it('renders placeholder elements for each column', () => {
     const { container } = render(<SkeletonLoader />);
     const firstRow = container.querySelector('.space-y-3 > div:first-child');
-    
+
     // Should have multiple placeholder divs (date, description, category, type, amount, actions)
     const placeholders = firstRow?.querySelectorAll('.animate-shimmer');
     expect(placeholders).toBeDefined();
@@ -41,7 +41,7 @@ describe('SkeletonLoader', () => {
   it('applies shimmer animation class', () => {
     const { container } = render(<SkeletonLoader />);
     const shimmerElements = container.querySelectorAll('.animate-shimmer');
-    
+
     expect(shimmerElements.length).toBeGreaterThan(0);
     shimmerElements.forEach((element) => {
       expect(element).toHaveClass('animate-shimmer');

@@ -40,9 +40,7 @@ describe('TransactionRow', () => {
       amount: 50000,
     };
 
-    render(
-      <TransactionRow transaction={incomeTransaction} isEven={true} />
-    );
+    render(<TransactionRow transaction={incomeTransaction} isEven={true} />);
 
     const badge = screen.getByText('Income');
     expect(badge).toHaveClass('bg-green-100', 'text-green-700');
@@ -74,9 +72,7 @@ describe('TransactionRow', () => {
       amount: 50000,
     };
 
-    const { container } = render(
-      <TransactionRow transaction={incomeTransaction} isEven={true} />
-    );
+    const { container } = render(<TransactionRow transaction={incomeTransaction} isEven={true} />);
 
     // Find the td element containing the amount
     const amountCell = container.querySelector('td.text-green-600');
@@ -85,9 +81,7 @@ describe('TransactionRow', () => {
   });
 
   it('formats amount with INR symbol and correct color for expense', () => {
-    const { container } = render(
-      <TransactionRow transaction={mockTransaction} isEven={true} />
-    );
+    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={true} />);
 
     // Find the td element containing the amount
     const amountCell = container.querySelector('td.text-red-600');
@@ -190,18 +184,14 @@ describe('TransactionRow', () => {
   });
 
   it('applies white background for even rows', () => {
-    const { container } = render(
-      <TransactionRow transaction={mockTransaction} isEven={true} />
-    );
+    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={true} />);
 
     const row = container.querySelector('tr');
     expect(row).toHaveClass('bg-white');
   });
 
   it('applies gray-50 background for odd rows', () => {
-    const { container } = render(
-      <TransactionRow transaction={mockTransaction} isEven={false} />
-    );
+    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={false} />);
 
     const row = container.querySelector('tr');
     expect(row).toHaveClass('bg-gray-50');
