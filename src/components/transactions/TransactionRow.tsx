@@ -1,9 +1,10 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { useRoleStore } from '../../stores/roleStore';
 import { getCategoryIcon } from '../../utils/categoryIcons';
 import { getCategoryColor } from '../../utils/colorUtils';
 import { formatCurrency } from '../../utils/formatters';
+import { useSwipeToDelete } from '../../hooks/useSwipeToDelete';
 import type { Transaction } from '../../types';
 
 interface TransactionRowProps {
@@ -26,6 +27,28 @@ export const TransactionRow = memo(function TransactionRow({
   const [showAmountTooltip, setShowAmountTooltip] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Swipe-to-delete for mobile
+  const { handlers, translateX, isDeleting: isSwipeDeleting } = useSwipeToDelete({
+    onDelete: () => {
+      setIsDeleting(true);
+      setTimeout(() => {
+        onDelete(transaction.id);
+      }, 200);
+    },
+    threshold: 50,
+  });
 
   // Format date as "DD MMM YYYY"
   const formatDate = (dateString: string): string => {
@@ -96,8 +119,17 @@ export const TransactionRow = memo(function TransactionRow({
       className={`${
         isEven ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-900'
       } hover:bg-[var(--color-bg)] transition-colors duration-100 ${
-        isDeleting ? 'animate-fade-out-collapse' : ''
+        isDeleting || isSwipeDeleting ? 'animate-fade-out-collapse' : ''
       } ${isNew ? 'animate-fade-in-from-top' : ''}`}
+      style={
+        isMobile && role === 'ADMIN'
+          ? {
+              transform: `translateX(${translateX}px)`,
+              transition: translateX === 0 ? 'transform 0.2s ease-out' : 'none',
+            }
+          : undefined
+      }
+      {...(isMobile && role === 'ADMIN' ? handlers : {})}
     >
       {/* Date Column */}
       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">

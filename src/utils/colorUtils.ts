@@ -1,9 +1,6 @@
 import type { Category } from '../types';
 
-/**
- * Color map for expense categories
- * Maps each category to a specific color from design tokens
- */
+
 export const CATEGORY_COLORS: Record<Category, string> = {
   groceries: '#10B981', // green-500
   dining: '#F59E0B', // amber-500
@@ -22,7 +19,7 @@ export const CATEGORY_COLORS: Record<Category, string> = {
 };
 
 /**
- * Get color based on sign of value (for delta badges and transaction amounts)
+ * Get color based on sign of value
  */
 export function getSignBasedColor(value: number): {
   bg: string;
@@ -47,26 +44,27 @@ export function getSignBasedColor(value: number): {
   }
 }
 
-/**
- * Get heatmap cell color based on transaction count
- */
+
 export function getHeatmapColor(count: number): string {
   if (count === 0) {
+    // Distinct gray for zero transactions - darker in dark mode for contrast
     return 'bg-gray-100 dark:bg-gray-700/50';
   } else if (count <= 2) {
-    return 'bg-teal-200 dark:bg-teal-600/60';
+    // Very pale mint for lowest non-zero values - brighter in dark mode
+    return 'bg-teal-100 dark:bg-teal-500/30';
   } else if (count <= 5) {
-    return 'bg-teal-400 dark:bg-teal-500/80';
+    // Light teal - more saturated in dark mode
+    return 'bg-teal-300 dark:bg-teal-400/60';
   } else if (count <= 10) {
-    return 'bg-teal-600 dark:bg-teal-400';
+    // Medium teal - bright and vibrant in dark mode
+    return 'bg-teal-500 dark:bg-teal-400';
   } else {
-    return 'bg-teal-800 dark:bg-teal-300';
+    // Deep teal for highest values - very bright in dark mode
+    return 'bg-teal-700 dark:bg-teal-300';
   }
 }
 
-/**
- * Get category color from the color map
- */
+
 export function getCategoryColor(category: Category): string {
   return CATEGORY_COLORS[category];
 }

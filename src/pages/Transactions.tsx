@@ -8,6 +8,7 @@ import {
   TransactionForm,
   type TransactionFormData,
 } from '../components/transactions/TransactionForm';
+import { ExportButton } from '../components/transactions/ExportButton';
 import { useFilteredTransactions } from '../hooks/useFilteredTransactions';
 import { useTransactionsStore } from '../stores/transactionsStore';
 import { useRoleStore } from '../stores/roleStore';
@@ -69,15 +70,18 @@ function TransactionsContent() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Transactions</h2>
-          {role === 'ADMIN' && (
-            <button
-              onClick={handleAddClick}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            >
-              <Plus className="w-4 h-4" />
-              Add Transaction
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            <ExportButton transactions={filteredTransactions} />
+            {role === 'ADMIN' && (
+              <button
+                onClick={handleAddClick}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              >
+                <Plus className="w-4 h-4" />
+                Add Transaction
+              </button>
+            )}
+          </div>
         </div>
         <FilterBar />
         <TransactionTable

@@ -34,7 +34,7 @@ export const InsightCard: React.FC<InsightCardProps> = React.memo(
 
     return (
       <div
-        className={`${styles.bg} ${styles.border} border rounded-lg p-6 shadow-sm transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-md focus-within:ring-2 focus-within:ring-teal-500 focus-within:outline-none insight-card h-[380px] flex flex-col`}
+        className={`${styles.bg} ${styles.border} border rounded-lg p-6 shadow-sm transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg focus-within:ring-2 focus-within:ring-teal-500 focus-within:outline-none insight-card h-[380px] flex flex-col`}
         aria-label={ariaLabel}
         tabIndex={0}
       >

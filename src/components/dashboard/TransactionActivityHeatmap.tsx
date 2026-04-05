@@ -15,8 +15,8 @@ export const TransactionActivityHeatmap: React.FC = React.memo(() => {
   // Define day labels (Mon-Sun)
   const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  // Define time slot labels with clearer formatting (6 time slots covering 24 hours)
-  const timeSlotLabels = ['12 AM', '4 AM', '8 AM', '12 PM', '4 PM', '8 PM'];
+  // Define time slot labels as ranges for clarity
+  const timeSlotLabels = ['12am-4am', '4am-8am', '8am-12pm', '12pm-4pm', '4pm-8pm', '8pm-12am'];
 
   // Format tooltip text
   const getTooltipText = (day: string, timeSlot: string, count: number): string => {
@@ -40,16 +40,16 @@ export const TransactionActivityHeatmap: React.FC = React.memo(() => {
   const activityStats = useMemo(() => {
     const totalTransactions = heatmapData.reduce((sum, cell) => sum + cell.count, 0);
 
-    // Find most active day
+    // Find most active day (handle ties by showing all tied days)
     const dayTotals = new Map<string, number>();
     heatmapData.forEach((cell) => {
       const current = dayTotals.get(cell.day) || 0;
       dayTotals.set(cell.day, current + cell.count);
     });
-    const mostActiveDay = Array.from(dayTotals.entries()).reduce(
-      (max, [day, count]) => (count > max.count ? { day, count } : max),
-      { day: 'N/A', count: 0 }
-    );
+    const maxDayCount = Math.max(...Array.from(dayTotals.values()), 0);
+    const mostActiveDays = Array.from(dayTotals.entries())
+      .filter(([_, count]) => count === maxDayCount && count > 0)
+      .map(([day]) => day.slice(0, 3));
 
     // Find most active time slot
     const timeSlotTotals = new Map<string, number>();
@@ -63,11 +63,14 @@ export const TransactionActivityHeatmap: React.FC = React.memo(() => {
     );
 
     // Find peak activity hour (single cell with most transactions)
-    const peakCell = heatmapData.reduce((max, cell) => (cell.count > max.count ? cell : max), {
-      day: 'N/A',
-      timeSlot: 'N/A',
-      count: 0,
-    });
+    const peakCell = heatmapData.reduce(
+      (max, cell) => (cell.count > max.count ? cell : max),
+      {
+        day: 'N/A',
+        timeSlot: 'N/A',
+        count: 0,
+      }
+    );
 
     // Calculate daily breakdown for bar chart
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -79,7 +82,8 @@ export const TransactionActivityHeatmap: React.FC = React.memo(() => {
 
     return {
       totalTransactions,
-      mostActiveDay,
+      mostActiveDays: mostActiveDays.length > 0 ? mostActiveDays : ['N/A'], // Handle empty case
+      mostActiveDayCount: maxDayCount,
       mostActiveTimeSlot,
       peakCell,
       dailyBreakdown,
@@ -88,129 +92,102 @@ export const TransactionActivityHeatmap: React.FC = React.memo(() => {
   }, [heatmapData]);
 
   return (
-    <div className="bg-white dark:bg-navy-800 rounded-lg p-6 shadow-sm">
-      <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">
-        Transaction Activity
-      </h3>
+    <figure>
+      <div 
+        className="bg-white dark:bg-navy-800 rounded-lg p-6 shadow-sm"
+        aria-label="Transaction activity heatmap showing transaction frequency by day and time"
+      >
+        <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">
+          Transaction Activity
+        </h2>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Heatmap Section */}
-        <div className="flex gap-2">
-          {/* Y-axis: Day labels */}
-          <div className="flex flex-col gap-1" style={{ paddingTop: 'calc(1rem + 0.5rem)' }}>
-            {dayLabels.map((label) => (
-              <div
-                key={label}
-                className="h-9 flex items-center justify-end pr-2 text-xs font-medium text-gray-600 dark:text-gray-400"
-              >
-                {label}
-              </div>
-            ))}
-          </div>
-
-          {/* Heatmap grid container */}
-          <div className="flex-1">
-            {/* X-axis: Time slot labels */}
-            <div className="flex gap-1 mb-2 pl-0">
-              {timeSlotLabels.map((label, index) => (
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-2">
+            {/* Y-axis: Day labels */}
+            <div className="flex flex-col gap-1" style={{ paddingTop: 'calc(1rem + 0.5rem)' }}>
+              {dayLabels.map((label) => (
                 <div
-                  key={`${label}-${index}`}
-                  className="w-9 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300"
+                  key={label}
+                  className="h-9 flex items-center justify-end pr-2 text-xs font-medium text-gray-600 dark:text-gray-400"
                 >
                   {label}
                 </div>
               ))}
             </div>
 
-            {/* Heatmap cells (7×7 grid) */}
-            <div className="flex flex-col gap-1">
-              {heatmapGrid.map((dayData, dayIndex) => (
-                <div key={dayLabels[dayIndex]} className="flex gap-1">
-                  {dayData.map((cell, cellIndex) => (
-                    <div
-                      key={`${cell.day}-${cell.timeSlot}-${cellIndex}`}
-                      className={`
-                      w-9 h-9 rounded-md transition-all duration-200 hover:scale-110 cursor-default
-                      focus:scale-110 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2
-                      ${getHeatmapColor(cell.count)}
-                    `}
-                      title={getTooltipText(cell.day, cell.timeSlot, cell.count)}
-                      aria-label={getTooltipText(cell.day, cell.timeSlot, cell.count)}
-                      role="gridcell"
-                      tabIndex={0}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+            {/* Heatmap grid container */}
+            <div>
+              {/* X-axis: Time slot labels */}
+              <div className="flex gap-1 mb-2 pl-0">
+                {timeSlotLabels.map((label, index) => (
+                  <div
+                    key={`${label}-${index}`}
+                    className="w-9 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300"
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
 
-        {/* Activity Summary Stats */}
-        <div className="flex flex-col gap-4 min-w-[200px]">
-          <div className="space-y-3">
-            {/* Total Transactions */}
-            <div className="bg-gray-50 dark:bg-navy-700 rounded-lg p-3">
-              <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Total This Week</div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {activityStats.totalTransactions}
-              </div>
-            </div>
-
-            {/* Most Active Day */}
-            <div className="bg-gray-50 dark:bg-navy-700 rounded-lg p-3">
-              <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Most Active Day</div>
-              <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                {activityStats.mostActiveDay.day.slice(0, 3)}
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">
-                {activityStats.mostActiveDay.count} transactions
-              </div>
-            </div>
-
-            {/* Most Active Time Slot */}
-            <div className="bg-gray-50 dark:bg-navy-700 rounded-lg p-3">
-              <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Peak Time Slot</div>
-              <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                {activityStats.mostActiveTimeSlot.slot}
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">
-                {activityStats.mostActiveTimeSlot.count} transactions
-              </div>
-            </div>
-
-            {/* Peak Activity Hour */}
-            <div className="bg-gray-50 dark:bg-navy-700 rounded-lg p-3">
-              <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Peak Activity</div>
-              <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                {activityStats.peakCell.day.slice(0, 3)} {activityStats.peakCell.timeSlot}
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">
-                {activityStats.peakCell.count} transactions
+              {/* Heatmap cells (7×6 grid) */}
+              <div className="flex flex-col gap-1" role="grid">
+                {heatmapGrid.map((dayData, dayIndex) => (
+                  <div key={dayLabels[dayIndex]} className="flex gap-1" role="row">
+                    {dayData.map((cell, cellIndex) => (
+                      <div
+                        key={`${cell.day}-${cell.timeSlot}-${cellIndex}`}
+                        className={`
+                        w-9 h-9 rounded-md transition-all duration-200 hover:scale-110 cursor-default
+                        focus:scale-110 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2
+                        ${getHeatmapColor(cell.count)}
+                      `}
+                        title={getTooltipText(cell.day, cell.timeSlot, cell.count)}
+                        aria-label={getTooltipText(cell.day, cell.timeSlot, cell.count)}
+                        role="gridcell"
+                        tabIndex={0}
+                      />
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+
+          {/* Legend - Positioned directly below heatmap */}
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-600 dark:text-gray-400 ml-12">
+            <span>Less</span>
+            <div className="flex gap-1">
+              <div className="w-4 h-4 rounded bg-gray-100 dark:bg-gray-700/50" title="0 transactions" />
+              <div className="w-4 h-4 rounded bg-teal-100 dark:bg-teal-500/30" title="1-2 transactions" />
+              <div className="w-4 h-4 rounded bg-teal-300 dark:bg-teal-400/60" title="3-5 transactions" />
+              <div className="w-4 h-4 rounded bg-teal-500 dark:bg-teal-400" title="6-10 transactions" />
+              <div className="w-4 h-4 rounded bg-teal-700 dark:bg-teal-300" title="11+ transactions" />
+            </div>
+            <span>More</span>
+          </div>
         </div>
 
-        {/* Daily Breakdown Chart */}
-        <div className="flex flex-col gap-4 min-w-[180px]">
-          <div className="bg-gray-50 dark:bg-navy-700 rounded-lg p-4 h-full flex flex-col">
-            <div className="text-xs text-gray-600 dark:text-gray-400 mb-3">Daily Breakdown</div>
-            <div className="space-y-2 flex-1 flex flex-col justify-around">
+        {/* Daily Breakdown Chart - Takes remaining space */}
+        <div className="flex-1 min-w-[280px]">
+          <div className="bg-gray-50 dark:bg-navy-700 rounded-lg p-6 h-full flex flex-col">
+            <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Daily Breakdown</div>
+            <div className="space-y-3 flex-1 flex flex-col justify-around">
               {activityStats.dailyBreakdown.map((dayData) => {
                 const barWidth = (dayData.count / activityStats.maxDailyCount) * 100;
                 return (
-                  <div key={dayData.day} className="flex items-center gap-2">
-                    <div className="text-xs font-medium text-gray-700 dark:text-gray-300 w-8">
+                  <div key={dayData.day} className="flex items-center gap-4">
+                    <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 w-10">
                       {dayData.day.slice(0, 3)}
                     </div>
-                    <div className="flex-1 bg-gray-200 dark:bg-navy-600 rounded-full h-4 overflow-hidden">
+                    <div className="flex-1 bg-gray-200 dark:bg-navy-600 rounded-full h-6 overflow-hidden">
                       <div
                         className="bg-teal-500 dark:bg-teal-400 h-full rounded-full transition-all duration-300"
                         style={{ width: `${barWidth}%` }}
                       />
                     </div>
-                    <div className="text-xs font-semibold text-gray-900 dark:text-gray-100 w-6 text-right">
+                    <div className="text-base font-bold text-gray-900 dark:text-gray-100 w-10 text-right">
                       {dayData.count}
                     </div>
                   </div>
@@ -220,20 +197,13 @@ export const TransactionActivityHeatmap: React.FC = React.memo(() => {
           </div>
         </div>
       </div>
-
-      {/* Legend */}
-      <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-        <span>Less</span>
-        <div className="flex gap-1">
-          <div className="w-4 h-4 rounded bg-gray-100 dark:bg-gray-700/50" />
-          <div className="w-4 h-4 rounded bg-teal-200 dark:bg-teal-600/60" />
-          <div className="w-4 h-4 rounded bg-teal-400 dark:bg-teal-500/80" />
-          <div className="w-4 h-4 rounded bg-teal-600 dark:bg-teal-400" />
-          <div className="w-4 h-4 rounded bg-teal-800 dark:bg-teal-300" />
-        </div>
-        <span>More</span>
       </div>
-    </div>
+      <figcaption className="sr-only">
+        Transaction activity heatmap showing {activityStats.totalTransactions} total transactions this week.
+        Most active day: {activityStats.mostActiveDays.join(' and ')} with {activityStats.mostActiveDayCount} transactions.
+        Peak time slot: {activityStats.peakCell.timeSlot} on {activityStats.peakCell.day} with {activityStats.peakCell.count} transactions.
+      </figcaption>
+    </figure>
   );
 });
 

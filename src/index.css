@@ -31,10 +31,50 @@
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
+    font-size: 16px; /* Base font size for mobile */
   }
 
   #root {
     min-height: 100vh;
+  }
+
+  /* Responsive typography */
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  /* Ensure minimum text sizes */
+  p,
+  span,
+  div {
+    font-size: 16px;
+  }
+
+  small,
+  .text-xs,
+  .text-sm {
+    font-size: 14px;
+  }
+
+  /* Responsive images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Dark mode color transitions */
+  * {
+    transition-property: color, background-color, border-color;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
   }
 
   /* Keyboard navigation focus indicators */
@@ -65,6 +105,22 @@
 }
 
 @layer utilities {
+  /* Fade-up animation for KPI cards */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up 300ms ease-out;
+  }
+
   /* Slide-in animation for panel */
   @keyframes slide-in {
     from {
@@ -90,6 +146,37 @@
 
   .animate-slide-out {
     animation: slide-out 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Slide-up animation for bottom sheet */
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Pulse-scale animation for role badge */
+  @keyframes pulse-scale {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-pulse-scale {
+    animation: pulse-scale 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   /* Backdrop fade animations */
@@ -154,5 +241,16 @@
 
   .animate-fade-out-collapse {
     animation: fade-out-collapse 200ms ease-in forwards;
+  }
+
+  /* Disable all animations when prefers-reduced-motion is enabled */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

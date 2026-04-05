@@ -57,63 +57,71 @@ const SpendingDonut: React.FC<SpendingDonutProps> = ({ data }) => {
   };
 
   return (
-    <div
-      className="bg-white dark:bg-navy-800 rounded-lg p-6 shadow-sm"
-      aria-label="Spending breakdown donut chart showing expenses by category"
-    >
-      <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">
-        Spending Breakdown
-      </h3>
+    <figure>
+      <div
+        className="bg-white dark:bg-navy-800 rounded-lg p-6 shadow-sm"
+        aria-label="Spending breakdown donut chart showing expenses by category"
+      >
+        <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">
+          Spending Breakdown
+        </h2>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="amount"
-            nameKey="category"
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            onClick={handleSegmentClick}
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={entry.color}
-                className="cursor-pointer hover:opacity-80 transition-opacity focus:outline-none"
-                aria-label={`${entry.category}: ${formatCurrency(entry.amount)} (${entry.percentage.toFixed(1)}%)`}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(e, entry)}
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="amount"
+              nameKey="category"
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={80}
+              onClick={handleSegmentClick}
+              animationDuration={600}
+              animationEasing="ease-in-out"
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.color}
+                  className="cursor-pointer hover:opacity-80 transition-opacity focus:outline-none"
+                  aria-label={`${entry.category}: ${formatCurrency(entry.amount)} (${entry.percentage.toFixed(1)}%)`}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(e, entry)}
+                />
+              ))}
+              <Label
+                value={`₹${formatShortAmount(totalExpenses).replace('₹', '')}`}
+                position="center"
+                className="text-2xl font-bold fill-gray-900 dark:fill-gray-100"
+                style={{ fontSize: '24px', fontWeight: 'bold' }}
               />
-            ))}
-            <Label
-              value={`₹${formatShortAmount(totalExpenses).replace('₹', '')}`}
-              position="center"
-              className="text-2xl font-bold fill-gray-900 dark:fill-gray-100"
-              style={{ fontSize: '24px', fontWeight: 'bold' }}
-            />
-          </Pie>
-          <Tooltip content={<CustomTooltip />} />
-        </PieChart>
-      </ResponsiveContainer>
+            </Pie>
+            <Tooltip content={<CustomTooltip />} />
+          </PieChart>
+        </ResponsiveContainer>
 
-      {/* Legend */}
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        {data.map((item) => (
-          <div key={item.category} className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full flex-shrink-0"
-              style={{ backgroundColor: item.color }}
-            />
-            <span className="text-xs text-gray-600 dark:text-gray-400 capitalize truncate">
-              {item.category}: {item.percentage.toFixed(1)}%
-            </span>
-          </div>
-        ))}
+        {/* Legend */}
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          {data.map((item) => (
+            <div key={item.category} className="flex items-center gap-2">
+              <div
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-xs text-gray-600 dark:text-gray-400 capitalize truncate">
+                {item.category}: {item.percentage.toFixed(1)}%
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      <figcaption className="sr-only">
+        Spending breakdown showing expenses by category. Total expenses: {formatCurrency(totalExpenses)}.
+        {data.length > 0 && ` Top category: ${data[0].category} at ${data[0].percentage.toFixed(1)}%.`}
+      </figcaption>
+    </figure>
   );
 };
 

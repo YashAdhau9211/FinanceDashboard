@@ -37,33 +37,32 @@ export function Dashboard() {
           <KPICardsGrid />
         </ErrorBoundary>
 
-        {/* Middle row: Transaction Activity Heatmap (left) + Balance Trend Chart (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ErrorBoundary
-            sectionName="Transaction Activity Heatmap"
-            fallback={(error, retry) => (
-              <ErrorFallback
-                sectionName="Transaction Activity Heatmap"
-                error={error}
-                onRetry={retry}
-              />
-            )}
-          >
-            <TransactionActivityHeatmap />
-          </ErrorBoundary>
+        {/* Second row: Balance Trend Chart (Full Width) */}
+        <ErrorBoundary
+          sectionName="Balance Trend Chart"
+          fallback={(error, retry) => (
+            <ErrorFallback sectionName="Balance Trend Chart" error={error} onRetry={retry} />
+          )}
+        >
+          <BalanceTrendChart data={monthlyData} />
+        </ErrorBoundary>
 
-          <ErrorBoundary
-            sectionName="Balance Trend Chart"
-            fallback={(error, retry) => (
-              <ErrorFallback sectionName="Balance Trend Chart" error={error} onRetry={retry} />
-            )}
-          >
-            <BalanceTrendChart data={monthlyData} />
-          </ErrorBoundary>
-        </div>
+        {/* Third row: Transaction Activity Heatmap (Full Width) */}
+        <ErrorBoundary
+          sectionName="Transaction Activity Heatmap"
+          fallback={(error, retry) => (
+            <ErrorFallback
+              sectionName="Transaction Activity Heatmap"
+              error={error}
+              onRetry={retry}
+            />
+          )}
+        >
+          <TransactionActivityHeatmap />
+        </ErrorBoundary>
 
         {/* Bottom row: Spending Donut (left) + Recent Transactions Widget (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ErrorBoundary
             sectionName="Spending Breakdown"
             fallback={(error, retry) => (

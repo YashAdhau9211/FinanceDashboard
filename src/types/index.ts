@@ -54,6 +54,7 @@ export interface FilterState {
 export interface UIState {
   sidebarCollapsed: boolean;
   darkMode: boolean;
+  prefersReducedMotion: boolean;
 }
 
 // Monthly data interface for aggregated monthly data

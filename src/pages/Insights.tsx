@@ -69,10 +69,10 @@ export function Insights() {
 
     // Check if transactions actually changed
     if (prevTransactionsRef.current !== transactions) {
-      // Use setTimeout to avoid setState in effect
-      const updateTimer = setTimeout(() => setIsUpdating(true), 0);
+      // Apply fade out immediately
+      setIsUpdating(true);
 
-      // Apply fade out
+      // Apply fade in after 150ms
       const fadeTimer = setTimeout(() => {
         setIsUpdating(false);
       }, 150);
@@ -80,7 +80,6 @@ export function Insights() {
       prevTransactionsRef.current = transactions;
 
       return () => {
-        clearTimeout(updateTimer);
         clearTimeout(fadeTimer);
       };
     }

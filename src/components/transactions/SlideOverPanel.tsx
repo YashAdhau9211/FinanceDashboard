@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import { useUIStore } from '../../stores/uiStore';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 
 interface SlideOverPanelProps {
   isOpen: boolean;
@@ -10,67 +12,13 @@ interface SlideOverPanelProps {
 
 export function SlideOverPanel({ isOpen, onClose, title, children }: SlideOverPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const prefersReducedMotion = useUIStore((state) => state.prefersReducedMotion);
 
-  // Handle Escape key press
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [isOpen, onClose]);
-
-  // Focus trap implementation
-  useEffect(() => {
-    if (isOpen && panelRef.current) {
-      // Store the element that had focus before opening
-      previousFocusRef.current = document.activeElement as HTMLElement;
-
-      // Get all focusable elements within the panel
-      const focusableElements = panelRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      // Focus the first element
-      firstElement?.focus();
-
-      // Trap focus within the panel
-      const handleTab = (e: KeyboardEvent) => {
-        if (e.key !== 'Tab') return;
-
-        if (e.shiftKey) {
-          // Shift + Tab
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement?.focus();
-          }
-        } else {
-          // Tab
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement?.focus();
-          }
-        }
-      };
-
-      document.addEventListener('keydown', handleTab);
-
-      return () => {
-        document.removeEventListener('keydown', handleTab);
-        // Return focus to the trigger element on close
-        previousFocusRef.current?.focus();
-      };
-    }
-  }, [isOpen]);
+  // Use focus trap hook
+  useFocusTrap(panelRef, {
+    isActive: isOpen,
+    onEscape: onClose,
+  });
 
   // Prevent body scroll when panel is open
   useEffect(() => {
@@ -91,7 +39,7 @@ export function SlideOverPanel({ isOpen, onClose, title, children }: SlideOverPa
     <div className="fixed inset-0 z-50">
       {/* Backdrop with 50% opacity and fade animation */}
       <div
-        className="fixed inset-0 bg-black/50 animate-backdrop-in"
+        className={`fixed inset-0 bg-black/50 ${!prefersReducedMotion ? 'animate-backdrop-in' : ''}`}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -104,7 +52,7 @@ export function SlideOverPanel({ isOpen, onClose, title, children }: SlideOverPa
         aria-labelledby="slide-over-title"
         className="fixed inset-y-0 right-0 flex max-w-full"
       >
-        <div className="w-screen md:max-w-[480px] transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] animate-slide-in">
+        <div className={`w-screen md:max-w-[480px] transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${!prefersReducedMotion ? 'animate-slide-in' : ''}`}>
           <div className="flex h-full flex-col bg-white dark:bg-gray-800 shadow-xl">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-6 py-4">

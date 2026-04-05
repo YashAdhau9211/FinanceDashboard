@@ -27,7 +27,7 @@ export const TimeFilterToggle = React.memo(function TimeFilterToggle({
             ${months === 3 ? 'rounded-l-lg' : ''}
             ${months === 12 ? 'rounded-r-lg' : ''}
           `}
-          aria-label={`Show ${months} months`}
+          aria-label={`${months} months`}
           aria-pressed={active === months}
         >
           {months}M

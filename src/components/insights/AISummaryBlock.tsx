@@ -48,9 +48,9 @@ export const AISummaryBlock: React.FC<AISummaryBlockProps> = React.memo(({ summa
 
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-3">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
               Financial Insights
-            </h3>
+            </h2>
             <span className="px-2.5 py-0.5 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 text-xs font-semibold rounded-md">
               AI
             </span>

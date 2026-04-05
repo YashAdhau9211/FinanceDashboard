@@ -14,14 +14,14 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-60 bg-navy-900 fixed h-full">
+    <aside className="hidden lg:block w-16 md:w-16 lg:w-64 bg-navy-900 dark:bg-gray-900 fixed h-full">
       <div className="p-6">
         {/* Logo + Brand */}
         <div className="flex items-center gap-3 mb-8">
           <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">Z</span>
           </div>
-          {!sidebarCollapsed && <span className="text-xl font-bold text-white">Zorvyn</span>}
+          <span className="hidden lg:block text-xl font-bold text-white">Zorvyn</span>
         </div>
 
         {/* Navigation Links */}
@@ -39,9 +39,10 @@ export function Sidebar() {
                     ? 'bg-teal-500/10 text-teal-400'
                     : 'text-gray-400 hover:bg-navy-800 hover:text-white'
                 }`}
+                aria-label={item.label}
               >
                 <Icon size={20} />
-                {!sidebarCollapsed && <span className="text-sm font-medium">{item.label}</span>}
+                <span className="hidden lg:block text-sm font-medium">{item.label}</span>
               </Link>
             );
           })}

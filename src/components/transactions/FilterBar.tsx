@@ -17,10 +17,10 @@ export function FilterBar() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <TypeFilter />
           <CategoryFilter />
-          <div className="sm:col-span-2 lg:col-span-1">
+          <div className="sm:col-span-2">
             <DateRangePicker />
           </div>
-          <div className="flex items-end sm:col-span-2 lg:col-span-1">
+          <div className="flex items-end sm:col-span-2 lg:col-span-4">
             <FilterResetButton />
           </div>
         </div>

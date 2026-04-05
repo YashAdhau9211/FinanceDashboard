@@ -191,9 +191,11 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           max={new Date().toISOString().split('T')[0]}
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
           required
+          aria-required="true"
+          aria-describedby={touched.date && errors.date ? 'date-error' : undefined}
         />
         {touched.date && errors.date && (
-          <p role="alert" className="mt-1 text-sm text-red-600">
+          <p id="date-error" role="alert" className="mt-1 text-sm text-red-600">
             {errors.date}
           </p>
         )}
@@ -217,9 +219,11 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           placeholder="Enter transaction description"
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
           required
+          aria-required="true"
+          aria-describedby={touched.description && errors.description ? 'description-error' : undefined}
         />
         {touched.description && errors.description && (
-          <p role="alert" className="mt-1 text-sm text-red-600">
+          <p id="description-error" role="alert" className="mt-1 text-sm text-red-600">
             {errors.description}
           </p>
         )}
@@ -244,9 +248,11 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           placeholder="0.00"
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
           required
+          aria-required="true"
+          aria-describedby={touched.amount && errors.amount ? 'amount-error' : undefined}
         />
         {touched.amount && errors.amount && (
-          <p role="alert" className="mt-1 text-sm text-red-600">
+          <p id="amount-error" role="alert" className="mt-1 text-sm text-red-600">
             {errors.amount}
           </p>
         )}
@@ -254,7 +260,7 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
 
       {/* Type Field */}
       <div>
-        <fieldset>
+        <fieldset aria-describedby={touched.type && errors.type ? 'type-error' : undefined}>
           <legend className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
             Type <span className="text-red-500">*</span>
           </legend>
@@ -273,6 +279,7 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
                   onBlur={() => handleBlur('type')}
                   className="h-4 w-4 border-gray-300 dark:border-gray-600 text-teal-600 focus:ring-teal-500"
                   required
+                  aria-required="true"
                 />
                 <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 capitalize">
                   {type}
@@ -282,7 +289,7 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           </div>
         </fieldset>
         {touched.type && errors.type && (
-          <p role="alert" className="mt-1 text-sm text-red-600">
+          <p id="type-error" role="alert" className="mt-1 text-sm text-red-600">
             {errors.type}
           </p>
         )}
@@ -303,6 +310,8 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           onBlur={() => handleBlur('category')}
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
           required
+          aria-required="true"
+          aria-describedby={touched.category && errors.category ? 'category-error' : undefined}
         >
           {categories.map((category) => (
             <option key={category} value={category}>
@@ -311,7 +320,7 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
           ))}
         </select>
         {touched.category && errors.category && (
-          <p role="alert" className="mt-1 text-sm text-red-600">
+          <p id="category-error" role="alert" className="mt-1 text-sm text-red-600">
             {errors.category}
           </p>
         )}

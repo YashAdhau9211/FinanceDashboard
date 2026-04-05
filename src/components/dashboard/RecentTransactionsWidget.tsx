@@ -15,9 +15,9 @@ export function RecentTransactionsWidget({ transactions }: RecentTransactionsWid
       aria-label="Recent transactions widget showing the 5 most recent transactions"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Recent Transactions
-        </h3>
+        </h2>
         <Link
           to="/transactions"
           className="text-sm text-teal-700 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300 font-medium"

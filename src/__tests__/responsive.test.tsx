@@ -89,7 +89,7 @@ describe('Responsive Layout Tests', () => {
 
       // Find the KPI cards grid container
       const kpiGrid = container.querySelector('.grid');
-      expect(kpiGrid).toHaveClass('md:grid-cols-2');
+      expect(kpiGrid).toHaveClass('sm:grid-cols-2');
     });
   });
 
@@ -135,8 +135,8 @@ describe('Responsive Layout Tests', () => {
         </BrowserRouter>
       );
 
-      // Find grid containers with lg:grid-cols-2
-      const twoColumnGrids = container.querySelectorAll('.lg\\:grid-cols-2');
+      // Find grid containers with md:grid-cols-2
+      const twoColumnGrids = container.querySelectorAll('.md\\:grid-cols-2');
       expect(twoColumnGrids.length).toBeGreaterThanOrEqual(2); // Middle and bottom rows
     });
   });
