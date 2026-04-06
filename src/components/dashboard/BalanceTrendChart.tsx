@@ -30,15 +30,15 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
   return (
     <div className="bg-white dark:bg-navy-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-      <p className="text-sm font-medium mb-2">{label}</p>
+      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">{label}</p>
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-teal-500" />
-          <span className="text-xs">Income: {formatCurrency(payload[0]?.value || 0)}</span>
+          <span className="text-xs text-gray-700 dark:text-gray-300">Income: {formatCurrency(payload[0]?.value || 0)}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-amber-500" />
-          <span className="text-xs">Expenses: {formatCurrency(payload[1]?.value || 0)}</span>
+          <span className="text-xs text-gray-700 dark:text-gray-300">Expenses: {formatCurrency(payload[1]?.value || 0)}</span>
         </div>
       </div>
     </div>
@@ -159,8 +159,8 @@ export const BalanceTrendChart = React.memo(function BalanceTrendChart({
         </ResponsiveContainer>
       </div>
       <figcaption className="sr-only">
-        Balance trend showing income and expenses over the last {timeFilter} months. 
-        The chart displays two area series: income in teal and expenses in amber.
+        Balance trend showing income and expenses over the last {timeFilter} months. The chart
+        displays two area series: income in teal and expenses in amber.
       </figcaption>
     </figure>
   );

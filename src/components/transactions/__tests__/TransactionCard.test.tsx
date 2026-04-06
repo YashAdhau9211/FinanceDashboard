@@ -3,14 +3,18 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { TransactionCard } from '../TransactionCard';
 import type { Transaction } from '../../../types';
 
+type RoleState = { role: 'ADMIN' | 'ANALYST' };
+type RoleActions = { setRole: (role: 'ADMIN' | 'ANALYST') => void; toggleRole: () => void };
+type RoleSelector<T> = (state: RoleState & RoleActions) => T;
+
 // Mock the stores
-const mockUseRoleStore = vi.fn((selector) => {
-  const state = { role: 'ADMIN' };
-  return typeof selector === 'function' ? selector(state) : state.role;
+const mockUseRoleStore = vi.fn(<T,>(selector: RoleSelector<T>) => {
+  const state = { role: 'ADMIN' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+  return typeof selector === 'function' ? selector(state) : (state.role as T);
 });
 
 vi.mock('../../../stores/roleStore', () => ({
-  useRoleStore: (selector?: any) => mockUseRoleStore(selector),
+  useRoleStore: <T,>(selector?: RoleSelector<T>) => mockUseRoleStore(selector!),
 }));
 
 const mockTransaction: Transaction = {
@@ -32,9 +36,9 @@ describe('TransactionCard', () => {
     mockOnEdit.mockClear();
     mockOnDelete.mockClear();
     // Reset mock to default ADMIN role
-    mockUseRoleStore.mockImplementation((selector) => {
-      const state = { role: 'ADMIN' };
-      return typeof selector === 'function' ? selector(state) : state.role;
+    mockUseRoleStore.mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ADMIN' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return typeof selector === 'function' ? selector(state) : (state.role as T);
     });
   });
 
@@ -76,9 +80,9 @@ describe('TransactionCard', () => {
 
   it('should hide action buttons for ANALYST role', async () => {
     // Update mock to return ANALYST
-    mockUseRoleStore.mockImplementation((selector: any) => {
-      const state = { role: 'ANALYST' };
-      return typeof selector === 'function' ? selector(state) : state.role;
+    mockUseRoleStore.mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return typeof selector === 'function' ? selector(state) : (state.role as T);
     });
 
     render(

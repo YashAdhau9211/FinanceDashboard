@@ -486,7 +486,7 @@ describe('Property 10: Sort Order Consistency', () => {
         (transactionsData, sortField, sortDir) => {
           // Reset store before each iteration
           useTransactionsStore.setState({ transactions: [] });
-          
+
           const store = useTransactionsStore.getState();
 
           // Add multiple transactions

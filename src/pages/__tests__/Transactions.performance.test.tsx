@@ -103,7 +103,7 @@ describe('Transactions Page Performance', () => {
 
     const renderTime = endTime - startTime;
 
-    // Initial render should be under 600ms even with 100 transactions 
+    // Initial render should be under 600ms even with 100 transactions
     expect(renderTime).toBeLessThan(600);
   });
 
@@ -120,7 +120,7 @@ describe('Transactions Page Performance', () => {
 
     const renderTime = endTime - startTime;
 
-    // Empty state should render quickly 
+    // Empty state should render quickly
     expect(renderTime).toBeLessThan(300);
   });
 
@@ -168,7 +168,7 @@ describe('Transactions Page Performance', () => {
 
     const renderTime = endTime - startTime;
 
-    // Filtered render should still be under 600ms 
+    // Filtered render should still be under 600ms
     expect(renderTime).toBeLessThan(600);
   });
 });

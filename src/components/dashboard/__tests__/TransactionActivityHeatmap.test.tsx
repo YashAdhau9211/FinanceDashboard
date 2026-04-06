@@ -65,7 +65,6 @@ describe('Feature: sprint-1-dashboard-overview - TransactionActivityHeatmap', ()
 
   it('should apply correct color intensity based on transaction count', () => {
     // Arrange: Create transactions at specific times
-    // Using ISO format with time to test heatmap time slot mapping
     const transactions: Transaction[] = [
       // Monday 10am (8am-12pm slot) - 1 transaction
       {

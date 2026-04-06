@@ -14,7 +14,11 @@ export function Sidebar() {
     <aside className="hidden lg:block w-16 md:w-16 lg:w-64 bg-navy-900 dark:bg-gray-900 fixed h-full">
       <div className="p-6">
         {/* Logo + Brand */}
-        <Link to="/dashboard" className="flex items-center gap-3 mb-8 hover:opacity-80 transition-opacity" aria-label="Go to Dashboard">
+        <Link
+          to="/dashboard"
+          className="flex items-center gap-3 mb-8 hover:opacity-80 transition-opacity"
+          aria-label="Go to Dashboard"
+        >
           <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">Z</span>
           </div>

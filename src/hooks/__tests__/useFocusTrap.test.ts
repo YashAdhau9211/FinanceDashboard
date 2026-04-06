@@ -31,6 +31,7 @@ describe('useFocusTrap', () => {
 
   it('should focus first element when activated', () => {
     const ref = createRef<HTMLDivElement>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = container;
 
     renderHook(() =>
@@ -44,6 +45,7 @@ describe('useFocusTrap', () => {
 
   it('should cycle focus forward on Tab key', () => {
     const ref = createRef<HTMLDivElement>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = container;
 
     renderHook(() =>
@@ -71,6 +73,7 @@ describe('useFocusTrap', () => {
 
   it('should cycle focus backward on Shift+Tab key', () => {
     const ref = createRef<HTMLDivElement>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = container;
 
     renderHook(() =>
@@ -101,6 +104,7 @@ describe('useFocusTrap', () => {
 
   it('should call onEscape when Escape key is pressed', () => {
     const ref = createRef<HTMLDivElement>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = container;
     const onEscape = vi.fn();
 
@@ -120,6 +124,7 @@ describe('useFocusTrap', () => {
 
   it('should not trap focus when isActive is false', () => {
     const ref = createRef<HTMLDivElement>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = container;
 
     renderHook(() =>
@@ -139,6 +144,7 @@ describe('useFocusTrap', () => {
     outsideButton.focus();
 
     const ref = createRef<HTMLDivElement>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = container;
 
     const { unmount } = renderHook(() =>
@@ -150,7 +156,6 @@ describe('useFocusTrap', () => {
     // Focus should be inside container
     expect(document.activeElement).toBe(button1);
 
-    // Unmount - focus should return to outside button
     unmount();
     expect(document.activeElement).toBe(outsideButton);
 

@@ -51,7 +51,15 @@ describe('TransactionTable', () => {
   });
 
   it('renders table with correct columns', () => {
-    render(<TransactionTable transactions={mockTransactions} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={mockTransactions}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('DATE')).toBeInTheDocument();
     expect(screen.getByText('DESCRIPTION')).toBeInTheDocument();
@@ -63,7 +71,13 @@ describe('TransactionTable', () => {
 
   it('renders transactions with alternating row backgrounds', () => {
     const { container } = render(
-      <TransactionTable transactions={mockTransactions} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />
+      <TransactionTable
+        transactions={mockTransactions}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
     );
 
     const rows = container.querySelectorAll('tbody tr');
@@ -74,7 +88,15 @@ describe('TransactionTable', () => {
   it('hides ACTIONS column when role is ANALYST', () => {
     useRoleStore.setState({ role: 'ANALYST' });
 
-    render(<TransactionTable transactions={mockTransactions} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={mockTransactions}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.queryByText('ACTIONS')).not.toBeInTheDocument();
   });
@@ -82,20 +104,44 @@ describe('TransactionTable', () => {
   it('shows ACTIONS column when role is ADMIN', () => {
     useRoleStore.setState({ role: 'ADMIN' });
 
-    render(<TransactionTable transactions={mockTransactions} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={mockTransactions}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('ACTIONS')).toBeInTheDocument();
   });
 
   it('shows loading state placeholder when isLoading is true', () => {
-    render(<TransactionTable transactions={[]} isLoading={true} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={[]}
+        isLoading={true}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
     expect(screen.getByText('Loading transactions...')).toBeInTheDocument();
   });
 
   it('shows empty state when no transactions and no filters', () => {
-    render(<TransactionTable transactions={[]} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={[]}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('No transactions yet')).toBeInTheDocument();
     expect(screen.getByText('Add your first one to get started.')).toBeInTheDocument();
@@ -104,7 +150,15 @@ describe('TransactionTable', () => {
   it('shows filtered empty state when no results with active filters', () => {
     useFiltersStore.setState({ searchQuery: 'test query' });
 
-    render(<TransactionTable transactions={[]} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={[]}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('No transactions match your filters')).toBeInTheDocument();
     expect(screen.getByText('Try adjusting your search or filter criteria.')).toBeInTheDocument();
@@ -113,7 +167,15 @@ describe('TransactionTable', () => {
   it('shows filtered empty state when type filter is active', () => {
     useFiltersStore.setState({ type: 'income' });
 
-    render(<TransactionTable transactions={[]} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={[]}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('No transactions match your filters')).toBeInTheDocument();
   });
@@ -121,7 +183,15 @@ describe('TransactionTable', () => {
   it('shows filtered empty state when category filter is active', () => {
     useFiltersStore.setState({ category: 'groceries' });
 
-    render(<TransactionTable transactions={[]} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={[]}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('No transactions match your filters')).toBeInTheDocument();
   });
@@ -129,7 +199,15 @@ describe('TransactionTable', () => {
   it('shows filtered empty state when date range is active', () => {
     useFiltersStore.setState({ dateRange: { start: '2025-01-01', end: null } });
 
-    render(<TransactionTable transactions={[]} isLoading={false} onEdit={mockOnEdit} onDelete={mockOnDelete} onAddTransaction={mockOnAddTransaction} />);
+    render(
+      <TransactionTable
+        transactions={[]}
+        isLoading={false}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onAddTransaction={mockOnAddTransaction}
+      />
+    );
 
     expect(screen.getByText('No transactions match your filters')).toBeInTheDocument();
   });

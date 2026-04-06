@@ -237,8 +237,7 @@ describe('ExportButton', () => {
       const blobArg = createObjectURLSpy.mock.calls[0][0] as Blob;
       const text = await blobArg.text();
 
-      // PapaParse should properly escape special characters
-      // The description should be quoted and internal quotes should be escaped
+      // PapaParse should properly escape special character
       expect(text).toContain('Coffee');
 
       vi.restoreAllMocks();
@@ -253,7 +252,9 @@ describe('ExportButton', () => {
           const link = originalCreateElement('a');
           link.click = mockClick;
           Object.defineProperty(link, 'download', {
-            set: (value) => { capturedDownload = value; },
+            set: (value) => {
+              capturedDownload = value;
+            },
             get: () => capturedDownload,
           });
           return link;
@@ -281,7 +282,9 @@ describe('ExportButton', () => {
           const link = originalCreateElement('a');
           link.click = mockClick;
           Object.defineProperty(link, 'download', {
-            set: (value) => { capturedDownload = value; },
+            set: (value) => {
+              capturedDownload = value;
+            },
             get: () => capturedDownload,
           });
           return link;
@@ -289,12 +292,7 @@ describe('ExportButton', () => {
         return originalCreateElement(tagName);
       });
 
-      render(
-        <ExportButton
-          transactions={mockTransactions}
-          filename="custom-export.csv"
-        />
-      );
+      render(<ExportButton transactions={mockTransactions} filename="custom-export.csv" />);
 
       const button = screen.getByLabelText('Export transactions to CSV');
       fireEvent.click(button);
@@ -349,7 +347,7 @@ describe('ExportButton', () => {
 
       // Verify comma delimiter is used
       expect(text).toContain(',');
-      
+
       // Verify quotes are used (PapaParse adds quotes when needed)
       const lines = text.split('\n');
       expect(lines.length).toBeGreaterThan(1);
@@ -359,7 +357,7 @@ describe('ExportButton', () => {
 
     it('should export only provided transactions', async () => {
       const singleTransaction = [mockTransactions[0]];
-      
+
       const mockClick = vi.fn();
       const originalCreateElement = document.createElement.bind(document);
       vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
@@ -434,15 +432,12 @@ describe('ExportButton', () => {
       fireEvent.click(button);
 
       // Verify error was logged to console
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'CSV export failed:',
-        expect.any(Error)
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('CSV export failed:', expect.any(Error));
 
       // Verify toast was shown
       const toasts = useToastStore.getState().toasts;
       expect(toasts.length).toBeGreaterThanOrEqual(1);
-      const errorToast = toasts.find(t => t.type === 'error');
+      const errorToast = toasts.find((t) => t.type === 'error');
       expect(errorToast).toBeDefined();
       expect(errorToast?.message).toBe('Failed to export CSV. Please try again.');
 
@@ -453,11 +448,11 @@ describe('ExportButton', () => {
       // Mock Blob constructor to throw an error
       const OriginalBlob = global.Blob;
       global.Blob = class extends OriginalBlob {
-        constructor(...args: any[]) {
+        constructor(...args: ConstructorParameters<typeof Blob>) {
           super(...args);
           throw new Error('Blob creation failed');
         }
-      } as any;
+      } as typeof Blob;
 
       render(<ExportButton transactions={mockTransactions} />);
 
@@ -465,15 +460,12 @@ describe('ExportButton', () => {
       fireEvent.click(button);
 
       // Verify error was logged to console
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'CSV export failed:',
-        expect.any(Error)
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('CSV export failed:', expect.any(Error));
 
       // Verify toast was shown
       const toasts = useToastStore.getState().toasts;
       expect(toasts.length).toBeGreaterThanOrEqual(1);
-      const errorToast = toasts.find(t => t.type === 'error');
+      const errorToast = toasts.find((t) => t.type === 'error');
       expect(errorToast).toBeDefined();
       expect(errorToast?.message).toBe('Failed to export CSV. Please try again.');
 
@@ -493,22 +485,19 @@ describe('ExportButton', () => {
       fireEvent.click(button);
 
       // Verify error was logged to console
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'CSV export failed:',
-        expect.any(Error)
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('CSV export failed:', expect.any(Error));
 
       // Verify toast was shown
       const toasts = useToastStore.getState().toasts;
       expect(toasts.length).toBeGreaterThanOrEqual(1);
-      const errorToast = toasts.find(t => t.type === 'error');
+      const errorToast = toasts.find((t) => t.type === 'error');
       expect(errorToast).toBeDefined();
       expect(errorToast?.message).toBe('Failed to export CSV. Please try again.');
     });
 
     it('should log error details to console for debugging', () => {
       const testError = new Error('Test error for debugging');
-      
+
       // Mock Papa.unparse to throw a specific error
       const papaUnparseSpy = vi.spyOn(Papa, 'unparse').mockImplementation(() => {
         throw testError;

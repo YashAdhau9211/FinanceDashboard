@@ -126,7 +126,9 @@ describe('Monthly Data Selector - Property Tests', () => {
             ];
 
             const monthlyData = computeMonthlyData(transactions, 12);
-            const currentMonthData = monthlyData.find((d: { month: string }) => d.month === currentMonth);
+            const currentMonthData = monthlyData.find(
+              (d: { month: string }) => d.month === currentMonth
+            );
 
             expect(currentMonthData).toBeDefined();
             expect(currentMonthData!.transactionCount).toBe(1);
@@ -226,12 +228,14 @@ describe('Monthly Data Selector - Property Tests', () => {
       const monthlyData = computeMonthlyData(transactions, 12);
 
       // All months should have zeros when no transactions exist
-      monthlyData.forEach((data: { income: number; expenses: number; net: number; transactionCount: number }) => {
-        expect(data.income).toBe(0);
-        expect(data.expenses).toBe(0);
-        expect(data.net).toBe(0);
-        expect(data.transactionCount).toBe(0);
-      });
+      monthlyData.forEach(
+        (data: { income: number; expenses: number; net: number; transactionCount: number }) => {
+          expect(data.income).toBe(0);
+          expect(data.expenses).toBe(0);
+          expect(data.net).toBe(0);
+          expect(data.transactionCount).toBe(0);
+        }
+      );
     });
   });
 
@@ -240,12 +244,14 @@ describe('Monthly Data Selector - Property Tests', () => {
       const monthlyData = computeMonthlyData([], 12);
 
       expect(monthlyData).toHaveLength(12);
-      monthlyData.forEach((data: { income: number; expenses: number; net: number; transactionCount: number }) => {
-        expect(data.income).toBe(0);
-        expect(data.expenses).toBe(0);
-        expect(data.net).toBe(0);
-        expect(data.transactionCount).toBe(0);
-      });
+      monthlyData.forEach(
+        (data: { income: number; expenses: number; net: number; transactionCount: number }) => {
+          expect(data.income).toBe(0);
+          expect(data.expenses).toBe(0);
+          expect(data.net).toBe(0);
+          expect(data.transactionCount).toBe(0);
+        }
+      );
     });
 
     it('handles different time ranges (3, 6, 12 months)', () => {

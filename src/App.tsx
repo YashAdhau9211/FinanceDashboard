@@ -5,9 +5,15 @@ import { SkipLink } from './components/SkipLink';
 import { BottomTabBar } from './components/BottomTabBar';
 
 // Lazy load route components for code splitting
-const Dashboard = lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })));
-const Transactions = lazy(() => import('./pages/Transactions').then(module => ({ default: module.Transactions })));
-const Insights = lazy(() => import('./pages/Insights').then(module => ({ default: module.Insights })));
+const Dashboard = lazy(() =>
+  import('./pages/Dashboard').then((module) => ({ default: module.Dashboard }))
+);
+const Transactions = lazy(() =>
+  import('./pages/Transactions').then((module) => ({ default: module.Transactions }))
+);
+const Insights = lazy(() =>
+  import('./pages/Insights').then((module) => ({ default: module.Insights }))
+);
 
 // Loading fallback component
 function LoadingFallback() {

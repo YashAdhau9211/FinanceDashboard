@@ -5,18 +5,6 @@ import { Dashboard } from '../pages/Dashboard';
 import { Insights } from '../pages/Insights';
 import { Transactions } from '../pages/Transactions';
 
-/**
- * Responsive QA Tests at 768px (iPad viewport)
- * 
- * **Validates: Requirements 39.1, 39.2, 39.3, 39.4**
- * 
- * This test suite verifies the responsive design requirements at 768px viewport:
- * - Requirement 39.1: Zero horizontal overflow
- * - Requirement 39.2: 2-column KPI card layout
- * - Requirement 39.3: Sidebar collapsed to icon-only mode
- * - Requirement 39.4: Charts display side-by-side
- */
-
 // Mock window.matchMedia for responsive testing
 function mockMatchMedia(width: number) {
   Object.defineProperty(window, 'innerWidth', {
@@ -102,7 +90,7 @@ describe('Responsive QA at 768px (iPad)', () => {
       allElements.forEach((element) => {
         const computedStyle = window.getComputedStyle(element);
         const width = parseInt(computedStyle.width);
-        
+
         // Allow for some margin, but width should not exceed viewport
         if (!isNaN(width)) {
           expect(width).toBeLessThanOrEqual(768);
@@ -120,9 +108,11 @@ describe('Responsive QA at 768px (iPad)', () => {
       );
 
       // Find the KPI cards grid container
-      const kpiGrid = container.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4');
+      const kpiGrid = container.querySelector(
+        '.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4'
+      );
       expect(kpiGrid).toBeInTheDocument();
-      
+
       // Verify it has the sm:grid-cols-2 class (applies at 640px+, includes 768px)
       expect(kpiGrid).toHaveClass('sm:grid-cols-2');
     });
@@ -161,12 +151,11 @@ describe('Responsive QA at 768px (iPad)', () => {
         </BrowserRouter>
       );
 
-      // Sidebar should be visible (hidden lg:block means visible at lg+)
-      // At 768px (md breakpoint), sidebar should be hidden or icon-only
+      // Sidebar should be visible 
       const sidebar = container.querySelector('aside');
-      
+
       // Sidebar has "hidden lg:block" class, so at 768px (md) it should be hidden
-      // This is correct behavior - sidebar is only visible at lg (1024px+)
+
       expect(sidebar).toHaveClass('hidden');
       expect(sidebar).toHaveClass('lg:block');
     });
@@ -179,7 +168,7 @@ describe('Responsive QA at 768px (iPad)', () => {
       );
 
       const sidebar = container.querySelector('aside');
-      
+
       // Sidebar has w-16 for md (tablet) and w-64 for lg (desktop)
       expect(sidebar).toHaveClass('w-16');
       expect(sidebar).toHaveClass('md:w-16');
@@ -227,10 +216,10 @@ describe('Responsive QA at 768px (iPad)', () => {
 
       // Find the middle row grid container
       const chartGrids = container.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2');
-      
+
       // Should have at least 2 grids (middle row and bottom row)
       expect(chartGrids.length).toBeGreaterThanOrEqual(2);
-      
+
       // Each grid should have md:grid-cols-2 class
       chartGrids.forEach((grid) => {
         expect(grid).toHaveClass('md:grid-cols-2');
@@ -258,7 +247,7 @@ describe('Responsive QA at 768px (iPad)', () => {
 
       // Find chart grid containers
       const chartGrids = container.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2');
-      
+
       chartGrids.forEach((grid) => {
         expect(grid).toHaveClass('gap-6');
       });
@@ -284,7 +273,9 @@ describe('Responsive QA at 768px (iPad)', () => {
       );
 
       // Insights grid should have md:grid-cols-2 class
-      const insightsGrid = container.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
+      const insightsGrid = container.querySelector(
+        '.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3'
+      );
       expect(insightsGrid).toBeInTheDocument();
       expect(insightsGrid).toHaveClass('md:grid-cols-2');
     });

@@ -40,7 +40,11 @@ export const TransactionRow = memo(function TransactionRow({
   }, []);
 
   // Swipe-to-delete for mobile
-  const { handlers, translateX, isDeleting: isSwipeDeleting } = useSwipeToDelete({
+  const {
+    handlers,
+    translateX,
+    isDeleting: isSwipeDeleting,
+  } = useSwipeToDelete({
     onDelete: () => {
       setIsDeleting(true);
       setTimeout(() => {
@@ -89,7 +93,6 @@ export const TransactionRow = memo(function TransactionRow({
     return 'bg-gray-100 text-gray-700';
   };
 
-  const CategoryIcon = getCategoryIcon(transaction.category);
   const categoryColor = getCategoryColor(transaction.category);
   const isTruncated = transaction.description.length > 32;
   const isAbbreviated = Math.abs(transaction.amount) >= 1000000;
@@ -157,7 +160,10 @@ export const TransactionRow = memo(function TransactionRow({
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium text-white"
           style={{ backgroundColor: categoryColor }}
         >
-          <CategoryIcon className="w-3.5 h-3.5" />
+          {(() => {
+            const Icon = getCategoryIcon(transaction.category);
+            return <Icon className="w-3.5 h-3.5" />;
+          })()}
           {transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}
         </span>
       </td>

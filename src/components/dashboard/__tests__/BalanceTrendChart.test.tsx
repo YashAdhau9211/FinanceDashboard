@@ -9,8 +9,16 @@ vi.mock('recharts', () => ({
   AreaChart: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="area-chart">{children}</div>
   ),
-  Area: ({ dataKey, animationDuration, animationEasing }: { dataKey: string; animationDuration?: number; animationEasing?: string }) => (
-    <div 
+  Area: ({
+    dataKey,
+    animationDuration,
+    animationEasing,
+  }: {
+    dataKey: string;
+    animationDuration?: number;
+    animationEasing?: string;
+  }) => (
+    <div
       data-testid={`area-${dataKey}`}
       data-animation-duration={animationDuration}
       data-animation-easing={animationEasing}
@@ -247,7 +255,6 @@ describe('BalanceTrendChart Component', () => {
 
     const incomeArea = screen.getByTestId('area-income');
     expect(incomeArea).toHaveAttribute('data-animation-duration', '600');
-    
-    // The actual animation disabling is handled by CSS, not component logic
+
   });
 });

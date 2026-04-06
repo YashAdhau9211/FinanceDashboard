@@ -10,18 +10,14 @@ describe('useSwipeToDelete', () => {
   });
 
   it('should initialize with translateX of 0 and isDeleting false', () => {
-    const { result } = renderHook(() =>
-      useSwipeToDelete({ onDelete: mockOnDelete })
-    );
+    const { result } = renderHook(() => useSwipeToDelete({ onDelete: mockOnDelete }));
 
     expect(result.current.translateX).toBe(0);
     expect(result.current.isDeleting).toBe(false);
   });
 
   it('should return handlers for touch events', () => {
-    const { result } = renderHook(() =>
-      useSwipeToDelete({ onDelete: mockOnDelete })
-    );
+    const { result } = renderHook(() => useSwipeToDelete({ onDelete: mockOnDelete }));
 
     expect(result.current.handlers).toHaveProperty('onTouchStart');
     expect(result.current.handlers).toHaveProperty('onTouchMove');
@@ -29,9 +25,7 @@ describe('useSwipeToDelete', () => {
   });
 
   it('should calculate swipe distance correctly', () => {
-    const { result } = renderHook(() =>
-      useSwipeToDelete({ onDelete: mockOnDelete })
-    );
+    const { result } = renderHook(() => useSwipeToDelete({ onDelete: mockOnDelete }));
 
     // Simulate touch start at x=100
     act(() => {
@@ -51,9 +45,7 @@ describe('useSwipeToDelete', () => {
   });
 
   it('should only allow left swipe (negative distance)', () => {
-    const { result } = renderHook(() =>
-      useSwipeToDelete({ onDelete: mockOnDelete })
-    );
+    const { result } = renderHook(() => useSwipeToDelete({ onDelete: mockOnDelete }));
 
     // Simulate touch start at x=100
     act(() => {
@@ -127,9 +119,7 @@ describe('useSwipeToDelete', () => {
   });
 
   it('should use default threshold of 50px', () => {
-    const { result } = renderHook(() =>
-      useSwipeToDelete({ onDelete: mockOnDelete })
-    );
+    const { result } = renderHook(() => useSwipeToDelete({ onDelete: mockOnDelete }));
 
     // Simulate swipe left exactly 50px
     act(() => {

@@ -54,9 +54,12 @@ describe('Responsive Layout Integration', () => {
       render(<App />);
 
       // Wait for page to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that KPICardsGrid has grid-cols-1 class
       const grid = document.querySelector('.grid');
@@ -87,9 +90,12 @@ describe('Responsive Layout Integration', () => {
       render(<App />);
 
       // Wait for page to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that KPICardsGrid has sm:grid-cols-2 class
       const grid = document.querySelector('.grid');
@@ -105,9 +111,12 @@ describe('Responsive Layout Integration', () => {
       render(<App />);
 
       // Wait for page to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that chart containers have md:grid-cols-2 class
       const chartGrids = document.querySelectorAll('.grid.md\\:grid-cols-2');
@@ -134,9 +143,12 @@ describe('Responsive Layout Integration', () => {
       render(<App />);
 
       // Wait for page to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that KPICardsGrid has lg:grid-cols-4 class
       const grid = document.querySelector('.grid');
@@ -160,9 +172,12 @@ describe('Responsive Layout Integration', () => {
       render(<App />);
 
       // Wait for page to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that main content has max-w-screen-xl class
       const mainContent = document.getElementById('main-content');
@@ -179,9 +194,7 @@ describe('Responsive Layout Integration', () => {
 
       // Check BottomTabBar links
       const tabLinks = screen.getAllByRole('link');
-      const bottomTabLinks = tabLinks.filter((link) =>
-        link.classList.contains('min-h-[44px]')
-      );
+      const bottomTabLinks = tabLinks.filter((link) => link.classList.contains('min-h-[44px]'));
 
       bottomTabLinks.forEach((link) => {
         expect(link).toHaveClass('min-w-[44px]', 'min-h-[44px]');
@@ -193,9 +206,12 @@ describe('Responsive Layout Integration', () => {
       render(<App />);
 
       // Wait for page to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check TopNav buttons - may not exist in test environment
       const darkModeButton = screen.queryByLabelText('Toggle dark mode');

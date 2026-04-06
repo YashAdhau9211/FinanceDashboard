@@ -1,12 +1,3 @@
-/**
- * SkipLink Component
- * 
- * Provides a "Skip to main content" link as the first focusable element
- * for keyboard users to bypass navigation and jump directly to main content.
- * 
- * Validates: Requirements 19.1, 19.2, 19.3, 19.4, 19.5
- */
-
 export function SkipLink() {
   return (
     <a

@@ -22,7 +22,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   const data = payload[0].payload;
   return (
     <div className="bg-white dark:bg-navy-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-      <p className="text-sm font-medium mb-1 capitalize">{data.category}</p>
+      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1 capitalize">{data.category}</p>
       <p className="text-xs text-gray-600 dark:text-gray-400">
         {formatCurrency(data.amount)} ({data.percentage.toFixed(1)}%)
       </p>
@@ -118,8 +118,10 @@ const SpendingDonut: React.FC<SpendingDonutProps> = ({ data }) => {
         </div>
       </div>
       <figcaption className="sr-only">
-        Spending breakdown showing expenses by category. Total expenses: {formatCurrency(totalExpenses)}.
-        {data.length > 0 && ` Top category: ${data[0].category} at ${data[0].percentage.toFixed(1)}%.`}
+        Spending breakdown showing expenses by category. Total expenses:{' '}
+        {formatCurrency(totalExpenses)}.
+        {data.length > 0 &&
+          ` Top category: ${data[0].category} at ${data[0].percentage.toFixed(1)}%.`}
       </figcaption>
     </figure>
   );

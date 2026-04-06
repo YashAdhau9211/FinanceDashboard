@@ -1,6 +1,5 @@
 import type { Category } from '../types';
 
-
 export const CATEGORY_COLORS: Record<Category, string> = {
   groceries: '#10B981', // green-500
   dining: '#F59E0B', // amber-500
@@ -44,7 +43,6 @@ export function getSignBasedColor(value: number): {
   }
 }
 
-
 export function getHeatmapColor(count: number): string {
   if (count === 0) {
     // Distinct gray for zero transactions - darker in dark mode for contrast
@@ -63,7 +61,6 @@ export function getHeatmapColor(count: number): string {
     return 'bg-teal-700 dark:bg-teal-300';
   }
 }
-
 
 export function getCategoryColor(category: Category): string {
   return CATEGORY_COLORS[category];

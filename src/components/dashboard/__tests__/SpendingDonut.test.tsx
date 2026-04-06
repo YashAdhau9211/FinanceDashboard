@@ -45,8 +45,8 @@ vi.mock('recharts', () => ({
     animationEasing?: string;
     'aria-label'?: string;
   }) => (
-    <div 
-      data-testid="pie" 
+    <div
+      data-testid="pie"
       aria-label={ariaLabel}
       data-animation-duration={animationDuration}
       data-animation-easing={animationEasing}
@@ -186,7 +186,6 @@ describe('SpendingDonut', () => {
 
     expect(screen.getByText('Spending Breakdown')).toBeInTheDocument();
     // With empty data, the Label component won't render in our mock
-    // Just verify the chart structure is present
     expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
   });
 
@@ -253,7 +252,7 @@ describe('SpendingDonut', () => {
 
     const pie = screen.getByTestId('pie');
     expect(pie).toHaveAttribute('data-animation-duration', '600');
-    
+
     // The actual animation disabling is handled by CSS, not component logic
   });
 });

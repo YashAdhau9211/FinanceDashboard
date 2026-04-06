@@ -37,7 +37,6 @@ export const darkModeColors: ChartColorPalette = {
   axis: '#9CA3AF', // gray-400
 };
 
-
 export function getChartColors(isDarkMode: boolean): ChartColorPalette {
   return isDarkMode ? darkModeColors : lightModeColors;
 }

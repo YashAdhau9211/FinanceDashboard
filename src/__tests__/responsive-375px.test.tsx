@@ -3,16 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import App from '../App';
 
 /**
- * Responsive QA Tests for 375px Viewport (iPhone SE)
- * 
- * **Validates: Requirements 38.1, 38.2, 38.3, 38.4**
- * 
- * This test suite verifies that the application works correctly at the smallest
- * mobile viewport (iPhone SE at 375px width). Tests cover:
- * - Zero horizontal overflow (Requirement 38.1)
- * - Touch targets minimum 44×44px (Requirement 38.2)
- * - Text readable without zooming (Requirement 38.3)
- * - Bottom tab bar accessible (Requirement 38.4)
+ * Responsive QA Tests for 375px Viewport
  */
 describe('Responsive QA at 375px (iPhone SE)', () => {
   let originalInnerWidth: number;
@@ -45,9 +36,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load (lazy loaded components)
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 10000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 10000 }
+      );
 
       // Check that content width does not exceed viewport width
       const scrollWidth = container.scrollWidth;
@@ -60,9 +54,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for dashboard to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check for horizontal overflow
       const scrollWidth = container.scrollWidth;
@@ -75,9 +72,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that no element has a width greater than viewport
       const allElements = container.querySelectorAll('*');
@@ -108,13 +108,16 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Find dark mode toggle button - it may not exist in test environment
       const darkModeButton = screen.queryByLabelText('Toggle dark mode');
-      
+
       if (darkModeButton) {
         // Verify button has minimum 44×44px touch target
         expect(darkModeButton).toHaveClass('min-h-[44px]');
@@ -129,9 +132,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Find role switcher button - it may not exist in test environment
       const roleSwitcher = screen.queryByLabelText(/Switch to (ADMIN|ANALYST) role/i);
@@ -149,20 +155,20 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Get all buttons
       const buttons = container.querySelectorAll('button');
 
       // Filter out non-interactive buttons (like disabled ones)
-      const interactiveButtons = Array.from(buttons).filter(
-        (button) => !button.disabled
-      );
+      const interactiveButtons = Array.from(buttons).filter((button) => !button.disabled);
 
       // Verify each button has minimum 44px height or adequate padding
-      // Note: Some buttons may use padding instead of explicit height
       interactiveButtons.forEach((button) => {
         const hasMinHeight =
           button.classList.contains('min-h-[44px]') ||
@@ -184,16 +190,17 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
-      // Check that body text is at least 16px
-      // In Tailwind, base text is 16px by default
       const body = document.body;
       expect(body).toBeInTheDocument();
 
-      // Verify that most text is readable (at least 12px / text-xs)
+
       // Some decorative elements may be smaller, but main content should be readable
       const allText = container.querySelectorAll('p, span, div, a, button');
 
@@ -208,8 +215,7 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
         }
       });
 
-      // Allow a small number of very small text elements (decorative elements)
-      // But most text should be readable
+      // Allow a small number of very small text elements 
       const percentageVerySmall = (verySmallTextCount / allText.length) * 100;
       expect(percentageVerySmall).toBeLessThan(5); // Less than 5% of elements should be very small
     });
@@ -218,9 +224,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that headings are present and readable
       const h1Elements = document.querySelectorAll('h1');
@@ -258,9 +267,7 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       // Find all elements with text-xs class
       const smallTextElements = container.querySelectorAll('.text-xs');
 
-      // Verify text-xs is used (which is 12px in Tailwind)
-      // Note: text-xs is 12px, but it's acceptable for labels in bottom tab bar
-      // The requirement is that body text should be 16px minimum
+      // Verify text-xs is used 
       expect(smallTextElements.length).toBeGreaterThanOrEqual(0);
     });
 
@@ -268,9 +275,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // KPI values should use large text classes (text-2xl or larger)
       const kpiValues = container.querySelectorAll('[class*="text-2xl"], [class*="text-3xl"]');
@@ -332,7 +342,7 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       // Find the active tab in the bottom tab bar (should be Dashboard by default)
       const nav = screen.getByLabelText('Mobile navigation');
       const dashboardLink = nav.querySelector('a[aria-label="Dashboard"]');
-      
+
       expect(dashboardLink).toHaveAttribute('aria-current', 'page');
     });
 
@@ -365,7 +375,7 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       // Verify active tab has teal color
       expect(
         dashboardLink?.classList.contains('text-teal-800') ||
-        dashboardLink?.classList.contains('text-teal-400')
+          dashboardLink?.classList.contains('text-teal-400')
       ).toBe(true);
     });
   });
@@ -375,13 +385,16 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Find KPI cards grid
       const grid = container.querySelector('.grid');
-      
+
       if (grid) {
         expect(grid).toHaveClass('grid-cols-1');
       } else {
@@ -394,13 +407,16 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Verify grids have gap classes
       const grids = container.querySelectorAll('.grid');
-      
+
       // Check that at least some grids have gap classes
       const gridsWithGap = Array.from(grids).filter((grid) => {
         return (
@@ -420,9 +436,12 @@ describe('Responsive QA at 375px (iPhone SE)', () => {
       const { container } = render(<App />);
 
       // Wait for content to load
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Check that main containers have mobile padding
       const mainContainers = container.querySelectorAll('.px-4, .p-4, .px-6');

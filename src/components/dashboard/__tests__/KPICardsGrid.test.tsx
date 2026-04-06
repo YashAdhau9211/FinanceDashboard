@@ -152,14 +152,12 @@ describe('KPICardsGrid', () => {
 
   it('should respect prefers-reduced-motion via CSS', () => {
     // This test verifies that the CSS media query is in place
-    // The actual behavior is tested via CSS @media (prefers-reduced-motion: reduce)
     const { container } = render(<KPICardsGrid />);
 
     const animatedWrappers = container.querySelectorAll('.animate-fade-up');
     expect(animatedWrappers).toHaveLength(4);
 
     // The CSS will handle disabling animations when prefers-reduced-motion is set
-    // This is tested in the CSS layer, not in component logic
   });
 
   it('should compute correct sparkline data for each KPI', () => {

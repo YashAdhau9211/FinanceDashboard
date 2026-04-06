@@ -52,7 +52,9 @@ export function SlideOverPanel({ isOpen, onClose, title, children }: SlideOverPa
         aria-labelledby="slide-over-title"
         className="fixed inset-y-0 right-0 flex max-w-full"
       >
-        <div className={`w-screen md:max-w-[480px] transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${!prefersReducedMotion ? 'animate-slide-in' : ''}`}>
+        <div
+          className={`w-screen md:max-w-[480px] transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${!prefersReducedMotion ? 'animate-slide-in' : ''}`}
+        >
           <div className="flex h-full flex-col bg-white dark:bg-gray-800 shadow-xl">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-6 py-4">

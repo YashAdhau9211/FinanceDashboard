@@ -80,7 +80,6 @@ describe('Dark Mode', () => {
       });
 
       // The TopNav component has a useEffect that applies the class
-      // Wait for next tick
       await new Promise((resolve) => setTimeout(resolve, 10));
       expect(document.documentElement.classList.contains('dark')).toBe(true);
 
@@ -137,7 +136,6 @@ describe('Dark Mode', () => {
       });
 
       // Chart should re-render with new key
-      // This is verified by the component's internal logic
       expect(useUIStore.getState().darkMode).toBe(true);
     });
   });

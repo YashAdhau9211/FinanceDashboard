@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-/**
- * Custom hook that animates a number from 0 to target value with easing
- */
+
 export function useCountUp(target: number, duration: number = 800): number {
   const [current, setCurrent] = useState(0);
   const startTimeRef = useRef<number | null>(null);
@@ -14,6 +12,7 @@ export function useCountUp(target: number, duration: number = 800): number {
     if (targetRef.current !== target) {
       targetRef.current = target;
       startTimeRef.current = null;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrent(0);
     }
 

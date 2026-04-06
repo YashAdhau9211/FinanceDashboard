@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { BottomTabBar } from '../BottomTabBar';
 
 describe('BottomTabBar', () => {
-  const renderBottomTabBar = (_initialRoute = '/dashboard') => {
+  const renderBottomTabBar = () => {
     return render(
       <BrowserRouter>
         <BottomTabBar />
@@ -46,7 +46,6 @@ describe('BottomTabBar', () => {
     const { container } = renderBottomTabBar();
 
     // The BottomTabBar uses location.pathname which defaults to "/"
-    // Since we're in a test environment, check that the component renders correctly
     const links = container.querySelectorAll('a');
     expect(links.length).toBe(4); // Should have 4 tabs
   });

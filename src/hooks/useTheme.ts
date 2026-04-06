@@ -9,9 +9,6 @@ interface UseThemeReturn {
 
 /**
  * Hook for managing dark mode theme
- * - Applies/removes 'dark' class on document.documentElement
- * - Persists preference to localStorage via UIStore
- * - Handles localStorage errors gracefully
  */
 export function useTheme(): UseThemeReturn {
   const darkMode = useUIStore((state) => state.darkMode);

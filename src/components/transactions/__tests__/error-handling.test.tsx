@@ -151,7 +151,7 @@ describe('Error Handling Tests', () => {
           type: 'expense',
           category: 'groceries',
         });
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
 

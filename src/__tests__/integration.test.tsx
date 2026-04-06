@@ -138,9 +138,12 @@ describe('Integration Tests', () => {
       render(<App />);
 
       // Should redirect to /dashboard and show Dashboard page
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
     });
 
     it('should navigate between routes when sidebar links are clicked', async () => {
@@ -149,9 +152,12 @@ describe('Integration Tests', () => {
       render(<App />);
 
       // Wait for Dashboard to load first
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 5000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
 
       // Click Transactions link in sidebar
       const transactionsLink = screen.getAllByRole('link', { name: /transactions/i })[0]; // Get sidebar link
@@ -180,9 +186,12 @@ describe('Integration Tests', () => {
       render(<App />);
 
       // Wait for page to load with extended timeout for lazy loading
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 15000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 15000 }
+      );
 
       // Initially, dark class should not be present
       expect(document.documentElement.classList.contains('dark')).toBe(false);
@@ -207,9 +216,12 @@ describe('Integration Tests', () => {
       render(<App />);
 
       // Wait for page to load with extended timeout for lazy loading
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 15000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 15000 }
+      );
 
       // Dark class should be present initially
       expect(document.documentElement.classList.contains('dark')).toBe(true);
@@ -230,9 +242,12 @@ describe('Integration Tests', () => {
       const { unmount } = render(<App />);
 
       // Wait for page to load with extended timeout for lazy loading
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 15000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 15000 }
+      );
 
       // Enable dark mode
       const darkModeToggle = screen.getByLabelText(/toggle dark mode/i);
@@ -248,9 +263,12 @@ describe('Integration Tests', () => {
       render(<App />);
 
       // Wait for page to load again with extended timeout for lazy loading
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
-      }, { timeout: 15000 });
+      await waitFor(
+        () => {
+          expect(screen.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
+        },
+        { timeout: 15000 }
+      );
 
       // Dark mode should still be enabled (from UI store state)
       await waitFor(() => {

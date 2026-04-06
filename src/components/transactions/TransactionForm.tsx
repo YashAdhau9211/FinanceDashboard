@@ -60,6 +60,7 @@ export function TransactionForm({ onSubmit, onCancel, transaction }: Transaction
     if (Object.keys(touched).length > 0) {
       validateForm();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData, touched]);
 
   const validateForm = (): boolean => {
@@ -226,7 +227,9 @@ export function TransactionForm({ onSubmit, onCancel, transaction }: Transaction
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
           required
           aria-required="true"
-          aria-describedby={touched.description && errors.description ? 'description-error' : undefined}
+          aria-describedby={
+            touched.description && errors.description ? 'description-error' : undefined
+          }
         />
         {touched.description && errors.description && (
           <p id="description-error" role="alert" className="mt-1 text-sm text-red-600">

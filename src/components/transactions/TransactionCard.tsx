@@ -40,7 +40,6 @@ export function TransactionCard({ transaction, onEdit, onDelete }: TransactionCa
     return 'bg-gray-100 text-gray-700';
   };
 
-  const CategoryIcon = getCategoryIcon(transaction.category);
   const categoryColor = getCategoryColor(transaction.category);
 
   const handleEditClick = () => {
@@ -89,7 +88,10 @@ export function TransactionCard({ transaction, onEdit, onDelete }: TransactionCa
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium text-white"
           style={{ backgroundColor: categoryColor }}
         >
-          <CategoryIcon className="w-3.5 h-3.5" />
+          {(() => {
+            const Icon = getCategoryIcon(transaction.category);
+            return <Icon className="w-3.5 h-3.5" />;
+          })()}
           {transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}
         </span>
         <span

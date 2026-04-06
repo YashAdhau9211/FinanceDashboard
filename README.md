@@ -3,7 +3,10 @@
 A modern, responsive financial intelligence dashboard built with React and TypeScript, featuring real-time KPI tracking, interactive visualizations, and role-based access control.
 
 ## Live Demo
-**[View Live Demo](#)** _(Deployment URL will be added after deployment)_
+
+**[View Live Demo →](https://finance-dashboard-snowy-xi.vercel.app)**
+
+Experience the full application with all features enabled. The demo includes sample financial data for exploration.
 
 ## Features
 

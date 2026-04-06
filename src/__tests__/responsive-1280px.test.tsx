@@ -5,18 +5,6 @@ import { Dashboard } from '../pages/Dashboard';
 import { Insights } from '../pages/Insights';
 import { Transactions } from '../pages/Transactions';
 
-/**
- * Responsive QA Tests at 1280px (Desktop viewport)
- * 
- * **Validates: Requirements 40.1, 40.2, 40.3, 40.4**
- * 
- * This test suite verifies the responsive design requirements at 1280px viewport:
- * - Requirement 40.1: Zero horizontal overflow
- * - Requirement 40.2: 4-column KPI card layout
- * - Requirement 40.3: Sidebar full width (240px)
- * - Requirement 40.4: Content centered with max-width
- */
-
 // Mock window.matchMedia for responsive testing
 function mockMatchMedia(width: number) {
   Object.defineProperty(window, 'innerWidth', {
@@ -102,7 +90,7 @@ describe('Responsive QA at 1280px (Desktop)', () => {
       allElements.forEach((element) => {
         const computedStyle = window.getComputedStyle(element);
         const width = parseInt(computedStyle.width);
-        
+
         // Allow for some margin, but width should not exceed viewport
         if (!isNaN(width)) {
           expect(width).toBeLessThanOrEqual(1280);
@@ -120,9 +108,11 @@ describe('Responsive QA at 1280px (Desktop)', () => {
       );
 
       // Find the KPI cards grid container
-      const kpiGrid = container.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4');
+      const kpiGrid = container.querySelector(
+        '.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4'
+      );
       expect(kpiGrid).toBeInTheDocument();
-      
+
       // Verify it has the lg:grid-cols-4 class (applies at 1024px+, includes 1280px)
       expect(kpiGrid).toHaveClass('lg:grid-cols-4');
     });
@@ -162,7 +152,7 @@ describe('Responsive QA at 1280px (Desktop)', () => {
       // At 1280px with 4-column grid, all 4 cards should fit in one row
       const kpiGrid = container.querySelector('.grid.lg\\:grid-cols-4');
       expect(kpiGrid).toBeInTheDocument();
-      
+
       // Verify grid has 4 columns at lg breakpoint
       expect(kpiGrid).toHaveClass('lg:grid-cols-4');
     });
@@ -178,7 +168,7 @@ describe('Responsive QA at 1280px (Desktop)', () => {
 
       // Sidebar should be visible at lg breakpoint (1024px+)
       const sidebar = container.querySelector('aside');
-      
+
       expect(sidebar).toHaveClass('lg:block');
     });
 
@@ -190,9 +180,8 @@ describe('Responsive QA at 1280px (Desktop)', () => {
       );
 
       const sidebar = container.querySelector('aside');
-      
+
       // Sidebar has w-64 for lg (desktop) which is 256px (16rem)
-      // Note: w-64 is 256px, not 240px, but this is the Tailwind equivalent
       expect(sidebar).toHaveClass('lg:w-64');
     });
 
@@ -232,8 +221,6 @@ describe('Responsive QA at 1280px (Desktop)', () => {
       );
 
       // Verify sidebar navigation items are present
-      // Note: In test environment, sidebar may not render all text
-      // but we can verify the structure is correct
       const sidebar = document.querySelector('aside');
       expect(sidebar).toBeInTheDocument();
     });
@@ -350,10 +337,10 @@ describe('Responsive QA at 1280px (Desktop)', () => {
 
       // Find chart grid containers
       const chartGrids = container.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2');
-      
+
       // Should have chart grids with 2-column layout
       expect(chartGrids.length).toBeGreaterThanOrEqual(2);
-      
+
       chartGrids.forEach((grid) => {
         expect(grid).toHaveClass('md:grid-cols-2');
       });
@@ -509,7 +496,7 @@ describe('Responsive QA at 1280px (Desktop)', () => {
       );
 
       const grids = container.querySelectorAll('.grid');
-      
+
       // Check that grids have gap classes
       const gridsWithGap = Array.from(grids).filter((grid) => {
         return (
@@ -537,18 +524,10 @@ describe('Responsive QA at 1280px (Desktop)', () => {
     });
 
     it('should apply consistent max-width across all pages', () => {
-      const pages = [
-        <Dashboard />,
-        <Insights />,
-        <Transactions />,
-      ];
+      const pages = [<Dashboard />, <Insights />, <Transactions />];
 
       pages.forEach((page) => {
-        const { container } = render(
-          <BrowserRouter>
-            {page}
-          </BrowserRouter>
-        );
+        const { container } = render(<BrowserRouter>{page}</BrowserRouter>);
 
         const maxWidthContainer = container.querySelector('.max-w-screen-xl');
         expect(maxWidthContainer).toBeInTheDocument();

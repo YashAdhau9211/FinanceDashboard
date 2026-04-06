@@ -6,16 +6,60 @@ import { useFiltersStore } from '../../../stores/filtersStore';
 
 vi.mock('../../../stores/filtersStore');
 
+type TransactionType = 'income' | 'expense' | 'transfer';
+type Category =
+  | 'salary'
+  | 'freelance'
+  | 'investment'
+  | 'rent'
+  | 'utilities'
+  | 'groceries'
+  | 'dining'
+  | 'transportation'
+  | 'entertainment'
+  | 'healthcare'
+  | 'shopping'
+  | 'transfer'
+  | 'other';
+type FiltersState = {
+  searchQuery: string;
+  type: TransactionType | 'all';
+  category: Category | 'all';
+  dateRange: { start: string | null; end: string | null };
+  sortField: 'date' | 'amount' | 'description';
+  sortDir: 'asc' | 'desc';
+  resetFilters: () => void;
+  setSearchQuery: (query: string) => void;
+  setType: (type: TransactionType | 'all') => void;
+  setCategory: (category: Category | 'all') => void;
+  setDateRange: (start: string | null, end: string | null) => void;
+  setSortField: (field: 'date' | 'amount' | 'description') => void;
+  setSortDir: (dir: 'asc' | 'desc') => void;
+};
+type FiltersSelector<T> = (state: FiltersState) => T;
+
 describe('FilteredEmptyState', () => {
   const mockResetFilters = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useFiltersStore).mockImplementation((selector: any) => {
-      const state = {
+    vi.mocked(useFiltersStore).mockImplementation(<T,>(selector: FiltersSelector<T>) => {
+      const state: FiltersState = {
+        searchQuery: '',
+        type: 'all',
+        category: 'all',
+        dateRange: { start: null, end: null },
+        sortField: 'date',
+        sortDir: 'desc',
         resetFilters: mockResetFilters,
+        setSearchQuery: vi.fn(),
+        setType: vi.fn(),
+        setCategory: vi.fn(),
+        setDateRange: vi.fn(),
+        setSortField: vi.fn(),
+        setSortDir: vi.fn(),
       };
-      return selector ? selector(state) : state;
+      return selector ? selector(state) : (state as T);
     });
   });
 

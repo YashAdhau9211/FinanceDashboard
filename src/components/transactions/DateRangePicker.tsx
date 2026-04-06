@@ -17,11 +17,14 @@ export function DateRangePicker() {
       const endDate = new Date(dateRange.end);
 
       if (endDate < startDate) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setError('End date cannot be before start date');
       } else {
+         
         setError(null);
       }
     } else {
+       
       setError(null);
     }
   }, [dateRange.start, dateRange.end]);

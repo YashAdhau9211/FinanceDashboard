@@ -27,6 +27,7 @@ export function TopNav({ pageTitle }: TopNavProps) {
   // Trigger animation when role changes
   useEffect(() => {
     if (!prefersReducedMotion) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRoleAnimating(true);
       const timer = setTimeout(() => setRoleAnimating(false), 200);
       return () => clearTimeout(timer);
@@ -38,7 +39,11 @@ export function TopNav({ pageTitle }: TopNavProps) {
       <div className="flex items-center justify-between px-6 h-full">
         {/* Left: Logo + Page Title */}
         <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center hover:opacity-80 transition-opacity" aria-label="Go to Dashboard">
+          <Link
+            to="/dashboard"
+            className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center hover:opacity-80 transition-opacity"
+            aria-label="Go to Dashboard"
+          >
             <span className="text-white font-bold text-lg">Z</span>
           </Link>
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{pageTitle}</h1>
@@ -54,11 +59,17 @@ export function TopNav({ pageTitle }: TopNavProps) {
             aria-label={`Current role: ${role}. Click to switch role`}
           >
             {role === 'ADMIN' ? (
-              <span className={`px-2 py-1 text-xs font-semibold bg-teal-500 text-white rounded ${roleAnimating ? 'animate-pulse-scale' : ''}`}>
+              <span
+                className={`px-2 py-1 text-xs font-semibold bg-teal-500 text-white rounded ${roleAnimating ? 'animate-pulse-scale' : ''}`}
+              >
                 ADMIN
               </span>
             ) : (
-              <span className={`text-sm font-medium text-gray-700 dark:text-gray-300 ${roleAnimating ? 'animate-pulse-scale' : ''}`}>{role}</span>
+              <span
+                className={`text-sm font-medium text-gray-700 dark:text-gray-300 ${roleAnimating ? 'animate-pulse-scale' : ''}`}
+              >
+                {role}
+              </span>
             )}
           </button>
 

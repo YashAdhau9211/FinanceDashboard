@@ -9,7 +9,7 @@ describe('Accessibility Fixes - Task 11.3', () => {
     it('should use text-teal-800 for active tabs (7.58:1 contrast ratio)', () => {
       // Mock the location to be on dashboard
       window.history.pushState({}, 'Dashboard', '/dashboard');
-      
+
       render(
         <BrowserRouter>
           <BottomTabBar />
@@ -18,7 +18,7 @@ describe('Accessibility Fixes - Task 11.3', () => {
 
       // Find the active tab (Dashboard)
       const dashboardLink = screen.getByLabelText('Dashboard');
-      
+
       // Check that it has the correct color class
       expect(dashboardLink.className).toContain('text-teal-800');
       expect(dashboardLink.className).not.toContain('text-teal-700');

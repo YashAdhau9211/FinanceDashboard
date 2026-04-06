@@ -8,15 +8,6 @@ import { useFiltersStore } from '../../../stores/filtersStore';
 import { useRoleStore } from '../../../stores/roleStore';
 import type { Transaction } from '../../../types';
 
-/**
- * Integration tests for CSV export with filtering
- * **Validates: Requirements 17.3**
- * 
- * These tests verify that:
- * - CSV export includes only filtered transactions
- * - CSV export works with different filter combinations
- * - CSV export handles empty filtered results
- */
 describe('CSV Export Integration Tests', () => {
   const mockTransactions: Transaction[] = [
     {
@@ -97,7 +88,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export includes only filtered transactions (search filter)
-   * **Validates: Requirement 17.3**
    */
   it('should export only transactions matching search query', async () => {
     const user = userEvent.setup();
@@ -155,7 +145,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export includes only filtered transactions (type filter)
-   * **Validates: Requirement 17.3**
    */
   it('should export only transactions matching type filter', async () => {
     const user = userEvent.setup();
@@ -213,7 +202,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export includes only filtered transactions (category filter)
-   * **Validates: Requirement 17.3**
    */
   it('should export only transactions matching category filter', async () => {
     const user = userEvent.setup();
@@ -271,7 +259,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export works with multiple filters combined
-   * **Validates: Requirement 17.3**
    */
   it('should export only transactions matching multiple combined filters', async () => {
     const user = userEvent.setup();
@@ -334,7 +321,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export works with date range filter
-   * **Validates: Requirement 17.3**
    */
   it('should export only transactions within date range filter', async () => {
     const user = userEvent.setup();
@@ -393,7 +379,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export handles empty filtered results
-   * **Validates: Requirement 17.3**
    */
   it('should handle export when no transactions match filters', async () => {
     const user = userEvent.setup();
@@ -447,15 +432,11 @@ describe('CSV Export Integration Tests', () => {
     expect(text).not.toContain('Restaurant Dinner');
     expect(text).not.toContain('Freelance Income');
     expect(text).not.toContain('Coffee Shop');
-    
-    // The CSV should either be empty or contain only headers
-    // This verifies the export handles empty results gracefully
     expect(text.length).toBeLessThan(100); // Should be minimal content
   });
 
   /**
    * Test: Export respects all transactions when no filters applied
-   * **Validates: Requirement 17.3**
    */
   it('should export all transactions when no filters are applied', async () => {
     const user = userEvent.setup();
@@ -509,7 +490,6 @@ describe('CSV Export Integration Tests', () => {
 
   /**
    * Test: Export works after resetting filters
-   * **Validates: Requirement 17.3**
    */
   it('should export all transactions after filters are reset', async () => {
     const user = userEvent.setup();

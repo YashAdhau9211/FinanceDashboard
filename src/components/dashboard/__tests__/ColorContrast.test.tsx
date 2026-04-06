@@ -99,7 +99,7 @@ describe('Color Contrast Tests', () => {
     it('should maintain 13.9:1 contrast for navy background with white text', () => {
       // Navy background: #0F2744
       // White text: #FFFFFF
-      // Expected contrast ratio: 13.9:1 (exceeds WCAG AAA requirement of 7:1)
+      // Expected contrast ratio: 13.9:1 
 
       const { container } = render(
         <div className="bg-navy-800 text-white p-4">
@@ -115,7 +115,7 @@ describe('Color Contrast Tests', () => {
     it('should maintain 4.7:1 contrast for teal on navy background', () => {
       // Navy background: #0F2744
       // Teal color: #00C896
-      // Expected contrast ratio: 4.7:1 (exceeds WCAG AA requirement of 4.5:1 for normal text)
+      // Expected contrast ratio: 4.7:1 
 
       const { container } = render(
         <div className="bg-navy-800 p-4">
@@ -129,9 +129,7 @@ describe('Color Contrast Tests', () => {
 
     it('should have accessible button colors in light mode', async () => {
       const { container } = render(
-        <button className="bg-teal-500 text-white px-4 py-2 rounded">
-          Click me
-        </button>
+        <button className="bg-teal-500 text-white px-4 py-2 rounded">Click me</button>
       );
 
       const results = await axe(container);
@@ -201,9 +199,7 @@ describe('Color Contrast Tests', () => {
             className="border border-gray-300 rounded px-3 py-2"
             placeholder="Enter text"
           />
-          <button className="border border-gray-300 rounded px-3 py-2 mt-2">
-            Button
-          </button>
+          <button className="border border-gray-300 rounded px-3 py-2 mt-2">Button</button>
         </div>
       );
 

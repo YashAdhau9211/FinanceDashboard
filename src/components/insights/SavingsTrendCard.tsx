@@ -103,17 +103,17 @@ export const SavingsTrendCard: React.FC<SavingsTrendCardProps> = React.memo(({ i
                 domain={['dataMin - 10', 'dataMax + 10']}
               />
               <Tooltip content={<CustomTooltip />} />
-              <ReferenceArea 
-                y1={0} 
-                y2={"dataMax" as DynamicDomainValue} 
-                fill="url(#positiveZone)" 
-                ifOverflow="extendDomain" 
+              <ReferenceArea
+                y1={0}
+                y2={'dataMax' as DynamicDomainValue}
+                fill="url(#positiveZone)"
+                ifOverflow="extendDomain"
               />
-              <ReferenceArea 
-                y1={"dataMin" as DynamicDomainValue} 
-                y2={0} 
-                fill="url(#negativeZone)" 
-                ifOverflow="extendDomain" 
+              <ReferenceArea
+                y1={'dataMin' as DynamicDomainValue}
+                y2={0}
+                fill="url(#negativeZone)"
+                ifOverflow="extendDomain"
               />
               <Line
                 type="monotone"

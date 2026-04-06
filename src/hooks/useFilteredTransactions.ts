@@ -6,9 +6,6 @@ import type { Transaction } from '../types';
 
 /**
  * React hook that provides filtered transactions with automatic reactivity
- * Subscribes to both TransactionsStore and FiltersStore
- * Recomputes when transactions or filters change
- * @returns Filtered and sorted array of transactions
  */
 export function useFilteredTransactions(): Transaction[] {
   // Subscribe to transactions array from TransactionsStore

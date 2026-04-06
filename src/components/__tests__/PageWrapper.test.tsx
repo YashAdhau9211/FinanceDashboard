@@ -89,7 +89,7 @@ describe('PageWrapper', () => {
     const content = screen.getByTestId('content');
     const mainContentDiv = content.parentElement?.parentElement; // Navigate up to #main-content div
     expect(mainContentDiv).toHaveClass('p-6');
-    
+
     // Check for max-width container
     const maxWidthContainer = content.parentElement;
     expect(maxWidthContainer).toHaveClass('max-w-screen-xl', 'mx-auto');

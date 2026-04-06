@@ -9,6 +9,17 @@ import { BrowserRouter } from 'react-router-dom';
 vi.mock('../stores/transactionsStore');
 vi.mock('../stores/roleStore');
 
+type TransactionsState = {
+  transactions: typeof mockTransactions;
+  addTransaction: () => void;
+  updateTransaction: () => void;
+  deleteTransaction: () => void;
+};
+type TransactionsSelector<T> = (state: TransactionsState) => T;
+
+type RoleState = { role: 'ADMIN' | 'ANALYST' };
+type RoleSelector<T> = (state: RoleState) => T;
+
 const mockTransactions = [
   {
     id: '1',
@@ -41,21 +52,25 @@ describe('Transactions Page - CRUD Integration', () => {
     vi.clearAllMocks();
 
     // Mock transactions store
-    (useTransactionsStore as any).mockImplementation((selector: any) => {
-      const state = {
-        transactions: mockTransactions,
-        addTransaction: mockAddTransaction,
-        updateTransaction: mockUpdateTransaction,
-        deleteTransaction: mockDeleteTransaction,
-      };
-      return selector(state);
-    });
+    (useTransactionsStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      <T,>(selector: TransactionsSelector<T>) => {
+        const state = {
+          transactions: mockTransactions,
+          addTransaction: mockAddTransaction,
+          updateTransaction: mockUpdateTransaction,
+          deleteTransaction: mockDeleteTransaction,
+        };
+        return selector(state);
+      }
+    );
 
     // Mock role store - default to ADMIN
-    (useRoleStore as any).mockImplementation((selector: any) => {
-      const state = { role: 'ADMIN' };
-      return selector(state);
-    });
+    (useRoleStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      <T,>(selector: RoleSelector<T>) => {
+        const state = { role: 'ADMIN' as const };
+        return selector(state);
+      }
+    );
   });
 
   const renderWithRouter = (component: React.ReactElement) => {
@@ -130,15 +145,17 @@ describe('Transactions Page - CRUD Integration', () => {
     it('should show empty state when no transactions and no filters', async () => {
       vi.useRealTimers(); // Use real timers for this test
 
-      (useTransactionsStore as any).mockImplementation((selector: any) => {
-        const state = {
-          transactions: [],
-          addTransaction: mockAddTransaction,
-          updateTransaction: mockUpdateTransaction,
-          deleteTransaction: mockDeleteTransaction,
-        };
-        return selector(state);
-      });
+      (useTransactionsStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: TransactionsSelector<T>) => {
+          const state = {
+            transactions: [],
+            addTransaction: mockAddTransaction,
+            updateTransaction: mockUpdateTransaction,
+            deleteTransaction: mockDeleteTransaction,
+          };
+          return selector(state);
+        }
+      );
 
       renderWithRouter(<Transactions />);
 
@@ -156,15 +173,17 @@ describe('Transactions Page - CRUD Integration', () => {
     it('should show Add Transaction button in empty state for ADMIN', async () => {
       vi.useRealTimers(); // Use real timers for this test
 
-      (useTransactionsStore as any).mockImplementation((selector: any) => {
-        const state = {
-          transactions: [],
-          addTransaction: mockAddTransaction,
-          updateTransaction: mockUpdateTransaction,
-          deleteTransaction: mockDeleteTransaction,
-        };
-        return selector(state);
-      });
+      (useTransactionsStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: TransactionsSelector<T>) => {
+          const state = {
+            transactions: [],
+            addTransaction: mockAddTransaction,
+            updateTransaction: mockUpdateTransaction,
+            deleteTransaction: mockDeleteTransaction,
+          };
+          return selector(state);
+        }
+      );
 
       renderWithRouter(<Transactions />);
 
@@ -183,20 +202,24 @@ describe('Transactions Page - CRUD Integration', () => {
     it('should not show Add Transaction button in empty state for ANALYST', async () => {
       vi.useRealTimers(); // Use real timers for this test
 
-      (useTransactionsStore as any).mockImplementation((selector: any) => {
-        const state = {
-          transactions: [],
-          addTransaction: mockAddTransaction,
-          updateTransaction: mockUpdateTransaction,
-          deleteTransaction: mockDeleteTransaction,
-        };
-        return selector(state);
-      });
+      (useTransactionsStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: TransactionsSelector<T>) => {
+          const state = {
+            transactions: [],
+            addTransaction: mockAddTransaction,
+            updateTransaction: mockUpdateTransaction,
+            deleteTransaction: mockDeleteTransaction,
+          };
+          return selector(state);
+        }
+      );
 
-      (useRoleStore as any).mockImplementation((selector: any) => {
-        const state = { role: 'ANALYST' };
-        return selector(state);
-      });
+      (useRoleStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: RoleSelector<T>) => {
+          const state = { role: 'ANALYST' as const };
+          return selector(state);
+        }
+      );
 
       renderWithRouter(<Transactions />);
 
@@ -222,10 +245,12 @@ describe('Transactions Page - CRUD Integration', () => {
     });
 
     it('should not show Add Transaction button for ANALYST role', () => {
-      (useRoleStore as any).mockImplementation((selector: any) => {
-        const state = { role: 'ANALYST' };
-        return selector(state);
-      });
+      (useRoleStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: RoleSelector<T>) => {
+          const state = { role: 'ANALYST' as const };
+          return selector(state);
+        }
+      );
 
       renderWithRouter(<Transactions />);
       expect(screen.queryByRole('button', { name: /add transaction/i })).not.toBeInTheDocument();
@@ -319,10 +344,12 @@ describe('Transactions Page - CRUD Integration', () => {
     });
 
     it('should not show Edit buttons for ANALYST role', async () => {
-      (useRoleStore as any).mockImplementation((selector: any) => {
-        const state = { role: 'ANALYST' };
-        return selector(state);
-      });
+      (useRoleStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: RoleSelector<T>) => {
+          const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+          return selector(state);
+        }
+      );
 
       renderWithRouter(<Transactions />);
 
@@ -391,10 +418,12 @@ describe('Transactions Page - CRUD Integration', () => {
     });
 
     it('should not show Delete buttons for ANALYST role', async () => {
-      (useRoleStore as any).mockImplementation((selector: any) => {
-        const state = { role: 'ANALYST' };
-        return selector(state);
-      });
+      (useRoleStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        <T,>(selector: RoleSelector<T>) => {
+          const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+          return selector(state);
+        }
+      );
 
       renderWithRouter(<Transactions />);
 

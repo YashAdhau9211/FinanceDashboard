@@ -10,12 +10,6 @@ interface ExportButtonProps {
   filename?: string;
 }
 
-/**
- * ExportButton component for CSV export functionality
- * Only visible to ADMIN role users
- * 
- * Validates Requirements: 16.1, 16.2, 16.3, 16.4, 16.5, 17.1, 17.2, 17.3, 17.4, 17.5, 17.6, 18.1, 18.2, 18.3
- */
 export function ExportButton({
   transactions,
   filename = 'zorvyn-transactions.csv',
@@ -64,10 +58,10 @@ export function ExportButton({
   return (
     <button
       onClick={handleExport}
-      className="flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
+      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
       aria-label="Export transactions to CSV"
     >
-      <Download size={20} />
+      <Download className="w-4 h-4" />
       <span>Export CSV</span>
     </button>
   );

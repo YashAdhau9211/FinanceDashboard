@@ -67,7 +67,6 @@ describe('Sidebar', () => {
     );
 
     // With responsive design, labels are hidden with lg:block class
-    // Check that labels exist but are hidden on smaller screens
     const labels = container.querySelectorAll('.hidden.lg\\:block');
     expect(labels.length).toBeGreaterThan(0);
   });

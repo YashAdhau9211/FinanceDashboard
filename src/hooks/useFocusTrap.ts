@@ -3,11 +3,8 @@ import type { RefObject } from 'react';
 
 /**
  * useFocusTrap Hook
- * 
+ *
  * Traps focus within a container element (e.g., modal, slide-over panel).
- * Handles Tab/Shift+Tab cycling and Escape key to close.
- * 
- * Validates: Requirements 26.4, 26.7
  */
 
 interface UseFocusTrapOptions {
@@ -25,9 +22,8 @@ export function useFocusTrap(
     if (!isActive || !ref.current) return;
 
     const container = ref.current;
-    const previousFocus = document.activeElement instanceof HTMLElement 
-      ? document.activeElement 
-      : null;
+    const previousFocus =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     // Get all focusable elements within the container
     const getFocusableElements = () => {

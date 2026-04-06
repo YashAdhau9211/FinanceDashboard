@@ -42,10 +42,10 @@ export const InsightCard: React.FC<InsightCardProps> = React.memo(
           <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
             {title}
           </h3>
-          <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 font-mono">
+          <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 font-mono break-words overflow-wrap-anywhere">
             {value}
           </div>
-          {description && <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>}
+          {description && <p className="text-sm text-gray-600 dark:text-gray-400 break-words">{description}</p>}
         </div>
         {children && (
           <div className="mt-4 flex-grow flex flex-col justify-center overflow-hidden">

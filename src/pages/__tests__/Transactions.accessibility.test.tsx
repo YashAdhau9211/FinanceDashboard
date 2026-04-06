@@ -31,9 +31,7 @@ describe('Transactions Page Accessibility', () => {
       },
     });
 
-    const colorContrastViolations = results.violations.filter(
-      (v) => v.id === 'color-contrast'
-    );
+    const colorContrastViolations = results.violations.filter((v) => v.id === 'color-contrast');
     expect(colorContrastViolations).toHaveLength(0);
   });
 

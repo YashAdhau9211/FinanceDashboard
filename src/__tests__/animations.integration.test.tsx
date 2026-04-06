@@ -120,10 +120,10 @@ describe('Animation System Integration Tests', () => {
       );
 
       const insightCards = container.querySelectorAll('.insight-card');
-      
+
       // Just verify insight cards exist and have transition classes
       expect(insightCards.length).toBeGreaterThan(0);
-      
+
       insightCards.forEach((card) => {
         // Check for transition classes (hover classes are in className string)
         expect(card.className).toContain('transition-all');
@@ -216,7 +216,7 @@ describe('Animation System Integration Tests', () => {
   describe('Animation Performance', () => {
     it('should render Dashboard without animation jank', () => {
       const startTime = performance.now();
-      
+
       render(
         <BrowserRouter>
           <Dashboard />
@@ -232,7 +232,7 @@ describe('Animation System Integration Tests', () => {
 
     it('should render Insights page without animation jank', () => {
       const startTime = performance.now();
-      
+
       render(
         <BrowserRouter>
           <Insights />

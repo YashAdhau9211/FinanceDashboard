@@ -27,7 +27,6 @@ describe('TransactionRow Performance', () => {
 
   it('should use React.memo to prevent unnecessary re-renders', () => {
     // Verify that TransactionRow is wrapped with memo
-    // React.memo components have a $$typeof property
     expect(TransactionRow).toBeDefined();
 
     // Test that the component doesn't re-render when props don't change
@@ -59,7 +58,6 @@ describe('TransactionRow Performance', () => {
     );
 
     // Component should not trigger unnecessary renders
-    // This is a basic check - React.memo will handle the optimization
     expect(mockOnEdit).not.toHaveBeenCalled();
     expect(mockOnDelete).not.toHaveBeenCalled();
   });

@@ -142,7 +142,6 @@ describe('Accessibility Tests - Transactions Feature', () => {
       // Check for alert roles (errors appear after blur)
       const alerts = screen.queryAllByRole('alert');
       // Errors may or may not appear depending on validation logic
-      // Just verify that if they appear, they have role="alert"
       if (alerts.length > 0) {
         expect(alerts.length).toBeGreaterThan(0);
       }

@@ -6,6 +6,10 @@ import { useRoleStore } from '../../../stores/roleStore';
 
 vi.mock('../../../stores/roleStore');
 
+type RoleState = { role: 'ADMIN' | 'ANALYST' };
+type RoleActions = { setRole: (role: 'ADMIN' | 'ANALYST') => void; toggleRole: () => void };
+type RoleSelector<T> = (state: RoleState & RoleActions) => T;
+
 describe('EmptyState', () => {
   const mockOnAddTransaction = vi.fn();
 
@@ -14,9 +18,9 @@ describe('EmptyState', () => {
   });
 
   it('displays empty state message', () => {
-    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
-      const state = { role: 'ANALYST' as const };
-      return selector ? selector(state) : state;
+    vi.mocked(useRoleStore).mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return selector ? selector(state) : (state as T);
     });
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
@@ -26,9 +30,9 @@ describe('EmptyState', () => {
   });
 
   it('displays folder icon', () => {
-    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
-      const state = { role: 'ANALYST' as const };
-      return selector ? selector(state) : state;
+    vi.mocked(useRoleStore).mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return selector ? selector(state) : (state as T);
     });
 
     const { container } = render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
@@ -39,9 +43,9 @@ describe('EmptyState', () => {
   });
 
   it('displays Add Transaction button for ADMIN role', () => {
-    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
-      const state = { role: 'ADMIN' as const };
-      return selector ? selector(state) : state;
+    vi.mocked(useRoleStore).mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ADMIN' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return selector ? selector(state) : (state as T);
     });
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
@@ -51,9 +55,9 @@ describe('EmptyState', () => {
   });
 
   it('does not display Add Transaction button for ANALYST role', () => {
-    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
-      const state = { role: 'ANALYST' as const };
-      return selector ? selector(state) : state;
+    vi.mocked(useRoleStore).mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return selector ? selector(state) : (state as T);
     });
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
@@ -63,9 +67,9 @@ describe('EmptyState', () => {
   });
 
   it('calls onAddTransaction when button is clicked', async () => {
-    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
-      const state = { role: 'ADMIN' as const };
-      return selector ? selector(state) : state;
+    vi.mocked(useRoleStore).mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ADMIN' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return selector ? selector(state) : (state as T);
     });
     const user = userEvent.setup();
 
@@ -78,9 +82,9 @@ describe('EmptyState', () => {
   });
 
   it('centers content vertically and horizontally', () => {
-    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
-      const state = { role: 'ANALYST' as const };
-      return selector ? selector(state) : state;
+    vi.mocked(useRoleStore).mockImplementation(<T,>(selector: RoleSelector<T>) => {
+      const state = { role: 'ANALYST' as const, setRole: vi.fn(), toggleRole: vi.fn() };
+      return selector ? selector(state) : (state as T);
     });
 
     const { container } = render(<EmptyState onAddTransaction={mockOnAddTransaction} />);

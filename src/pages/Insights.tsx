@@ -69,7 +69,6 @@ export function Insights() {
 
     // Check if transactions actually changed
     if (prevTransactionsRef.current !== transactions) {
-      // Apply fade out immediately
       setIsUpdating(true);
 
       // Apply fade in after 150ms
