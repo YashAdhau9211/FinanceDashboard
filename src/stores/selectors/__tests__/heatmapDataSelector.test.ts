@@ -202,8 +202,8 @@ describe('Heatmap Data Selector - Property Tests', () => {
 
       const timeSlots = ['12am-4am', '4am-8am', '8am-12pm', '12pm-4pm', '4pm-8pm', '8pm-12am'];
       timeSlots.forEach((timeSlot) => {
-        const cells = heatmapData.filter((c) => c.day === 'Monday' && c.timeSlot === timeSlot);
-        const totalCount = cells.reduce((sum, c) => sum + c.count, 0);
+        const cells = heatmapData.filter((c: { day: string; timeSlot: string }) => c.day === 'Monday' && c.timeSlot === timeSlot);
+        const totalCount = cells.reduce((sum: number, c: { count: number }) => sum + c.count, 0);
         expect(totalCount).toBeGreaterThan(0);
       });
     });
