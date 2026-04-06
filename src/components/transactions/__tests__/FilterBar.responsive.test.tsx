@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { FilterBar } from './FilterBar';
+import { FilterBar } from '../FilterBar';
 
 // Mock the filter components
 vi.mock('./SearchBar', () => ({
@@ -35,17 +35,17 @@ describe('FilterBar - Responsive Design', () => {
   });
 
   it('should have responsive grid layout classes', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Check for responsive grid classes
-    const gridContainer = container.querySelector('.grid');
+    const gridContainer = document.querySelector('.grid');
     expect(gridContainer?.className).toContain('grid-cols-1');
     expect(gridContainer?.className).toContain('sm:grid-cols-2');
     expect(gridContainer?.className).toContain('lg:grid-cols-4');
   });
 
   it('should have full-width search bar container', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Search bar should be in a full-width container
     const searchContainer = screen.getByTestId('search-bar').parentElement;
@@ -53,39 +53,39 @@ describe('FilterBar - Responsive Design', () => {
   });
 
   it('should stack filter controls vertically on mobile', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Grid should start with single column (mobile)
-    const gridContainer = container.querySelector('.grid');
+    const gridContainer = document.querySelector('.grid');
     expect(gridContainer?.className).toContain('grid-cols-1');
   });
 
   it('should use 2 columns on tablet screens', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Grid should have 2 columns on small screens
-    const gridContainer = container.querySelector('.grid');
+    const gridContainer = document.querySelector('.grid');
     expect(gridContainer?.className).toContain('sm:grid-cols-2');
   });
 
   it('should use 4 columns on desktop screens', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Grid should have 4 columns on large screens
-    const gridContainer = container.querySelector('.grid');
+    const gridContainer = document.querySelector('.grid');
     expect(gridContainer?.className).toContain('lg:grid-cols-4');
   });
 
   it('should have proper spacing between filter controls', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Check for gap classes
-    const gridContainer = container.querySelector('.grid');
+    const gridContainer = document.querySelector('.grid');
     expect(gridContainer?.className).toContain('gap-4');
   });
 
   it('should span date range picker across 2 columns on tablet', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Date range picker container should span 2 columns on tablet
     const dateRangeContainer = screen.getByTestId('date-range-picker').parentElement;
@@ -93,7 +93,7 @@ describe('FilterBar - Responsive Design', () => {
   });
 
   it('should span filter reset button across 2 columns on tablet', () => {
-    const { container } = render(<FilterBar />);
+    render(<FilterBar />);
 
     // Filter reset button container should span 2 columns on tablet
     const resetButtonContainer = screen.getByTestId('filter-reset-button').parentElement;

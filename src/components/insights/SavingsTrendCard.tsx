@@ -13,6 +13,9 @@ import { InsightCard } from './InsightCard';
 import ChartErrorBoundary from './ChartErrorBoundary';
 import type { SavingsTrendInsight } from '../../types';
 
+// Type for Recharts dynamic domain values
+type DynamicDomainValue = number | 'dataMin' | 'dataMax' | 'auto';
+
 interface SavingsTrendCardProps {
   insight: SavingsTrendInsight;
 }
@@ -100,8 +103,18 @@ export const SavingsTrendCard: React.FC<SavingsTrendCardProps> = React.memo(({ i
                 domain={['dataMin - 10', 'dataMax + 10']}
               />
               <Tooltip content={<CustomTooltip />} />
-              <ReferenceArea y1={0} y2={"dataMax" as any} fill="url(#positiveZone)" ifOverflow="extendDomain" />
-              <ReferenceArea y1={"dataMin" as any} y2={0} fill="url(#negativeZone)" ifOverflow="extendDomain" />
+              <ReferenceArea 
+                y1={0} 
+                y2={"dataMax" as DynamicDomainValue} 
+                fill="url(#positiveZone)" 
+                ifOverflow="extendDomain" 
+              />
+              <ReferenceArea 
+                y1={"dataMin" as DynamicDomainValue} 
+                y2={0} 
+                fill="url(#negativeZone)" 
+                ifOverflow="extendDomain" 
+              />
               <Line
                 type="monotone"
                 dataKey="savingsRate"

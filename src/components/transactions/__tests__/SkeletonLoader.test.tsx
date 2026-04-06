@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { SkeletonLoader } from './SkeletonLoader';
+import { SkeletonLoader } from '../SkeletonLoader';
 
 describe('SkeletonLoader', () => {
   it('renders 5 skeleton rows', () => {

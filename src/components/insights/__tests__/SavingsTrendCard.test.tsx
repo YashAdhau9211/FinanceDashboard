@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { SavingsTrendCard } from './SavingsTrendCard';
-import type { SavingsTrendInsight } from '../../types';
+import { SavingsTrendCard } from '../SavingsTrendCard';
+import type { SavingsTrendInsight } from '../../../types';
 
 describe('SavingsTrendCard', () => {
   it('renders card with insight data', () => {

@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { DollarSign, TrendingUp } from 'lucide-react';
-import { KPICard } from './KPICard';
+import { KPICard } from '../KPICard';
 
 // Mock the useCountUp hook to return the target value immediately
-vi.mock('../../hooks/useCountUp', () => ({
+vi.mock('../../../hooks/useCountUp', () => ({
   useCountUp: (target: number) => target,
 }));
 
@@ -100,12 +100,12 @@ describe('KPICard', () => {
         icon={DollarSign}
         sparklineData={mockSparklineData}
         format="currency"
-        showEditButton={true}
       />
     );
 
-    const editButton = screen.getByLabelText('Edit Total Balance');
-    expect(editButton).toBeInTheDocument();
+    // KPICard does not have an edit button feature
+    const editButton = screen.queryByLabelText('Edit Total Balance');
+    expect(editButton).not.toBeInTheDocument();
   });
 
   it('should not show edit button when showEditButton is false', () => {
@@ -117,10 +117,10 @@ describe('KPICard', () => {
         icon={DollarSign}
         sparklineData={mockSparklineData}
         format="currency"
-        showEditButton={false}
       />
     );
 
+    // KPICard does not have an edit button feature
     const editButton = screen.queryByLabelText('Edit Total Balance');
     expect(editButton).not.toBeInTheDocument();
   });

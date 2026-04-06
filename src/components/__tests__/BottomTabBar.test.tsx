@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { BottomTabBar } from './BottomTabBar';
+import { BottomTabBar } from '../BottomTabBar';
 
 describe('BottomTabBar', () => {
-  const renderBottomTabBar = (initialRoute = '/dashboard') => {
+  const renderBottomTabBar = (_initialRoute = '/dashboard') => {
     return render(
       <BrowserRouter>
         <BottomTabBar />

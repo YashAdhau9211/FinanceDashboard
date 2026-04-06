@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { useTransactionsStore } from './transactionsStore';
-import { useRoleStore } from './roleStore';
+import { useTransactionsStore } from '../transactionsStore';
+import { useRoleStore } from '../roleStore';
 
 describe('Role-Based Access Control (RBAC)', () => {
   let consoleWarnSpy: ReturnType<typeof vi.spyOn>;

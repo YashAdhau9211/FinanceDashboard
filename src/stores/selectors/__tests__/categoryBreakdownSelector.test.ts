@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
-import { computeCategoryBreakdown, CATEGORY_COLORS } from './categoryBreakdownSelector';
-import type { Transaction, TransactionType, Category } from '../../types';
+import { computeCategoryBreakdown, CATEGORY_COLORS } from '../categoryBreakdownSelector';
+import type { Transaction, TransactionType, Category } from '../../../types';
 
 // Helper to create a transaction
 function createTransaction(overrides: Partial<Transaction>): Transaction {

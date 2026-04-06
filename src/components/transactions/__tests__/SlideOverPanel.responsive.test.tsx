@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { SlideOverPanel } from './SlideOverPanel';
+import { SlideOverPanel } from '../SlideOverPanel';
 
 describe('SlideOverPanel - Responsive Design', () => {
   const mockOnClose = vi.fn();
@@ -38,7 +38,7 @@ describe('SlideOverPanel - Responsive Design', () => {
     );
 
     // Panel should have w-screen class
-    const panel = container.querySelector('[role="dialog"]')?.firstChild;
+    const panel = container.querySelector('[role="dialog"]')?.firstChild as HTMLElement | null;
     expect(panel?.className).toContain('w-screen');
   });
 
@@ -50,7 +50,7 @@ describe('SlideOverPanel - Responsive Design', () => {
     );
 
     // Panel should have md:max-w-[480px] class
-    const panel = container.querySelector('[role="dialog"]')?.firstChild;
+    const panel = container.querySelector('[role="dialog"]')?.firstChild as HTMLElement | null;
     expect(panel?.className).toContain('md:max-w-[480px]');
   });
 
@@ -62,7 +62,7 @@ describe('SlideOverPanel - Responsive Design', () => {
     );
 
     // Panel should have animate-slide-in class
-    const panel = container.querySelector('[role="dialog"]')?.firstChild;
+    const panel = container.querySelector('[role="dialog"]')?.firstChild as HTMLElement | null;
     expect(panel?.className).toContain('animate-slide-in');
   });
 
@@ -74,7 +74,7 @@ describe('SlideOverPanel - Responsive Design', () => {
     );
 
     // Panel should have duration-300 class
-    const panel = container.querySelector('[role="dialog"]')?.firstChild;
+    const panel = container.querySelector('[role="dialog"]')?.firstChild as HTMLElement | null;
     expect(panel?.className).toContain('duration-300');
   });
 
@@ -86,7 +86,7 @@ describe('SlideOverPanel - Responsive Design', () => {
     );
 
     // Panel should have ease-[cubic-bezier(0.16,1,0.3,1)] class
-    const panel = container.querySelector('[role="dialog"]')?.firstChild;
+    const panel = container.querySelector('[role="dialog"]')?.firstChild as HTMLElement | null;
     expect(panel?.className).toContain('ease-[cubic-bezier(0.16,1,0.3,1)]');
   });
 
@@ -164,7 +164,7 @@ describe('SlideOverPanel - Responsive Design', () => {
   });
 
   it('should have scrollable content area', () => {
-    const { container } = render(
+    render(
       <SlideOverPanel isOpen={true} onClose={mockOnClose} title="Test Panel">
         <div>Panel Content</div>
       </SlideOverPanel>
@@ -175,14 +175,14 @@ describe('SlideOverPanel - Responsive Design', () => {
   });
 
   it('should have proper dark mode support', () => {
-    const { container } = render(
+    render(
       <SlideOverPanel isOpen={true} onClose={mockOnClose} title="Test Panel">
         <div>Panel Content</div>
       </SlideOverPanel>
     );
 
     // Check for dark mode classes
-    const panelContent = container.querySelector('.bg-white');
+    const panelContent = document.querySelector('.bg-white');
     expect(panelContent?.className).toContain('dark:bg-gray-800');
   });
 });

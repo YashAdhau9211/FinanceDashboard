@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { TopNav } from './TopNav';
-import { useRoleStore } from '../stores/roleStore';
-import { useUIStore } from '../stores/uiStore';
+import { TopNav } from '../TopNav';
+import { useRoleStore } from '../../stores/roleStore';
+import { useUIStore } from '../../stores/uiStore';
 
 describe('TopNav', () => {
   beforeEach(() => {

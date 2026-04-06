@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useFilteredTransactions } from './useFilteredTransactions';
-import { useTransactionsStore } from '../stores/transactionsStore';
-import { useFiltersStore } from '../stores/filtersStore';
-import type { Transaction } from '../types';
+import { useFilteredTransactions } from '../useFilteredTransactions';
+import { useTransactionsStore } from '../../stores/transactionsStore';
+import { useFiltersStore } from '../../stores/filtersStore';
+import type { Transaction } from '../../types';
 
 describe('useFilteredTransactions Performance - Memoization', () => {
   const mockTransactions: Transaction[] = Array.from({ length: 100 }, (_, i) => ({

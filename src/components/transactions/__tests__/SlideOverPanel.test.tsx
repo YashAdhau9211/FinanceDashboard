@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { SlideOverPanel } from './SlideOverPanel';
+import { SlideOverPanel } from '../SlideOverPanel';
 
 describe('SlideOverPanel', () => {
   it('should not render when isOpen is false', () => {

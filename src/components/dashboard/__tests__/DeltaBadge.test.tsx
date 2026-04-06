@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { DeltaBadge } from './DeltaBadge';
+import { DeltaBadge } from '../DeltaBadge';
 
 describe('DeltaBadge', () => {
   it('should display positive delta with green color and TrendingUp icon', () => {

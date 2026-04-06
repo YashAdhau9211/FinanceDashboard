@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { SkipLink } from './SkipLink';
+import { SkipLink } from '../SkipLink';
 
 describe('SkipLink', () => {
   it('should render skip link with correct text', () => {

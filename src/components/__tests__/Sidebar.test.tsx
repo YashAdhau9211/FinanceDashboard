@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import { Sidebar } from './Sidebar';
-import { useUIStore } from '../stores/uiStore';
+import { Sidebar } from '../Sidebar';
+import { useUIStore } from '../../stores/uiStore';
 
 describe('Sidebar', () => {
   beforeEach(() => {

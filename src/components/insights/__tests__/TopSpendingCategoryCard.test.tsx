@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { TopSpendingCategoryCard } from './TopSpendingCategoryCard';
-import type { TopSpendingCategoryInsight } from '../../types';
+import { TopSpendingCategoryCard } from '../TopSpendingCategoryCard';
+import type { TopSpendingCategoryInsight } from '../../../types';
 
 describe('TopSpendingCategoryCard', () => {
   it('renders card with insight data', () => {

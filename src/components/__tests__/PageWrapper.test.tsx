@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { PageWrapper } from './PageWrapper';
-import { useUIStore } from '../stores/uiStore';
-import { useRoleStore } from '../stores/roleStore';
+import { PageWrapper } from '../PageWrapper';
+import { useUIStore } from '../../stores/uiStore';
+import { useRoleStore } from '../../stores/roleStore';
 
 describe('PageWrapper', () => {
   beforeEach(() => {

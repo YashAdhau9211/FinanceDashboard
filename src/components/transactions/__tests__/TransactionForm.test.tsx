@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { TransactionForm } from './TransactionForm';
-import type { Transaction } from '../../types';
+import { TransactionForm } from '../TransactionForm';
+import type { Transaction } from '../../../types';
 
 const mockTransaction: Transaction = {
   id: '1',

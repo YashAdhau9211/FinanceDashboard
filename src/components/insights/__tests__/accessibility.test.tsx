@@ -109,20 +109,20 @@ describe('Insights Accessibility Tests', () => {
 
   describe('TopSpendingCategoryCard', () => {
     const mockInsight: TopSpendingCategoryInsight = {
-      category: 'Housing',
+      category: 'rent',
       amount: 1500,
       percentage: 45,
       chartData: [
-        { category: 'Housing', amount: 1500, color: '#3B82F6' },
-        { category: 'Food', amount: 800, color: '#10B981' },
-        { category: 'Transport', amount: 500, color: '#F59E0B' },
+        { category: 'rent', amount: 1500, color: '#3B82F6' },
+        { category: 'groceries', amount: 800, color: '#10B981' },
+        { category: 'transportation', amount: 500, color: '#F59E0B' },
       ],
     };
 
     it('should have ARIA label describing the insight', () => {
       render(<TopSpendingCategoryCard insight={mockInsight} />);
 
-      const card = screen.getByLabelText(/Top spending category: Housing/);
+      const card = screen.getByLabelText(/Top spending category: rent/i);
       expect(card).toBeInTheDocument();
     });
 
@@ -264,7 +264,7 @@ describe('Insights Accessibility Tests', () => {
     const mockInsight: UnusualSpendingInsight = {
       alerts: [
         {
-          category: 'Entertainment',
+          category: 'entertainment',
           currentAmount: 800,
           threeMonthAverage: 400,
           percentageIncrease: 100,

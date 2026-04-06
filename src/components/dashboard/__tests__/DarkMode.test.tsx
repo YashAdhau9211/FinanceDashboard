@@ -1,7 +1,7 @@
 import { render, screen, act } from '@testing-library/react';
-import { useUIStore } from '../../stores/uiStore';
-import { TopNav } from '../TopNav';
-import { BalanceTrendChart } from './BalanceTrendChart';
+import { useUIStore } from '../../../stores/uiStore';
+import { TopNav } from '../../TopNav';
+import { BalanceTrendChart } from '../BalanceTrendChart';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 describe('Dark Mode', () => {
@@ -98,8 +98,8 @@ describe('Dark Mode', () => {
   describe('Chart Color Adaptation', () => {
     it('should adapt chart colors to theme', () => {
       const mockData = [
-        { month: '2024-01', income: 5000, expenses: 3000, net: 2000 },
-        { month: '2024-02', income: 5500, expenses: 3200, net: 2300 },
+        { month: '2024-01', income: 5000, expenses: 3000, net: 2000, transactionCount: 10 },
+        { month: '2024-02', income: 5500, expenses: 3200, net: 2300, transactionCount: 12 },
       ];
 
       const { container, rerender } = render(<BalanceTrendChart data={mockData} />);
@@ -122,7 +122,7 @@ describe('Dark Mode', () => {
 
     it('should update chart key when theme changes', () => {
       const mockData = [
-        { month: '2024-01', income: 5000, expenses: 3000, net: 2000 },
+        { month: '2024-01', income: 5000, expenses: 3000, net: 2000, transactionCount: 10 },
       ];
 
       render(<BalanceTrendChart data={mockData} />);

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Receipt, TrendingUp, Settings } from 'lucide-react';
+import { LayoutDashboard, Receipt, TrendingUp } from 'lucide-react';
 
 export function BottomTabBar() {
   const location = useLocation();
@@ -8,7 +8,6 @@ export function BottomTabBar() {
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/transactions', icon: Receipt, label: 'Transactions' },
     { path: '/insights', icon: TrendingUp, label: 'Insights' },
-    { path: '/settings', icon: Settings, label: 'Settings' },
   ];
 
   return (

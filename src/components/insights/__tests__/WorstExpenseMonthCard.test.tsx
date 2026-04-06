@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { WorstExpenseMonthCard } from './WorstExpenseMonthCard';
-import type { WorstExpenseMonthInsight } from '../../types';
+import { WorstExpenseMonthCard } from '../WorstExpenseMonthCard';
+import type { WorstExpenseMonthInsight } from '../../../types';
 
 describe('WorstExpenseMonthCard', () => {
   it('should render card with insight data', () => {

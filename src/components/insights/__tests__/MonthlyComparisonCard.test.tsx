@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MonthlyComparisonCard } from './MonthlyComparisonCard';
-import type { MonthlyComparisonInsight } from '../../types';
+import { MonthlyComparisonCard } from '../MonthlyComparisonCard';
+import type { MonthlyComparisonInsight } from '../../../types';
 
 describe('MonthlyComparisonCard', () => {
   it('should render card with insight data', () => {

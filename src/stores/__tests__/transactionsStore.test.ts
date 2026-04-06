@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
-import { useTransactionsStore } from './transactionsStore';
-import { useRoleStore } from './roleStore';
-import type { TransactionType, Category } from '../types';
+import { useTransactionsStore } from '../transactionsStore';
+import { useRoleStore } from '../roleStore';
+import type { TransactionType, Category } from '../../types';
 
 // Helper to reset store state before each test
 beforeEach(() => {

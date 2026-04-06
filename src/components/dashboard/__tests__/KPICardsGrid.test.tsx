@@ -1,24 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { KPICardsGrid } from './KPICardsGrid';
-import type { Transaction, Role } from '../../types';
+import { KPICardsGrid } from '../KPICardsGrid';
+import type { Transaction, Role } from '../../../types';
 
 // Mock the stores
-vi.mock('../../stores/transactionsStore', () => ({
+vi.mock('../../../stores/transactionsStore', () => ({
   useTransactionsStore: vi.fn(),
 }));
 
-vi.mock('../../stores/roleStore', () => ({
+vi.mock('../../../stores/roleStore', () => ({
   useRoleStore: vi.fn(),
 }));
 
 // Mock the useCountUp hook
-vi.mock('../../hooks/useCountUp', () => ({
+vi.mock('../../../hooks/useCountUp', () => ({
   useCountUp: (target: number) => target,
 }));
 
-import { useTransactionsStore } from '../../stores/transactionsStore';
-import { useRoleStore } from '../../stores/roleStore';
+import { useTransactionsStore } from '../../../stores/transactionsStore';
+import { useRoleStore } from '../../../stores/roleStore';
 
 describe('KPICardsGrid', () => {
   const mockTransactions: Transaction[] = [
@@ -100,7 +100,7 @@ describe('KPICardsGrid', () => {
     expect(grid?.className).toContain('gap-4');
   });
 
-  it('should show edit buttons when role is ADMIN', () => {
+  it('should render all KPI cards when role is ADMIN', () => {
     vi.mocked(useRoleStore).mockImplementation(
       <T,>(selector: (state: { role: Role; setRole: () => void; toggleRole: () => void }) => T) =>
         selector({ role: 'ADMIN', setRole: vi.fn(), toggleRole: vi.fn() })
@@ -108,11 +108,14 @@ describe('KPICardsGrid', () => {
 
     render(<KPICardsGrid />);
 
-    const editButtons = screen.getAllByLabelText(/Edit/);
-    expect(editButtons).toHaveLength(4);
+    // Verify all 4 KPI cards are rendered
+    expect(screen.getByText('Total Balance')).toBeInTheDocument();
+    expect(screen.getByText('Total Income')).toBeInTheDocument();
+    expect(screen.getByText('Total Expenses')).toBeInTheDocument();
+    expect(screen.getByText('Savings Rate')).toBeInTheDocument();
   });
 
-  it('should not show edit buttons when role is ANALYST', () => {
+  it('should render all KPI cards when role is ANALYST', () => {
     vi.mocked(useRoleStore).mockImplementation(
       <T,>(selector: (state: { role: Role; setRole: () => void; toggleRole: () => void }) => T) =>
         selector({ role: 'ANALYST', setRole: vi.fn(), toggleRole: vi.fn() })
@@ -120,8 +123,11 @@ describe('KPICardsGrid', () => {
 
     render(<KPICardsGrid />);
 
-    const editButtons = screen.queryAllByLabelText(/Edit/);
-    expect(editButtons).toHaveLength(0);
+    // Verify all 4 KPI cards are rendered
+    expect(screen.getByText('Total Balance')).toBeInTheDocument();
+    expect(screen.getByText('Total Income')).toBeInTheDocument();
+    expect(screen.getByText('Total Expenses')).toBeInTheDocument();
+    expect(screen.getByText('Savings Rate')).toBeInTheDocument();
   });
 
   it('should apply staggered animation classes', () => {

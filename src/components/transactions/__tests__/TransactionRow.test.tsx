@@ -1,11 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { TransactionRow } from './TransactionRow';
-import { useRoleStore } from '../../stores/roleStore';
-import type { Transaction } from '../../types';
+import { TransactionRow } from '../TransactionRow';
+import { useRoleStore } from '../../../stores/roleStore';
+import type { Transaction } from '../../../types';
 
 describe('TransactionRow', () => {
+  const mockOnEdit = vi.fn();
+  const mockOnDelete = vi.fn();
+  
   const mockTransaction: Transaction = {
     id: '1',
     date: '2025-01-15',
@@ -19,16 +22,18 @@ describe('TransactionRow', () => {
 
   beforeEach(() => {
     useRoleStore.setState({ role: 'ADMIN' });
+    mockOnEdit.mockClear();
+    mockOnDelete.mockClear();
   });
 
   it('formats date as DD MMM YYYY', () => {
-    render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByText('15 Jan 2025')).toBeInTheDocument();
   });
 
   it('renders category pill with icon', () => {
-    render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByText('Groceries')).toBeInTheDocument();
   });
@@ -40,14 +45,14 @@ describe('TransactionRow', () => {
       amount: 50000,
     };
 
-    render(<TransactionRow transaction={incomeTransaction} isEven={true} />);
+    render(<TransactionRow transaction={incomeTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const badge = screen.getByText('Income');
     expect(badge).toHaveClass('bg-green-100', 'text-green-700');
   });
 
   it('renders type badge with correct color for expense', () => {
-    render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const badge = screen.getByText('Expense');
     expect(badge).toHaveClass('bg-red-100', 'text-red-700');
@@ -59,7 +64,7 @@ describe('TransactionRow', () => {
       type: 'transfer',
     };
 
-    render(<TransactionRow transaction={transferTransaction} isEven={true} />);
+    render(<TransactionRow transaction={transferTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const badge = screen.getByText('Transfer');
     expect(badge).toHaveClass('bg-gray-100', 'text-gray-700');
@@ -72,7 +77,7 @@ describe('TransactionRow', () => {
       amount: 50000,
     };
 
-    const { container } = render(<TransactionRow transaction={incomeTransaction} isEven={true} />);
+    const { container } = render(<TransactionRow transaction={incomeTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // Find the td element containing the amount
     const amountCell = container.querySelector('td.text-green-600');
@@ -81,7 +86,7 @@ describe('TransactionRow', () => {
   });
 
   it('formats amount with INR symbol and correct color for expense', () => {
-    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // Find the td element containing the amount
     const amountCell = container.querySelector('td.text-red-600');
@@ -97,7 +102,7 @@ describe('TransactionRow', () => {
     };
 
     const { container } = render(
-      <TransactionRow transaction={transferTransaction} isEven={true} />
+      <TransactionRow transaction={transferTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
     // Find the td element containing the amount
@@ -112,7 +117,7 @@ describe('TransactionRow', () => {
       description: 'This is a very long description that exceeds thirty-two characters',
     };
 
-    render(<TransactionRow transaction={longDescTransaction} isEven={true} />);
+    render(<TransactionRow transaction={longDescTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // The truncated text has a space before the ellipsis
     expect(screen.getByText(/This is a very long description \.\.\./)).toBeInTheDocument();
@@ -125,7 +130,7 @@ describe('TransactionRow', () => {
       description: 'This is a very long description that exceeds thirty-two characters',
     };
 
-    render(<TransactionRow transaction={longDescTransaction} isEven={true} />);
+    render(<TransactionRow transaction={longDescTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const truncatedText = screen.getByText(/This is a very long description \.\.\./);
     await user.hover(truncatedText);
@@ -143,7 +148,7 @@ describe('TransactionRow', () => {
       type: 'income',
     };
 
-    render(<TransactionRow transaction={largeAmountTransaction} isEven={true} />);
+    render(<TransactionRow transaction={largeAmountTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByText('₹15L')).toBeInTheDocument();
   });
@@ -156,7 +161,7 @@ describe('TransactionRow', () => {
       type: 'income',
     };
 
-    render(<TransactionRow transaction={largeAmountTransaction} isEven={true} />);
+    render(<TransactionRow transaction={largeAmountTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const abbreviatedAmount = screen.getByText('₹15L');
     await user.hover(abbreviatedAmount);
@@ -168,7 +173,7 @@ describe('TransactionRow', () => {
   it('renders Actions column buttons when role is ADMIN', () => {
     useRoleStore.setState({ role: 'ADMIN' });
 
-    render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByLabelText('Edit transaction')).toBeInTheDocument();
     expect(screen.getByLabelText('Delete transaction')).toBeInTheDocument();
@@ -177,21 +182,21 @@ describe('TransactionRow', () => {
   it('does not render Actions column when role is ANALYST', () => {
     useRoleStore.setState({ role: 'ANALYST' });
 
-    render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.queryByLabelText('Edit transaction')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('Delete transaction')).not.toBeInTheDocument();
   });
 
   it('applies white background for even rows', () => {
-    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={true} />);
+    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={true} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const row = container.querySelector('tr');
     expect(row).toHaveClass('bg-white');
   });
 
   it('applies gray-50 background for odd rows', () => {
-    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={false} />);
+    const { container } = render(<TransactionRow transaction={mockTransaction} isEven={false} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const row = container.querySelector('tr');
     expect(row).toHaveClass('bg-gray-50');

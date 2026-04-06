@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { TransactionActivityHeatmap } from './TransactionActivityHeatmap';
-import { useTransactionsStore } from '../../stores/transactionsStore';
-import type { Transaction } from '../../types';
+import { TransactionActivityHeatmap } from '../TransactionActivityHeatmap';
+import { useTransactionsStore } from '../../../stores/transactionsStore';
+import type { Transaction } from '../../../types';
 
 describe('Feature: sprint-1-dashboard-overview - TransactionActivityHeatmap', () => {
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe('Feature: sprint-1-dashboard-overview - TransactionActivityHeatmap', ()
     expect(screen.getAllByText('Sun').length).toBeGreaterThanOrEqual(1);
   });
 
-  it('should display time slot labels (12 AM, 4 AM, 8 AM, 12 PM, 4 PM, 8 PM)', () => {
+  it('should display time slot labels (12am-4am, 4am-8am, 8am-12pm, 12pm-4pm, 4pm-8pm, 8pm-12am)', () => {
     // Arrange
     useTransactionsStore.setState({
       transactions: [],
@@ -55,12 +55,12 @@ describe('Feature: sprint-1-dashboard-overview - TransactionActivityHeatmap', ()
     render(<TransactionActivityHeatmap />);
 
     // Assert: Check that all time slot labels are displayed
-    expect(screen.getByText('12 AM')).toBeInTheDocument();
-    expect(screen.getByText('4 AM')).toBeInTheDocument();
-    expect(screen.getByText('8 AM')).toBeInTheDocument();
-    expect(screen.getByText('12 PM')).toBeInTheDocument();
-    expect(screen.getByText('4 PM')).toBeInTheDocument();
-    expect(screen.getByText('8 PM')).toBeInTheDocument();
+    expect(screen.getByText('12am-4am')).toBeInTheDocument();
+    expect(screen.getByText('4am-8am')).toBeInTheDocument();
+    expect(screen.getByText('8am-12pm')).toBeInTheDocument();
+    expect(screen.getByText('12pm-4pm')).toBeInTheDocument();
+    expect(screen.getByText('4pm-8pm')).toBeInTheDocument();
+    expect(screen.getByText('8pm-12am')).toBeInTheDocument();
   });
 
   it('should apply correct color intensity based on transaction count', () => {

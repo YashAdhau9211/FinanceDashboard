@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useSwipeToDelete } from './useSwipeToDelete';
+import { useSwipeToDelete } from '../useSwipeToDelete';
 
 describe('useSwipeToDelete', () => {
   const mockOnDelete = vi.fn();
@@ -37,14 +37,14 @@ describe('useSwipeToDelete', () => {
     act(() => {
       result.current.handlers.onTouchStart({
         touches: [{ clientX: 100 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     // Simulate touch move to x=50 (swipe left 50px)
     act(() => {
       result.current.handlers.onTouchMove({
         touches: [{ clientX: 50 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     expect(result.current.translateX).toBe(-50);
@@ -59,14 +59,14 @@ describe('useSwipeToDelete', () => {
     act(() => {
       result.current.handlers.onTouchStart({
         touches: [{ clientX: 100 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     // Simulate touch move to x=150 (swipe right 50px)
     act(() => {
       result.current.handlers.onTouchMove({
         touches: [{ clientX: 150 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     // Should not update translateX for right swipe
@@ -82,13 +82,13 @@ describe('useSwipeToDelete', () => {
     act(() => {
       result.current.handlers.onTouchStart({
         touches: [{ clientX: 100 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
       result.current.handlers.onTouchMove({
         touches: [{ clientX: 40 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
@@ -108,13 +108,13 @@ describe('useSwipeToDelete', () => {
     act(() => {
       result.current.handlers.onTouchStart({
         touches: [{ clientX: 100 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
       result.current.handlers.onTouchMove({
         touches: [{ clientX: 70 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
@@ -135,13 +135,13 @@ describe('useSwipeToDelete', () => {
     act(() => {
       result.current.handlers.onTouchStart({
         touches: [{ clientX: 100 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
       result.current.handlers.onTouchMove({
         touches: [{ clientX: 50 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
@@ -160,13 +160,13 @@ describe('useSwipeToDelete', () => {
     act(() => {
       result.current.handlers.onTouchStart({
         touches: [{ clientX: 100 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     act(() => {
       result.current.handlers.onTouchMove({
         touches: [{ clientX: 70 }],
-      } as React.TouchEvent);
+      } as unknown as React.TouchEvent);
     });
 
     expect(result.current.translateX).toBe(-30);

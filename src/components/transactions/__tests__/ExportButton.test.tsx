@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Papa from 'papaparse';
 
-import { ExportButton } from './ExportButton';
-import { useRoleStore } from '../../stores/roleStore';
-import { useToastStore } from '../../stores/toastStore';
-import type { Transaction } from '../../types';
+import { ExportButton } from '../ExportButton';
+import { useRoleStore } from '../../../stores/roleStore';
+import { useToastStore } from '../../../stores/toastStore';
+import type { Transaction } from '../../../types';
 
 describe('ExportButton', () => {
   const mockTransactions: Transaction[] = [
@@ -453,7 +453,8 @@ describe('ExportButton', () => {
       // Mock Blob constructor to throw an error
       const OriginalBlob = global.Blob;
       global.Blob = class extends OriginalBlob {
-        constructor() {
+        constructor(...args: any[]) {
+          super(...args);
           throw new Error('Blob creation failed');
         }
       } as any;

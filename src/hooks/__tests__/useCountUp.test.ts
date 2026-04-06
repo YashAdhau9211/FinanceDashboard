@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { useCountUp } from './useCountUp';
+import { useCountUp } from '../useCountUp';
 
 describe('useCountUp', () => {
   it('should start from 0', () => {

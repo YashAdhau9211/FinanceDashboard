@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
-import { TransactionRow } from './TransactionRow';
-import type { Transaction } from '../../types';
+import { TransactionRow } from '../TransactionRow';
+import type { Transaction } from '../../../types';
 
 // Mock the stores
-vi.mock('../../stores/roleStore', () => ({
+vi.mock('../../../stores/roleStore', () => ({
   useRoleStore: vi.fn(() => 'ADMIN'),
 }));
 

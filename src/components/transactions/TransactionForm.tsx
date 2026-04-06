@@ -1,4 +1,5 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import type { Transaction, TransactionType, Category } from '../../types';
 
 interface TransactionFormProps {
@@ -40,7 +41,7 @@ const categories: Category[] = [
   'other',
 ];
 
-export function TransactionForm({ mode, transaction, onSubmit, onCancel }: TransactionFormProps) {
+export function TransactionForm({ onSubmit, onCancel, transaction }: TransactionFormProps) {
   const [formData, setFormData] = useState<TransactionFormData>({
     date: transaction?.date || '',
     description: transaction?.description || '',
@@ -137,7 +138,12 @@ export function TransactionForm({ mode, transaction, onSubmit, onCancel }: Trans
 
   const handleRetry = () => {
     setSubmissionError(null);
-    handleSubmit(new Event('submit') as any);
+    const syntheticEvent = {
+      preventDefault: () => {},
+      target: {},
+      currentTarget: {},
+    } as unknown as FormEvent;
+    handleSubmit(syntheticEvent);
   };
 
   const hasErrors = Object.keys(errors).length > 0;

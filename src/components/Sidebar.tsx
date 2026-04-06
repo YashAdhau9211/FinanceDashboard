@@ -1,28 +1,25 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Receipt, TrendingUp, Settings } from 'lucide-react';
-import { useUIStore } from '../stores/uiStore';
+import { LayoutDashboard, Receipt, TrendingUp } from 'lucide-react';
 
 export function Sidebar() {
   const location = useLocation();
-  const sidebarCollapsed = useUIStore((state) => state.sidebarCollapsed);
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/transactions', label: 'Transactions', icon: Receipt },
     { path: '/insights', label: 'Insights', icon: TrendingUp },
-    { path: '/settings', label: 'Settings', icon: Settings },
   ];
 
   return (
     <aside className="hidden lg:block w-16 md:w-16 lg:w-64 bg-navy-900 dark:bg-gray-900 fixed h-full">
       <div className="p-6">
         {/* Logo + Brand */}
-        <div className="flex items-center gap-3 mb-8">
+        <Link to="/dashboard" className="flex items-center gap-3 mb-8 hover:opacity-80 transition-opacity" aria-label="Go to Dashboard">
           <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">Z</span>
           </div>
           <span className="hidden lg:block text-xl font-bold text-white">Zorvyn</span>
-        </div>
+        </Link>
 
         {/* Navigation Links */}
         <nav className="space-y-2">

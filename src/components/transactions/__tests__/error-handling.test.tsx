@@ -315,7 +315,7 @@ describe('Error Handling Tests', () => {
 
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-      const { rerender } = render(
+      render(
         <ErrorBoundary sectionName="Test Section">
           <MaybeThrowError />
         </ErrorBoundary>

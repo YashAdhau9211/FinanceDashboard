@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { RecentTransactionsWidget } from './RecentTransactionsWidget';
-import type { Transaction } from '../../types';
+import { RecentTransactionsWidget } from '../RecentTransactionsWidget';
+import type { Transaction } from '../../../types';
 
 // Helper to wrap component with Router
 function renderWithRouter(ui: React.ReactElement) {

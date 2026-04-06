@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import InsightCardErrorBoundary from './InsightCardErrorBoundary';
+import InsightCardErrorBoundary from '../InsightCardErrorBoundary';
 
 // Component that throws an error
 const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Sun, Moon, User } from 'lucide-react';
 import { useRoleStore } from '../stores/roleStore';
 import { useUIStore } from '../stores/uiStore';
@@ -37,9 +38,9 @@ export function TopNav({ pageTitle }: TopNavProps) {
       <div className="flex items-center justify-between px-6 h-full">
         {/* Left: Logo + Page Title */}
         <div className="flex items-center gap-4">
-          <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
+          <Link to="/dashboard" className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center hover:opacity-80 transition-opacity" aria-label="Go to Dashboard">
             <span className="text-white font-bold text-lg">Z</span>
-          </div>
+          </Link>
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{pageTitle}</h1>
         </div>
 

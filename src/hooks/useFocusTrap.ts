@@ -1,4 +1,5 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect } from 'react';
+import type { RefObject } from 'react';
 
 /**
  * useFocusTrap Hook
@@ -15,7 +16,7 @@ interface UseFocusTrapOptions {
 }
 
 export function useFocusTrap(
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   options: UseFocusTrapOptions
 ): void {
   const { isActive, onEscape } = options;
@@ -24,7 +25,9 @@ export function useFocusTrap(
     if (!isActive || !ref.current) return;
 
     const container = ref.current;
-    const previousFocus = document.activeElement as HTMLElement;
+    const previousFocus = document.activeElement instanceof HTMLElement 
+      ? document.activeElement 
+      : null;
 
     // Get all focusable elements within the container
     const getFocusableElements = () => {
@@ -35,7 +38,6 @@ export function useFocusTrap(
 
     const focusableElements = getFocusableElements();
     const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
 
     // Focus the first element
     firstElement?.focus();

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { SearchBar } from './SearchBar';
-import { useFiltersStore } from '../../stores/filtersStore';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { SearchBar } from '../SearchBar';
+import { useFiltersStore } from '../../../stores/filtersStore';
 
 describe('SearchBar Performance - Debounce', () => {
   beforeEach(() => {

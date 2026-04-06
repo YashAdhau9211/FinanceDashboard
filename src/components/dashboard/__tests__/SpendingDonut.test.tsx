@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import SpendingDonut from './SpendingDonut';
-import type { CategoryData } from '../../stores/selectors/categoryBreakdownSelector';
+import SpendingDonut from '../SpendingDonut';
+import type { CategoryData } from '../../../stores/selectors/categoryBreakdownSelector';
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
@@ -16,7 +16,7 @@ vi.mock('react-router-dom', async () => {
 
 // Mock filtersStore
 const mockSetCategory = vi.fn();
-vi.mock('../../stores/filtersStore', () => ({
+vi.mock('../../../stores/filtersStore', () => ({
   useFiltersStore: <T,>(selector: (state: { setCategory: typeof mockSetCategory }) => T) => {
     const store = {
       setCategory: mockSetCategory,

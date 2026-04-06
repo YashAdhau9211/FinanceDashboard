@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SearchBar } from './SearchBar';
-import { useFiltersStore } from '../../stores/filtersStore';
+import { SearchBar } from '../SearchBar';
+import { useFiltersStore } from '../../../stores/filtersStore';
 
 describe('SearchBar', () => {
   beforeEach(() => {

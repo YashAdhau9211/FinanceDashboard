@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { FilterBar } from './FilterBar';
-import { useFiltersStore } from '../../stores/filtersStore';
+import { FilterBar } from '../FilterBar';
+import { useFiltersStore } from '../../../stores/filtersStore';
 
 describe('FilterBar', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { TransactionCard } from './TransactionCard';
-import type { Transaction } from '../../types';
+import { TransactionCard } from '../TransactionCard';
+import type { Transaction } from '../../../types';
 
 // Mock the stores
 const mockUseRoleStore = vi.fn((selector) => {
@@ -9,7 +9,7 @@ const mockUseRoleStore = vi.fn((selector) => {
   return typeof selector === 'function' ? selector(state) : state.role;
 });
 
-vi.mock('../../stores/roleStore', () => ({
+vi.mock('../../../stores/roleStore', () => ({
   useRoleStore: (selector?: any) => mockUseRoleStore(selector),
 }));
 
@@ -188,7 +188,7 @@ describe('TransactionCard', () => {
       <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
-    const card = container.firstChild;
+    const card = container.firstChild as HTMLElement | null;
     expect(card?.className).toContain('animate-fade-in-from-top');
   });
 
@@ -197,7 +197,7 @@ describe('TransactionCard', () => {
       <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
-    const card = container.firstChild;
+    const card = container.firstChild as HTMLElement | null;
     expect(card?.className).toContain('bg-white');
     expect(card?.className).toContain('rounded-lg');
     expect(card?.className).toContain('border');
@@ -208,7 +208,7 @@ describe('TransactionCard', () => {
       <TransactionCard transaction={mockTransaction} onEdit={mockOnEdit} onDelete={mockOnDelete} />
     );
 
-    const card = container.firstChild;
+    const card = container.firstChild as HTMLElement | null;
     expect(card?.className).toContain('dark:bg-gray-800');
   });
 });

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { TransactionTable } from './TransactionTable';
-import type { Transaction } from '../../types';
+import { TransactionTable } from '../TransactionTable';
+import type { Transaction } from '../../../types';
 
 // Mock the stores
 const mockUseRoleStore = vi.fn((selector) => {
@@ -9,11 +9,11 @@ const mockUseRoleStore = vi.fn((selector) => {
   return typeof selector === 'function' ? selector(state) : state.role;
 });
 
-vi.mock('../../stores/roleStore', () => ({
+vi.mock('../../../stores/roleStore', () => ({
   useRoleStore: (selector?: any) => mockUseRoleStore(selector),
 }));
 
-vi.mock('../../stores/filtersStore', () => ({
+vi.mock('../../../stores/filtersStore', () => ({
   useFiltersStore: vi.fn((selector) => {
     const state = {
       sortField: 'date',

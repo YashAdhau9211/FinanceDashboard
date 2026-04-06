@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AISummaryBlock } from './AISummaryBlock';
-import type { AISummary } from '../../types';
+import { AISummaryBlock } from '../AISummaryBlock';
+import type { AISummary } from '../../../types';
 
 describe('AISummaryBlock', () => {
   const mockSummary: AISummary = {

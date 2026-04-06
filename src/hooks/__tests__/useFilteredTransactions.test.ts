@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useFilteredTransactions } from './useFilteredTransactions';
-import { useTransactionsStore } from '../stores/transactionsStore';
-import { useFiltersStore } from '../stores/filtersStore';
-import { useRoleStore } from '../stores/roleStore';
-import type { Transaction } from '../types';
+import { useFilteredTransactions } from '../useFilteredTransactions';
+import { useTransactionsStore } from '../../stores/transactionsStore';
+import { useFiltersStore } from '../../stores/filtersStore';
+import { useRoleStore } from '../../stores/roleStore';
+import type { Transaction } from '../../types';
 
 // Mock transactions for testing
 const mockTransactions: Transaction[] = [

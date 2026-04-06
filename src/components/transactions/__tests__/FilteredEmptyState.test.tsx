@@ -1,17 +1,22 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FilteredEmptyState } from './FilteredEmptyState';
-import { useFiltersStore } from '../../stores/filtersStore';
+import { FilteredEmptyState } from '../FilteredEmptyState';
+import { useFiltersStore } from '../../../stores/filtersStore';
 
-vi.mock('../../stores/filtersStore');
+vi.mock('../../../stores/filtersStore');
 
 describe('FilteredEmptyState', () => {
   const mockResetFilters = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useFiltersStore).mockReturnValue(mockResetFilters as any);
+    vi.mocked(useFiltersStore).mockImplementation((selector: any) => {
+      const state = {
+        resetFilters: mockResetFilters,
+      };
+      return selector ? selector(state) : state;
+    });
   });
 
   it('displays filtered empty state message', () => {

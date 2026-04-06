@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CategoryFilter } from './CategoryFilter';
-import { useFiltersStore } from '../../stores/filtersStore';
+import { CategoryFilter } from '../CategoryFilter';
+import { useFiltersStore } from '../../../stores/filtersStore';
 
 describe('CategoryFilter', () => {
   beforeEach(() => {

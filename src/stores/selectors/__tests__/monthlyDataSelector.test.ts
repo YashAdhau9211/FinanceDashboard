@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
-import { computeMonthlyData } from './monthlyDataSelector';
-import type { Transaction, TransactionType, Category } from '../../types';
+import { computeMonthlyData } from '../monthlyDataSelector';
+import type { Transaction, TransactionType, Category } from '../../../types';
 
 // Helper to create a transaction
 function createTransaction(overrides: Partial<Transaction>): Transaction {

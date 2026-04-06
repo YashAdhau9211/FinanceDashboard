@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, within, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { Transactions } from '../Transactions';
 import { useTransactionsStore } from '../../stores/transactionsStore';
 import { useRoleStore } from '../../stores/roleStore';

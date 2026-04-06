@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { EmptyState } from './EmptyState';
-import { useRoleStore } from '../../stores/roleStore';
+import { EmptyState } from '../EmptyState';
+import { useRoleStore } from '../../../stores/roleStore';
 
-vi.mock('../../stores/roleStore');
+vi.mock('../../../stores/roleStore');
 
 describe('EmptyState', () => {
   const mockOnAddTransaction = vi.fn();
@@ -14,7 +14,10 @@ describe('EmptyState', () => {
   });
 
   it('displays empty state message', () => {
-    vi.mocked(useRoleStore).mockReturnValue('ANALYST' as any);
+    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
+      const state = { role: 'ANALYST' as const };
+      return selector ? selector(state) : state;
+    });
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
 
@@ -23,7 +26,10 @@ describe('EmptyState', () => {
   });
 
   it('displays folder icon', () => {
-    vi.mocked(useRoleStore).mockReturnValue('ANALYST' as any);
+    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
+      const state = { role: 'ANALYST' as const };
+      return selector ? selector(state) : state;
+    });
 
     const { container } = render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
 
@@ -33,7 +39,10 @@ describe('EmptyState', () => {
   });
 
   it('displays Add Transaction button for ADMIN role', () => {
-    vi.mocked(useRoleStore).mockReturnValue('ADMIN' as any);
+    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
+      const state = { role: 'ADMIN' as const };
+      return selector ? selector(state) : state;
+    });
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
 
@@ -42,7 +51,10 @@ describe('EmptyState', () => {
   });
 
   it('does not display Add Transaction button for ANALYST role', () => {
-    vi.mocked(useRoleStore).mockReturnValue('ANALYST' as any);
+    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
+      const state = { role: 'ANALYST' as const };
+      return selector ? selector(state) : state;
+    });
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
 
@@ -51,7 +63,10 @@ describe('EmptyState', () => {
   });
 
   it('calls onAddTransaction when button is clicked', async () => {
-    vi.mocked(useRoleStore).mockReturnValue('ADMIN' as any);
+    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
+      const state = { role: 'ADMIN' as const };
+      return selector ? selector(state) : state;
+    });
     const user = userEvent.setup();
 
     render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
@@ -63,7 +78,10 @@ describe('EmptyState', () => {
   });
 
   it('centers content vertically and horizontally', () => {
-    vi.mocked(useRoleStore).mockReturnValue('ANALYST' as any);
+    vi.mocked(useRoleStore).mockImplementation((selector: any) => {
+      const state = { role: 'ANALYST' as const };
+      return selector ? selector(state) : state;
+    });
 
     const { container } = render(<EmptyState onAddTransaction={mockOnAddTransaction} />);
 

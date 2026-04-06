@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
-import { computeSummaryStats } from './summaryStatsSelector';
-import type { Transaction, TransactionType, Category } from '../../types';
+import { computeSummaryStats } from '../summaryStatsSelector';
+import type { Transaction, TransactionType, Category } from '../../../types';
 
 // Helper to create a transaction with specific properties
 function createTransaction(overrides: Partial<Transaction>): Transaction {

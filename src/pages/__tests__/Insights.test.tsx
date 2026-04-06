@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
-import { Insights } from './Insights';
-import { useTransactionsStore } from '../stores/transactionsStore';
-import type { Transaction } from '../types';
+import { Insights } from '../Insights';
+import { useTransactionsStore } from '../../stores/transactionsStore';
+import type { Transaction } from '../../types';
 
 // Mock PageWrapper
 vi.mock('../components/PageWrapper', () => ({
@@ -337,7 +337,7 @@ describe('Insights Page', () => {
       const { rerender } = render(<Insights />);
 
       // Get initial call count
-      const insightsModule = await import('../utils/insights');
+      const insightsModule = await import('../../utils/insights');
       const { getTopSpendingCategory } = vi.mocked(insightsModule);
       const initialCallCount = getTopSpendingCategory.mock.calls.length;
 
@@ -351,7 +351,7 @@ describe('Insights Page', () => {
     it('recomputes insights when transactions change', async () => {
       const { rerender } = render(<Insights />);
 
-      const insightsModule = await import('../utils/insights');
+      const insightsModule = await import('../../utils/insights');
       const { getTopSpendingCategory } = vi.mocked(insightsModule);
       const initialCallCount = getTopSpendingCategory.mock.calls.length;
 
