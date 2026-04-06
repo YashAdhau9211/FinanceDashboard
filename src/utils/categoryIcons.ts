@@ -37,7 +37,11 @@ export const CATEGORY_ICONS: Record<Category, LucideIcon> = {
 
 /**
  * Get icon component for a category
+ * Returns HelpCircle for custom categories not in the predefined list
  */
-export function getCategoryIcon(category: Category): LucideIcon {
-  return CATEGORY_ICONS[category];
+export function getCategoryIcon(category: Category | string): LucideIcon {
+  if (category in CATEGORY_ICONS) {
+    return CATEGORY_ICONS[category as Category];
+  }
+  return HelpCircle; // Default icon for custom categories
 }

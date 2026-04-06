@@ -4,7 +4,7 @@ import type { FilterState, TransactionType, Category, SortDir } from '../types';
 interface FiltersActions {
   setSearchQuery: (query: string) => void;
   setType: (type: TransactionType | 'all') => void;
-  setCategory: (category: Category | 'all') => void;
+  setCategory: (category: Category | string | 'all') => void; // Allow custom categories
   setDateRange: (start: string | null, end: string | null) => void;
   setSortField: (field: 'date' | 'amount' | 'description') => void;
   setSortDir: (dir: SortDir) => void;

@@ -24,14 +24,14 @@ type Category =
 type FiltersState = {
   searchQuery: string;
   type: TransactionType | 'all';
-  category: Category | 'all';
+  category: Category | string | 'all';
   dateRange: { start: string | null; end: string | null };
   sortField: 'date' | 'amount' | 'description';
   sortDir: 'asc' | 'desc';
   resetFilters: () => void;
   setSearchQuery: (query: string) => void;
   setType: (type: TransactionType | 'all') => void;
-  setCategory: (category: Category | 'all') => void;
+  setCategory: (category: Category | string | 'all') => void;
   setDateRange: (start: string | null, end: string | null) => void;
   setSortField: (field: 'date' | 'amount' | 'description') => void;
   setSortDir: (dir: 'asc' | 'desc') => void;

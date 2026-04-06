@@ -62,6 +62,13 @@ export function getHeatmapColor(count: number): string {
   }
 }
 
-export function getCategoryColor(category: Category): string {
-  return CATEGORY_COLORS[category];
+/**
+ * Get color for a category
+ * Returns gray color for custom categories not in the predefined list
+ */
+export function getCategoryColor(category: Category | string): string {
+  if (category in CATEGORY_COLORS) {
+    return CATEGORY_COLORS[category as Category];
+  }
+  return '#6B7280'; // gray-500 for custom categories
 }

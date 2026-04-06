@@ -1,11 +1,12 @@
 import type { Transaction, Category } from '../types';
+import { getCategoryColor } from './colorUtils';
 
 // Insight interfaces
 export interface TopSpendingCategoryInsight {
-  category: Category | null;
+  category: Category | string | null; // Allow custom categories
   amount: number;
   percentage: number;
-  chartData: Array<{ category: Category; amount: number; color: string }>;
+  chartData: Array<{ category: Category | string; amount: number; color: string }>;
 }
 
 export interface BestIncomeMonthInsight {
@@ -50,7 +51,7 @@ export interface SavingsTrendInsight {
 
 export interface UnusualSpendingInsight {
   alerts: Array<{
-    category: Category;
+    category: Category | string; // Allow custom categories
     currentAmount: number;
     threeMonthAverage: number;
     percentageIncrease: number;
@@ -60,23 +61,6 @@ export interface UnusualSpendingInsight {
 export interface AISummary {
   text: string;
 }
-
-// Helper function to get category colors
-const categoryColors: Record<Category, string> = {
-  salary: '#10B981',
-  freelance: '#3B82F6',
-  investment: '#8B5CF6',
-  rent: '#EF4444',
-  utilities: '#F59E0B',
-  groceries: '#84CC16',
-  dining: '#EC4899',
-  transportation: '#06B6D4',
-  entertainment: '#A855F7',
-  healthcare: '#14B8A6',
-  shopping: '#F97316',
-  transfer: '#6B7280',
-  other: '#9CA3AF',
-};
 
 // Helper function to get current month/year
 function getCurrentMonthYear(): { month: number; year: number } {
@@ -151,14 +135,14 @@ export function getTopSpendingCategory(transactions: Transaction[]): TopSpending
     }
 
     // Group by category and sum amounts
-    const categoryTotals = new Map<Category, number>();
+    const categoryTotals = new Map<Category | string, number>();
     currentMonthExpenses.forEach((t) => {
       const current = categoryTotals.get(t.category) || 0;
       categoryTotals.set(t.category, current + t.amount);
     });
 
     // Find category with max amount
-    let topCategory: Category | null = null;
+    let topCategory: Category | string | null = null;
     let maxAmount = 0;
     let totalExpenses = 0;
 
@@ -177,7 +161,7 @@ export function getTopSpendingCategory(transactions: Transaction[]): TopSpending
     const chartData = Array.from(categoryTotals.entries()).map(([category, amount]) => ({
       category,
       amount,
-      color: categoryColors[category],
+      color: getCategoryColor(category),
     }));
 
     return {
@@ -531,7 +515,7 @@ export function getUnusualSpending(transactions: Transaction[]): UnusualSpending
     const [current, ...previous3] = months;
 
     // Get expenses by category for current month
-    const currentExpenses = new Map<Category, number>();
+    const currentExpenses = new Map<Category | string, number>();
     transactions
       .filter((t) => t.type === 'expense' && isInMonth(t, current.month, current.year))
       .forEach((t) => {
@@ -540,7 +524,7 @@ export function getUnusualSpending(transactions: Transaction[]): UnusualSpending
       });
 
     // Get expenses by category for previous 3 months
-    const previous3Expenses = new Map<Category, number[]>();
+    const previous3Expenses = new Map<Category | string, number[]>();
     previous3.forEach(({ month, year }) => {
       transactions
         .filter((t) => t.type === 'expense' && isInMonth(t, month, year))
@@ -552,7 +536,7 @@ export function getUnusualSpending(transactions: Transaction[]): UnusualSpending
     });
 
     // Calculate 3-month average for each category
-    const threeMonthAverages = new Map<Category, number>();
+    const threeMonthAverages = new Map<Category | string, number>();
     previous3Expenses.forEach((amounts, category) => {
       const total = amounts.reduce((sum, amt) => sum + amt, 0);
       const average = total / 3; // Divide by 3 months, not by number of transactions
@@ -561,7 +545,7 @@ export function getUnusualSpending(transactions: Transaction[]): UnusualSpending
 
     // Find unusual spending (current > 1.5 * average)
     const alerts: Array<{
-      category: Category;
+      category: Category | string;
       currentAmount: number;
       threeMonthAverage: number;
       percentageIncrease: number;

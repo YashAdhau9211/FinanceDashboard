@@ -1,7 +1,8 @@
 import type { Transaction, Category } from '../../types';
+import { getCategoryColor } from '../../utils/colorUtils';
 
 export interface CategoryData {
-  category: Category;
+  category: Category | string; // Allow custom categories
   amount: number;
   percentage: number;
   color: string;
@@ -40,7 +41,7 @@ export function computeCategoryBreakdown(transactions: Transaction[]): CategoryD
   }
 
   // Group by category and sum amounts
-  const categoryMap = new Map<Category, number>();
+  const categoryMap = new Map<Category | string, number>();
 
   expenseTransactions.forEach((t) => {
     const current = categoryMap.get(t.category) || 0;
@@ -56,7 +57,7 @@ export function computeCategoryBreakdown(transactions: Transaction[]): CategoryD
       category,
       amount,
       percentage: totalExpenses === 0 ? 0 : (amount / totalExpenses) * 100,
-      color: CATEGORY_COLORS[category],
+      color: getCategoryColor(category),
     })
   );
 

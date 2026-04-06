@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Plus } from 'lucide-react';
 import { PageWrapper } from '../components/PageWrapper';
 import { TransactionTable } from '../components/transactions/TransactionTable';
@@ -9,6 +9,7 @@ import {
   type TransactionFormData,
 } from '../components/transactions/TransactionForm';
 import { ExportButton } from '../components/transactions/ExportButton';
+import { Pagination } from '../components/transactions/Pagination';
 import { useFilteredTransactions } from '../hooks/useFilteredTransactions';
 import { useTransactionsStore } from '../stores/transactionsStore';
 import { useRoleStore } from '../stores/roleStore';
@@ -19,12 +20,27 @@ function TransactionsContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredTransactions = useFilteredTransactions();
   const addTransaction = useTransactionsStore((state) => state.addTransaction);
   const updateTransaction = useTransactionsStore((state) => state.updateTransaction);
   const deleteTransaction = useTransactionsStore((state) => state.deleteTransaction);
   const role = useRoleStore((state) => state.role);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+  const paginatedTransactions = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredTransactions.slice(startIndex, endIndex);
+  }, [filteredTransactions, currentPage, itemsPerPage]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredTransactions.length]);
 
   // Simulate initial loading state
   useEffect(() => {
@@ -33,6 +49,11 @@ function TransactionsContent() {
     }, 600);
     return () => clearTimeout(timer);
   }, []);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleAddClick = () => {
     setEditingTransaction(undefined);
@@ -84,13 +105,22 @@ function TransactionsContent() {
           </div>
         </div>
         <FilterBar />
-        <TransactionTable
-          transactions={filteredTransactions}
-          isLoading={isLoading}
-          onEdit={handleEditClick}
-          onDelete={handleDeleteClick}
-          onAddTransaction={handleAddClick}
-        />
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <TransactionTable
+            transactions={paginatedTransactions}
+            isLoading={isLoading}
+            onEdit={handleEditClick}
+            onDelete={handleDeleteClick}
+            onAddTransaction={handleAddClick}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={filteredTransactions.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
 
       <SlideOverPanel

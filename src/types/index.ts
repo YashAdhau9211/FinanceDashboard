@@ -29,7 +29,7 @@ export interface Transaction {
   description: string;
   amount: number;
   type: TransactionType;
-  category: Category;
+  category: Category | string; // Allow custom categories
   merchant?: string;
   tags?: string[];
   notes?: string;
@@ -41,7 +41,7 @@ export interface Transaction {
 export interface FilterState {
   searchQuery: string;
   type: TransactionType | 'all';
-  category: Category | 'all';
+  category: Category | string | 'all'; // Allow custom categories
   dateRange: {
     start: string | null;
     end: string | null;
@@ -82,10 +82,10 @@ export interface InsightData {
 // Insight type definitions for Sprint 3 Insights Feature
 
 export interface TopSpendingCategoryInsight {
-  category: Category | null;
+  category: Category | string | null; // Allow custom categories
   amount: number;
   percentage: number;
-  chartData: Array<{ category: Category; amount: number; color: string }>;
+  chartData: Array<{ category: Category | string; amount: number; color: string }>;
 }
 
 export interface BestIncomeMonthInsight {
@@ -130,7 +130,7 @@ export interface SavingsTrendInsight {
 
 export interface UnusualSpendingInsight {
   alerts: Array<{
-    category: Category;
+    category: Category | string; // Allow custom categories
     currentAmount: number;
     threeMonthAverage: number;
     percentageIncrease: number;

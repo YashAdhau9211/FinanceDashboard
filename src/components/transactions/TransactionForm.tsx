@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import type { Transaction, TransactionType, Category } from '../../types';
+import { useCategoriesStore } from '../../stores/categoriesStore';
+import { Plus, X } from 'lucide-react';
 
 interface TransactionFormProps {
   mode: 'add' | 'edit';
@@ -14,7 +16,7 @@ export interface TransactionFormData {
   description: string;
   amount: number;
   type: TransactionType;
-  category: Category;
+  category: Category | string; // Allow custom categories
 }
 
 interface FormErrors {
@@ -25,23 +27,14 @@ interface FormErrors {
   category?: string;
 }
 
-const categories: Category[] = [
-  'salary',
-  'freelance',
-  'investment',
-  'rent',
-  'utilities',
-  'groceries',
-  'dining',
-  'transportation',
-  'entertainment',
-  'healthcare',
-  'shopping',
-  'transfer',
-  'other',
-];
-
 export function TransactionForm({ onSubmit, onCancel, transaction }: TransactionFormProps) {
+  const getAllCategories = useCategoriesStore((state) => state.getAllCategories);
+  const addCustomCategory = useCategoriesStore((state) => state.addCustomCategory);
+  const allCategories = getAllCategories();
+  
+  const [showCustomCategoryInput, setShowCustomCategoryInput] = useState(false);
+  const [customCategoryInput, setCustomCategoryInput] = useState('');
+  
   const [formData, setFormData] = useState<TransactionFormData>({
     date: transaction?.date || '',
     description: transaction?.description || '',
@@ -145,6 +138,21 @@ export function TransactionForm({ onSubmit, onCancel, transaction }: Transaction
       currentTarget: {},
     } as unknown as FormEvent;
     handleSubmit(syntheticEvent);
+  };
+
+  const handleAddCustomCategory = () => {
+    const trimmed = customCategoryInput.trim();
+    if (trimmed && !allCategories.includes(trimmed.toLowerCase())) {
+      addCustomCategory(trimmed);
+      setFormData({ ...formData, category: trimmed.toLowerCase() as Category });
+      setCustomCategoryInput('');
+      setShowCustomCategoryInput(false);
+    }
+  };
+
+  const handleCancelCustomCategory = () => {
+    setCustomCategoryInput('');
+    setShowCustomCategoryInput(false);
   };
 
   const hasErrors = Object.keys(errors).length > 0;
@@ -312,22 +320,72 @@ export function TransactionForm({ onSubmit, onCancel, transaction }: Transaction
         >
           Category <span className="text-red-500">*</span>
         </label>
-        <select
-          id="transaction-category"
-          value={formData.category}
-          onChange={(e) => setFormData({ ...formData, category: e.target.value as Category })}
-          onBlur={() => handleBlur('category')}
-          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
-          required
-          aria-required="true"
-          aria-describedby={touched.category && errors.category ? 'category-error' : undefined}
-        >
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </option>
-          ))}
-        </select>
+        
+        {!showCustomCategoryInput ? (
+          <>
+            <select
+              id="transaction-category"
+              value={formData.category}
+              onChange={(e) => {
+                if (e.target.value === '__add_custom__') {
+                  setShowCustomCategoryInput(true);
+                } else {
+                  setFormData({ ...formData, category: e.target.value as Category });
+                }
+              }}
+              onBlur={() => handleBlur('category')}
+              className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+              required
+              aria-required="true"
+              aria-describedby={touched.category && errors.category ? 'category-error' : undefined}
+            >
+              {allCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </option>
+              ))}
+              <option value="__add_custom__" className="text-teal-600 font-medium">
+                + Add Custom Category
+              </option>
+            </select>
+          </>
+        ) : (
+          <div className="mt-1 flex gap-2">
+            <input
+              type="text"
+              value={customCategoryInput}
+              onChange={(e) => setCustomCategoryInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAddCustomCategory();
+                } else if (e.key === 'Escape') {
+                  handleCancelCustomCategory();
+                }
+              }}
+              placeholder="Enter custom category name"
+              className="flex-1 block rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={handleAddCustomCategory}
+              className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] px-3 py-2 text-sm font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              aria-label="Add custom category"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={handleCancelCustomCategory}
+              className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              aria-label="Cancel"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+        
         {touched.category && errors.category && (
           <p id="category-error" role="alert" className="mt-1 text-sm text-red-600">
             {errors.category}

@@ -348,7 +348,11 @@ describe('Category Breakdown Selector - Property Tests', () => {
       const categoryData = computeCategoryBreakdown(transactions);
 
       categoryData.forEach((data) => {
-        expect(data.color).toBe(CATEGORY_COLORS[data.category]);
+        // Use getCategoryColor to handle both predefined and custom categories
+        const expectedColor = data.category in CATEGORY_COLORS 
+          ? CATEGORY_COLORS[data.category as Category]
+          : '#6B7280'; // gray-500 for custom categories
+        expect(data.color).toBe(expectedColor);
       });
     });
 

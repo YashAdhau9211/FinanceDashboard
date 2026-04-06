@@ -87,7 +87,7 @@ export function TransactionTable({
   return (
     <>
       {/* Desktop Table View (hidden on mobile) */}
-      <div className="hidden md:block overflow-x-auto bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-opacity duration-150">
+      <div className="hidden md:block overflow-x-auto transition-opacity duration-150">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200 dark:border-gray-700">
@@ -149,7 +149,7 @@ export function TransactionTable({
       </div>
 
       {/* Mobile Card View (visible only on mobile) */}
-      <div className="md:hidden space-y-3 transition-opacity duration-150">
+      <div className="md:hidden space-y-3 p-4 transition-opacity duration-150">
         {transactions.map((transaction) => (
           <TransactionCard
             key={transaction.id}
