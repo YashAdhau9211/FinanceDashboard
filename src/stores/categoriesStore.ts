@@ -22,7 +22,6 @@ const DEFAULT_CATEGORIES: Category[] = [
   'healthcare',
   'shopping',
   'transfer',
-  'other',
 ];
 
 export const useCategoriesStore = create<CategoriesState>()(

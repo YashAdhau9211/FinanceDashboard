@@ -1,6 +1,6 @@
 export type TransactionType = 'income' | 'expense' | 'transfer';
 
-// Category type with 13 categories
+// Category type with 12 categories
 export type Category =
   | 'salary'
   | 'freelance'
@@ -13,8 +13,7 @@ export type Category =
   | 'entertainment'
   | 'healthcare'
   | 'shopping'
-  | 'transfer'
-  | 'other';
+  | 'transfer';
 
 // Role type for user roles
 export type Role = 'ADMIN' | 'ANALYST';

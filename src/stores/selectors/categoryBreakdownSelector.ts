@@ -23,7 +23,6 @@ export const CATEGORY_COLORS: Record<Category, string> = {
   freelance: '#6B7280', // gray-500
   investment: '#6B7280', // gray-500
   transfer: '#6B7280', // gray-500
-  other: '#6B7280', // gray-500
 };
 
 export function computeCategoryBreakdown(transactions: Transaction[]): CategoryData[] {

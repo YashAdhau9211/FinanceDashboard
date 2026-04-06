@@ -147,7 +147,6 @@ describe('colorUtils', () => {
         'freelance',
         'investment',
         'transfer',
-        'other',
       ];
 
       categories.forEach((category) => {

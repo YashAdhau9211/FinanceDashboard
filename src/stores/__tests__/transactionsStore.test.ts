@@ -28,8 +28,7 @@ const categoryArb = fc.constantFrom<Category>(
   'entertainment',
   'healthcare',
   'shopping',
-  'transfer',
-  'other'
+  'transfer'
 );
 
 const transactionDataArb = fc.record({

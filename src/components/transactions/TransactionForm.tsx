@@ -40,7 +40,7 @@ export function TransactionForm({ onSubmit, onCancel, transaction }: Transaction
     description: transaction?.description || '',
     amount: transaction?.amount || 0,
     type: transaction?.type || 'expense',
-    category: transaction?.category || 'other',
+    category: transaction?.category || 'groceries',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});

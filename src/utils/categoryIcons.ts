@@ -32,7 +32,6 @@ export const CATEGORY_ICONS: Record<Category, LucideIcon> = {
   freelance: Briefcase,
   investment: TrendingUp,
   transfer: ArrowLeftRight,
-  other: HelpCircle,
 };
 
 /**
