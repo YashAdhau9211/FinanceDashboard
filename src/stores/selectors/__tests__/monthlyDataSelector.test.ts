@@ -81,7 +81,7 @@ describe('Monthly Data Selector - Property Tests', () => {
             const monthlyData = computeMonthlyData(transactions, 12);
 
             // Each month should have YYYY-MM format
-            monthlyData.forEach((data) => {
+            monthlyData.forEach((data: { month: string }) => {
               expect(data.month).toMatch(/^\d{4}-\d{2}$/);
             });
           }
@@ -126,7 +126,7 @@ describe('Monthly Data Selector - Property Tests', () => {
             ];
 
             const monthlyData = computeMonthlyData(transactions, 12);
-            const currentMonthData = monthlyData.find((d) => d.month === currentMonth);
+            const currentMonthData = monthlyData.find((d: { month: string }) => d.month === currentMonth);
 
             expect(currentMonthData).toBeDefined();
             expect(currentMonthData!.transactionCount).toBe(1);
@@ -146,7 +146,7 @@ describe('Monthly Data Selector - Property Tests', () => {
           (transactions) => {
             const monthlyData = computeMonthlyData(transactions, 12);
 
-            monthlyData.forEach((data) => {
+            monthlyData.forEach((data: { month: string; income: number }) => {
               // Compute expected income for this month
               const expectedIncome = transactions
                 .filter((t) => t.date.startsWith(data.month) && t.type === 'income')
@@ -167,7 +167,7 @@ describe('Monthly Data Selector - Property Tests', () => {
           (transactions) => {
             const monthlyData = computeMonthlyData(transactions, 12);
 
-            monthlyData.forEach((data) => {
+            monthlyData.forEach((data: { month: string; expenses: number }) => {
               // Compute expected expenses for this month
               const expectedExpenses = transactions
                 .filter((t) => t.date.startsWith(data.month) && t.type === 'expense')
@@ -188,7 +188,7 @@ describe('Monthly Data Selector - Property Tests', () => {
           (transactions) => {
             const monthlyData = computeMonthlyData(transactions, 12);
 
-            monthlyData.forEach((data) => {
+            monthlyData.forEach((data: { income: number; expenses: number; net: number }) => {
               const expectedNet = data.income - data.expenses;
               expect(Math.abs(data.net - expectedNet)).toBeLessThan(0.01);
             });
@@ -205,7 +205,7 @@ describe('Monthly Data Selector - Property Tests', () => {
           (transactions) => {
             const monthlyData = computeMonthlyData(transactions, 12);
 
-            monthlyData.forEach((data) => {
+            monthlyData.forEach((data: { month: string; transactionCount: number }) => {
               // Count expected transactions for this month
               const expectedCount = transactions.filter((t) =>
                 t.date.startsWith(data.month)
@@ -226,7 +226,7 @@ describe('Monthly Data Selector - Property Tests', () => {
       const monthlyData = computeMonthlyData(transactions, 12);
 
       // All months should have zeros when no transactions exist
-      monthlyData.forEach((data) => {
+      monthlyData.forEach((data: { income: number; expenses: number; net: number; transactionCount: number }) => {
         expect(data.income).toBe(0);
         expect(data.expenses).toBe(0);
         expect(data.net).toBe(0);
@@ -240,7 +240,7 @@ describe('Monthly Data Selector - Property Tests', () => {
       const monthlyData = computeMonthlyData([], 12);
 
       expect(monthlyData).toHaveLength(12);
-      monthlyData.forEach((data) => {
+      monthlyData.forEach((data: { income: number; expenses: number; net: number; transactionCount: number }) => {
         expect(data.income).toBe(0);
         expect(data.expenses).toBe(0);
         expect(data.net).toBe(0);
@@ -280,7 +280,7 @@ describe('Monthly Data Selector - Property Tests', () => {
       ];
 
       const monthlyData = computeMonthlyData(transactions, 12);
-      const currentMonthData = monthlyData.find((d) => d.month === currentMonth);
+      const currentMonthData = monthlyData.find((d: { month: string }) => d.month === currentMonth);
 
       expect(currentMonthData!.income).toBe(80000);
       expect(currentMonthData!.expenses).toBe(0);
@@ -305,7 +305,7 @@ describe('Monthly Data Selector - Property Tests', () => {
       ];
 
       const monthlyData = computeMonthlyData(transactions, 12);
-      const currentMonthData = monthlyData.find((d) => d.month === currentMonth);
+      const currentMonthData = monthlyData.find((d: { month: string }) => d.month === currentMonth);
 
       expect(currentMonthData!.income).toBe(0);
       expect(currentMonthData!.expenses).toBe(8000);

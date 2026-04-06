@@ -237,7 +237,7 @@ describe('Heatmap Data Selector - Property Tests', () => {
 
       const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       days.forEach((day) => {
-        const dayCells = heatmapData.filter((c) => c.day === day);
+        const dayCells = heatmapData.filter((c: { day: string }) => c.day === day);
         expect(dayCells.length).toBe(6); // 6 time slots per day
       });
     });
@@ -250,7 +250,7 @@ describe('Heatmap Data Selector - Property Tests', () => {
 
       days.forEach((day) => {
         timeSlots.forEach((timeSlot) => {
-          const cells = heatmapData.filter((c) => c.day === day && c.timeSlot === timeSlot);
+          const cells = heatmapData.filter((c: { day: string; timeSlot: string }) => c.day === day && c.timeSlot === timeSlot);
           expect(cells.length).toBeGreaterThan(0);
         });
       });
